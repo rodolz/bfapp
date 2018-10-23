@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Proveedor;
+use App\ProductoProveedor;
 
 class ProveedorController extends Controller
 {
@@ -61,7 +62,11 @@ class ProveedorController extends Controller
      */
     public function show($id)
     {
-        //
+        $proveedor = Proveedor::findOrfail($id);
+
+        $productos_proveedor = ProductoProveedor::where('idProveedor',$proveedor->id)
+                                                ->get();
+        return view('proveedores.show',compact('proveedor','productos_proveedor'));
     }
 
     /**
