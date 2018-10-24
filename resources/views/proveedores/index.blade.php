@@ -50,7 +50,7 @@
                             <th>Pais</th>
                             <th>Codigo Postal</th>
                             <th>Website</th>
-                            <th width="150px">Acciones</th>
+                            <th width="200px">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
