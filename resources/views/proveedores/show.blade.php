@@ -54,6 +54,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                         <div class="row">
+                        
                             <div class="text-center">
                                 <h2 class="bold">Productos</h2>
                             </div>
