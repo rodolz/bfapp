@@ -51,7 +51,7 @@ class ProductoCRUDController extends Controller
                             ->addColumn('action', function ($producto) {
                                 $token = csrf_token();
                             return "
-                            <a class='btn btn-orange' href='productos/{$producto->id}'><i class='fa fa-list-alt' aria-hidden='true'></i></a>
+                            <a class='btn btn-orange' href='productos/{$producto->id}'><i class='fa fa-eye' aria-hidden='true'></i></a>
                             <a class='btn btn-info' href='productos/{$producto->id}/edit'><i class='fa fa-pencil' aria-hidden='true'></i></a>
                             <form method='POST' action='productos/{$producto->id}' accept-charset='UTF-8' style='display:inline'>
                                 <input name='_method' type='hidden' value='DELETE'>

@@ -6768,11 +6768,11 @@ border-left: 3px solid transparent;
 .invoice-head-info {
     padding-top: 10px;
     padding-bottom: 10px;
-    white-space: nowrap;
+    white-space: initial;
     font-size: 14px;
 }
 .invoice-head-info:last-child {
-    padding-left: 0px;
+    padding-left: 15px;
 }
 .invoice-head-info:first-child {
     padding-right: 0px;
@@ -7715,6 +7715,13 @@ border-left: 3px solid transparent;
 .inputfile + label * {
     pointer-events: none;
 }
+
+/* Class to solve words overlapping inside a block */
+.ow {
+    overflow-wrap: break-all;
+    word-wrap: break-all;
+    hyphens: auto;
+  }
 /*
 .bg-muted{ background: #eaeaea; padding: 3px 8px;}
 .bg-primary{ background: rgba(31,181,172,1); padding: 3px 8px; color: #ffffff;} #1fb5ac

@@ -107,6 +107,11 @@ class ProductoProveedorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $producto = ProductoProveedor::find($id);
+        $proveedor = Proveedor::where('id',$producto->idProveedor)
+                                ->first();
+        $producto->delete();
+        return redirect()->route('proveedores.show',['id' => $proveedor->id])
+                        ->with('success','Producto Borrado!');
     }
 }

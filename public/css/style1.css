@@ -7690,7 +7690,11 @@ border-left: 3px solid transparent;
 
 }
 
-
+.ow {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
 
 
 

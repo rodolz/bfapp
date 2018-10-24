@@ -15,63 +15,47 @@
         </header>
         <div class="content-body">    
         	<div class="row">
-                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <!-- start -->
                     <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="invoice-head">
-                                <div class="col-md-2 col-sm-12 col-xs-12 invoice-title">
+                                <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 invoice-title">
                                     <h3 class="text-center bg-primary ">{{ $cliente->empresa }}</h3>    
                                 </div>
-                                <div class="col-md-3 col-sm-12 col-xs-12 invoice-head-info">
+                                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 invoice-head-info">
                                     <span class="text-muted">
                                         Dirección:<br/>
-                                        {{ $cliente->direccion }}<br>
+                                        {{ $cliente->direccion }}
                                     </span>
                                 </div>
-                                <div class="col-md-3 col-sm-12 col-xs-12 invoice-head-info">
+                                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 invoice-head-info">
                                     <span class="text-muted"> 
-        								Fecha:<br/>
-                                        {{ date('d/m/Y') }}<br/>
+                                        Fecha:<br/>
+                                        {{ date('d/m/Y') }}
                                     </span>
-                                </div>
-                                <div class="col-md-3 col-sm-12 col-xs-12 invoice-logo text-center">
-                                    <img src="{{ asset('images/logo.png') }}" class="img-reponsive"> 
                                 </div>
                             </div>
                         </div>
                         <div class="clearfix"></div><br>
-
-                        <div class="col-xs-6 invoice-infoblock pull-left">
+                        <div class="col-lg-12 col-xs-6 invoice-infoblock pull-left">
                             <h4>Contacto:</h4>
                             <address>
                                 <h3>{{ $cliente->contacto }}</h3>
                                 <span class="text-muted">
-                                {{  $cliente->email }}<br>
-                                {{  $cliente->tel_local }}<br>
-                                {{  $cliente->tel_celular }}
+                                Correo: {{  $cliente->email }}<br>
+                                Telefono Local: {{  $cliente->tel_local }}<br>
+                                Telefono Celular: {{  $cliente->tel_celular }}
                                 </span>
                             </address>
                         </div>
-
                         <div class="col-xs-12 invoice-infoblock text-right">
-                            <!-- <h4>Payment Method:</h4>
-                            <address>
-                                <h3>Credit Card</h3>
-                                <span class="text-muted">Visa ending **** 4242<br>
-                                    jsmith@email.com</span>
-                            </address> -->
-                            
                             <div class="invoice-due">
                                 <h3 class="text-muted">Deuda Total:</h3> &nbsp; <h3 class="text-danger">$ {{ number_format($monto_total,2,'.',',') }}</h3>                
                             </div>
-
                         </div>
-
                         <div class="clearfix"></div><br>
-
                     </div>
-
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <h3>Resumen</h3><br>
@@ -86,7 +70,6 @@
                                             <td width="200px" class="text-center bg-info"><h4>30 días</h4></td>
                                             <td width="200px" class="text-center bg-warning"><h4>60 días</h4></td>
                                             <td width="200px" class="text-right bg-danger"><h4>90 días o mas</h4></td>
-                                            <!-- <td class="text-right"><h4>Totales</h4></td> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -165,7 +148,7 @@
                                         </tr>
                                         @else
                                             <tr>
-                                                <td colspan="6">
+                                                <td colspan="7">
                                                     <h2 class="bold text-success text-center"><i class="fa fa-check-circle" aria-hidden="true" style="font-size:30px"></i> No tiene facturas pendientes</h2>
                                                 </td>
                                             </tr>
@@ -175,22 +158,13 @@
                             </div>
                         </div>
                     </div>
-
-
-
                     <div class="clearfix"></div><br>
-
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                            <a href="/pagos/estado_cuenta_pdf/{{$cliente->id}}" target="_blank" class="btn btn-purple btn-md"><i class="fa fa-print"></i> &nbsp; Imprimir </a>        
-                        {{--     <a href="#" target="_blank" class="btn btn-orange btn-md"><i class="fa fa-send"></i> &nbsp; Send </a> --}}        
+                            <a href="/pagos/estado_cuenta_pdf/{{$cliente->id}}" target="_blank" class="btn btn-purple btn-md"><i class="fa fa-print"></i> &nbsp; Imprimir </a>     
                         </div>
                     </div>
-
-
                     <!-- end -->
-
-
                 </div>
             </div>
         </div>

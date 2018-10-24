@@ -54,7 +54,6 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                         <div class="row">
-                        
                             <div class="text-center">
                                 <h2 class="bold">Productos</h2>
                             </div>
@@ -67,6 +66,7 @@
                                             <th>Codigo</th>
                                             <th>Descripcion</th>
                                             <th>Precio</th>
+                                            <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -76,49 +76,19 @@
                                                 <th>{{ $producto->codigo }}</th>
                                                 <th>{{ $producto->descripcion }}</th>
                                                 <th>${{ number_format($producto->precio, 2, '.', ',') }}</th>
+                                                {!! Form::open(['method' => 'DELETE','route' => ['proveedores_producto.destroy', $producto->id],'style'=>'display:inline']) !!}
+                                                <th>
+                                                <button type="submit" class="btn btn-danger">
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                </button>
+                                	            {!! Form::close() !!}
+                                                </th>
                                             </tr>
                                         @endforeach
                                     @else
                                         <tr>
                                             <td colspan="4">
-                                                <h2 class="bold text-warning text-center"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:30px"></i> No se han creado notas de entregas con este producto.</h2>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                            <div class="text-center">
-                                <h2 class="bold">Productos</h2>
-                            </div>
-                        </div>
-                        <div class="well row top15 right15">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Codigo</th>
-                                            <th>Descripcion</th>
-                                            <th>Precio</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    @if(count($productos_proveedor) > 0)
-                                        @foreach ($productos_proveedor as $producto)
-                                            <tr>
-                                                <th>{{ $producto->codigo }}</th>
-                                                <th>{{ $producto->descripcion }}</th>
-                                                <th>${{ number_format($producto->precio, 2, '.', ',') }}</th>
-                                            </tr>
-                                        @endforeach
-                                    @else
-                                        <tr>
-                                            <td colspan="4">
-                                                <h2 class="bold text-warning text-center"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:30px"></i> No se han creado notas de entregas con este producto.</h2>
+                                                <h2 class="bold text-warning text-center"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:30px"></i> No se han agregado productos </h2>
                                             </td>
                                         </tr>
                                     @endif
