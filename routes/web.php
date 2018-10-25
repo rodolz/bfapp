@@ -112,10 +112,10 @@
 		Route::get('ventas/lista_precios_dompdf', 'VentasController@lista_precios_dompdf');
 		Route::get('ventas/lista_precios','VentasController@lista_precios')->name('ventas.index');
 		Route::get('ventas/cotizaciones','CotizacionController@index')->name('ventas.cotizaciones.index');
-		Route::get('ventas/cotizaciones/{id}','CotizacionController@edit')->name('ventas.cotizaciones.edit');
+		// Route::get('ventas/cotizaciones/{id}','CotizacionController@edit')->name('ventas.cotizaciones.edit');
 		Route::post('ventas/cotizaciones/update', 'CotizacionController@update_cotizacion');
 		Route::resource('ventas/cotizaciones','CotizacionController', ['except' => [
-				'index',
+				'index'
 		]]);
 		Route::post('ventas/nueva_cotizacion', 'CotizacionController@nueva_cotizacion');
 		Route::resource('ventas/lista_precios', 'VentasController@lista_precios', ['except' => [

@@ -306,35 +306,26 @@
                                 text: "Al cerrar será redireccionado a las cotizaciones",
                                 type: "success",
                                 confirmButtonText: "Cerrar",
-                                },
-                                function(){
-                                  setTimeout(function(){
-                                    window.location.href = "{{URL::to('ventas/cotizaciones')}}";
-                                  }, 1500);
-                                });
+                                    onClose: () => {
+                                        window.location.href = "{{URL::to('ventas/cotizaciones')}}";
+                                    }
+                                })
                         }
                         else{
-                            var errors = "<p>"+data+"</p>";
                             swal({
                                 type: 'error',
                                 title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                                text: errors,
-                                html: true
+                                html: data
                             });
                             $("#submit").prop('disabled', false);
                         }
                     },
                     error: function( data ){
                         // Error...
-                        console.log(errors);
-                        console.log(data);
-                        var errors = "<p>"+data.responseText+"</p>";
                         swal({
                             type: 'error',
                             title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            text: errors,
-                            // customClass: 'sweet-alert-lg',
-                            html: true
+                            html: data
                         });
                         $("#submit").prop('disabled', false);
                     }

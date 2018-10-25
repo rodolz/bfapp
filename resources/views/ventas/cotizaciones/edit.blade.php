@@ -266,7 +266,6 @@
             var garantia = $('#garantia').val();
             var notas = $('#notas').val();
             var itbms = $('#itbms').val();
-
             if( condicion == '' || t_entrega == '' || d_oferta == '' || garantia == '' || itbms == ''){
                 showErrorMessage('Verifique los datos en el area de "Detalles", e intente de nuevo');
                 return false;
@@ -315,34 +314,30 @@
                     success: function( data, textStatus, jQxhr ){
                         if(data === "ok"){
                             swal({
-                                title:"Cotizacion creada!",
+                                title:"Cotizacion modificada!",
                                 text: "Al cerrar será redireccionado a las cotizaciones",
-                                icon: "success",
-                                button: "Cerrar",
-                                });
+                                type: "success",
+                                onClose: () => {
+                                    window.location.href = "{{URL::to('ventas/cotizaciones')}}";
+                                }
+                            })
                         }
                         else{
-                            var errors = "<p>"+data+"</p>";
+                            console.log(data);
                             swal({
-                                icon: 'error',
+                                type: 'error',
                                 title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                                text: errors,
-                                html: true
+                                html: data,
                             });
                             $("#submit").prop('disabled', false);
                         }
                     },
                     error: function( data ){
                         // Error...
-                        console.log(errors);
-                        console.log(data);
-                        var errors = "<p>"+data.responseText+"</p>";
                         swal({
-                            icon: 'error',
+                            type: 'error',
                             title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            text: errors,
-                            // customClass: 'sweet-alert-lg',
-                            html: true
+                            html: data
                         });
                         $("#submit").prop('disabled', false);
                     }

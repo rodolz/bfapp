@@ -145,15 +145,20 @@ class CotizacionController extends Controller
                 $precio_total += + $precio_x_cantidad;
                 array_push($productos,$producto_db);
             }
+            
             //Aplicar el ITBMS al precio total
             $precio_total = $precio_total + $precio_total * ($request->itbms / 100);
-
+            //Modificar la cotizacion
             $cotizacion->idCliente = $cliente->id;
             $cotizacion->idUsuario = Auth::user()->id;
+            $cotizacion->condicion = $request->condicion;
+            $cotizacion->t_entrega = $request->t_entrega;
+            $cotizacion->d_oferta = $request->d_oferta;
+            $cotizacion->garantia = $request->garantia;
             $cotizacion->monto_cotizacion = $precio_total;
-            // $orden->idOrdenEstado = 1;
+            $cotizacion->notas = $request->notas;
+            $cotizacion->itbms = $request->itbms;
             $cotizacion->save();
-
 
             // INICIO - INSETAR CADA PRODUCTO EN Cotizacion_producto
             foreach ($data as $producto) {
