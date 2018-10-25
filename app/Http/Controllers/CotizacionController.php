@@ -32,6 +32,23 @@ class CotizacionController extends Controller
         return view('ventas.cotizaciones.create', compact('clientes','productos'));//
     }
 
+    public function edit(Request $request, $id)
+    {
+        $clientes = Cliente::pluck('empresa','id');
+        $productos = Producto::select(DB::raw("CONCAT(codigo,' | ',descripcion) as codigo_descripcion"),'id')
+                                ->where('cantidad','>','0')
+                                ->pluck('codigo_descripcion','id');
+        $cotizacion = Cotizacion::find($id);
+
+        $productos_seleccionados = $cotizacion->cotizacion_producto;
+
+        // foreach ($productos_seleccionados as $producto) {
+        //     dd($producto->pivot->cantidad_producto);
+        //     // dd($producto->codigo);
+        // }
+        return view('ventas.cotizaciones.edit',compact('cotizacion','clientes','productos','productos_seleccionados'));
+    }
+
     public function destroy($id){
 
         $cotizacion = Cotizacion::findorFail($id)->delete();
@@ -107,6 +124,63 @@ class CotizacionController extends Controller
         return "ok";
     }
 
+    public function update_cotizacion(Request $request)
+    {
+        $cotizacion = Cotizacion::findorFail($request->idCotizacion);
+
+        // update de cotizacion
+        $precio_total = 0;
+        $cliente = Cliente::where('id', $request->idCliente)->first();
+        $data = json_decode($request->data, true);
+        $productos = array();
+        // Inicio de la transaccion
+        DB::beginTransaction();
+        try{
+            $cotizacion->cotizacion_producto()->detach();
+            foreach ($data as $producto) {
+                $producto['precio_final'] = str_replace(',', '', $producto['precio_final']);
+                $producto_db = Producto::where('id',$producto['id'])->first();
+                $producto_db->cantidad = $producto['cantidad'];
+                $precio_x_cantidad = $producto['precio_final'] * $producto_db->cantidad;
+                $precio_total += + $precio_x_cantidad;
+                array_push($productos,$producto_db);
+            }
+            //Aplicar el ITBMS al precio total
+            $precio_total = $precio_total + $precio_total * ($request->itbms / 100);
+
+            $cotizacion->idCliente = $cliente->id;
+            $cotizacion->idUsuario = Auth::user()->id;
+            $cotizacion->monto_cotizacion = $precio_total;
+            // $orden->idOrdenEstado = 1;
+            $cotizacion->save();
+
+
+            // INICIO - INSETAR CADA PRODUCTO EN Cotizacion_producto
+            foreach ($data as $producto) {
+                $producto['precio_final'] = str_replace(',', '', $producto['precio_final']);
+                DB::table('cotizacion_producto')->insert(
+                    [
+                    'idCotizacion' => $cotizacion->id,
+                    'idProducto' => $producto['id'],
+                    'cantidad_producto' => $producto['cantidad'],
+                    'precio_final' => $producto['precio_final']
+                    ]
+                );
+            }
+        }   
+        catch (\Exception $e) {
+             DB::rollback();
+             return $e->getMessage();
+        }
+        // Fin de la transaccion
+        // SE hace el commit
+        DB::commit();
+        return "ok";
+
+        // Orden::find($id)->update($request->all());
+        // return redirect()->route('ordenes.index')
+        //                 ->with('success','Orden Modificada!');
+    }
     //MOSTRAR EL PDF DE LA COTIZACION
     public function nueva_cotizacion_pdf($idCotizacion){
 

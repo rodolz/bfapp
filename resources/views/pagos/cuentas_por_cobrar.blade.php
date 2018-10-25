@@ -21,17 +21,17 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="invoice-head">
                                 <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 invoice-title">
-                                    <h3 class="text-center bg-primary ">{{ $cliente->empresa }}</h3>    
+                                    <h3 class="text-center bg-primary bold">{{ $cliente->empresa }}</h3>    
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 invoice-head-info">
                                     <span class="text-muted">
-                                        Dirección:<br/>
+                                        <strong>Dirección:</strong><br/>
                                         {{ $cliente->direccion }}
                                     </span>
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 invoice-head-info">
                                     <span class="text-muted"> 
-                                        Fecha:<br/>
+                                        <strong>Fecha:</strong><br/>
                                         {{ date('d/m/Y') }}
                                     </span>
                                 </div>

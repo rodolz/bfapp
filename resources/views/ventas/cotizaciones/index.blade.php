@@ -39,7 +39,7 @@
                                 <th>Condicion de Pago</th>
                                 <th>Monto</th>
                                 <th>Estado</th>
-                                <th width="200px">Acciones</th>
+                                <th width="250px">Acciones</th>
                             </tr>
                     	</thead>
                         <tbody>
@@ -59,8 +59,10 @@
                                     <td>    
                                     @if($cotizacion->idCotizacionEstado == 1)
                                         <a class="btn btn-primary" href="{{ route('ordenes.create_from_cotizacion',$cotizacion->id) }}"><i class="fa fa-file-text"></i></a>
+                                        <a class="btn btn-primary" href="{{ route('ventas.cotizaciones.edit',$cotizacion->id) }}"><i class="fa fa-pencil"></i></a>
                                     @else
                                             <button class="btn btn-primary" href="{{ route('ordenes.create_from_cotizacion',$cotizacion->id) }}" disabled><i class="fa fa-file-text"></i></button>
+                                            <button class="btn btn-primary" href="{{ route('ventas.cotizaciones.edit',$cotizacion->id) }}" disabled><i class="fa fa-pencil"></i></button>
                                     @endif
                                         <a class="btn btn-info" href="{{ URL::to('cotizacion-pdf/'.$cotizacion->id) }}"><i class="fa fa-file-pdf-o"></i></a>
                         	            {!! Form::open(['method' => 'DELETE','route' => ['cotizaciones.destroy', $cotizacion->id],'style'=>'display:inline']) !!}

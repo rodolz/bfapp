@@ -38,7 +38,8 @@
         <link href="{{ asset('plugins/datatables/extensions/TableTools/css/dataTables.tableTools.min.css') }}" rel="stylesheet" type="text/css" media="screen"/>
         <link href="{{ asset('plugins/datatables/extensions/Responsive/css/dataTables.responsive.css') }}" rel="stylesheet" type="text/css" media="screen"/>
         <link href="{{ asset('plugins/datatables/extensions/Responsive/bootstrap/3/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-        <link href="{{ asset('plugins/sweetalert/dist/sweetalert.css') }}" rel="stylesheet" type="text/css" media="screen"/>         
+        <!-- <link href="{{ asset('plugins/sweetalert/dist/sweetalert.css') }}" rel="stylesheet" type="text/css" media="screen"/>          -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.28.9/dist/sweetalert2.css">
         <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
 
 

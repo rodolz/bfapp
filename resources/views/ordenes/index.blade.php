@@ -66,7 +66,6 @@
                                          <td><label class="bg-info"><a style="text-decoration: none; color: white;" href="/factura-pdf/0/{{ $orden->id }}" >{{ $orden->estado->ordenes_estado }}</label></td>
                                     @endif
                                     <td>
-
                                         @if($orden->idOrdenEstado == 1)
                                             <a class="btn btn-primary" href="{{ route('ordenes.edit',$orden->id) }}"><i class="fa fa-pencil"></i></a>
                                         @else

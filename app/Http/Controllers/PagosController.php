@@ -12,7 +12,8 @@ use App\Factura;
 use App\Pago;
 use Yajra\Datatables\Datatables;
 use PDF;
-
+use Validator;
+use Alert;
 class PagosController extends Controller
 {
 
@@ -78,9 +79,17 @@ class PagosController extends Controller
             'idCliente.required' => 'Debe escojer a un cliente',
         ];
 
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'idCliente' => 'required',
-        ], $customMessages);
+        ],$customMessages);
+
+        if ($validator->fails()) {
+            $errores = $validator->errors();
+            // dd($errores->get('idCliente'));
+            Alert::error($errores->first('idCliente'));
+            return redirect()->back();
+        }     
+
 
         $cliente = Cliente::findOrfail($request->idCliente);
 
