@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class OrdenesComisiones extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('ordenes_comisiones', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
-            $table->string('email');
-            $table->string('password');
-            $table->string('avatar');
-            $table->rememberToken();
+            $table->integer('idComision')->unsigned();
+            $table->integer('idOrden')->unsigned();
+            $table->decimal('porcentaje',13,2);
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('ordenes_comisiones');
     }
 }

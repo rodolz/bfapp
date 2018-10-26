@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class CreateComisionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('comisions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
-            $table->string('email');
-            $table->string('password');
-            $table->string('avatar');
-            $table->rememberToken();
+            $table->integer('num_comision')->unique()->unsigned();
+            $table->integer('idRepartidor')->unsigned();
+            $table->decimal('monto_comision',13,2);
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('comisions');
     }
 }

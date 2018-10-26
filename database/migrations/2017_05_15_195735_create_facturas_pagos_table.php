@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class FacturasPagos extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('facturas_pagos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
-            $table->string('email');
-            $table->string('password');
-            $table->string('avatar');
-            $table->rememberToken();
+            $table->integer('idFactura')->unique()->unsigned();
+            $table->integer('idPago')->unsigned()->nullable();
+            $table->integer('idCliente')->unsigned()->nullable();
+            $table->decimal('monto_pago');
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('facturas_pagos');
     }
 }

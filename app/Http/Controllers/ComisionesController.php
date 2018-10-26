@@ -201,13 +201,13 @@ class ComisionesController extends Controller
         // Crear arreglo asociativo valor - descripcion
         $ordenes = Orden::orderBy('num_orden','DESC')->pluck('num_orden','id','DESC');
 
-        $users = User::all();
-        
-        foreach ($users as $user) {
-            if($user->hasRole('repartidor')){
-                $repartidores[$user->id] = $user->nombre;
-            }
-        }
+        // $users = User::all();
+        $repartidores = User::all()->pluck('nombre','id');
+        // foreach ($users as $user) {
+        //     if($user->hasRole('repartidor')){
+        //         $repartidores[$user->id] = $user->nombre;
+        //     }
+        // }
 
             return view('comisiones.create', compact('ordenes','repartidores'));
     }
