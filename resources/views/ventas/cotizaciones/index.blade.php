@@ -56,20 +56,22 @@
                                     @else
                                          <td><label class="bg-info"><a style="text-decoration: none; color: white;">{{ $cotizacion->estado->cotizacion_estado }}</label></td>
                                     @endif
-                                    <td>    
-                                    @if($cotizacion->idCotizacionEstado == 1)
-                                        <a class="btn btn-primary" href="{{ route('ordenes.create_from_cotizacion',$cotizacion->id) }}"><i class="fa fa-file-text"></i></a>
-                                        <a class="btn btn-primary" href="{{ route('cotizaciones.edit',$cotizacion->id) }}"><i class="fa fa-pencil"></i></a>
-                                    @else
-                                            <button class="btn btn-primary" href="{{ route('ordenes.create_from_cotizacion',$cotizacion->id) }}" disabled><i class="fa fa-file-text"></i></button>
-                                            <button class="btn btn-primary" href="{{ route('cotizaciones.edit',$cotizacion->id) }}" disabled><i class="fa fa-pencil"></i></button>
-                                    @endif
-                                        <a class="btn btn-info" href="{{ URL::to('cotizacion-pdf/'.$cotizacion->id) }}"><i class="fa fa-file-pdf-o"></i></a>
-                        	            {!! Form::open(['method' => 'DELETE','route' => ['cotizaciones.destroy', $cotizacion->id],'style'=>'display:inline']) !!}
-                                       <button type="submit" class="btn btn-danger">
-                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        </button>
-                        	            {!! Form::close() !!}
+                                    <td>
+                                        <div class="acciones-btn">
+                                            @if($cotizacion->idCotizacionEstado == 1)
+                                                <a class="btn btn-primary" href="{{ route('ordenes.create_from_cotizacion',$cotizacion->id) }}"><i class="fa fa-file-text"></i></a>
+                                                <a class="btn btn-primary" href="{{ route('cotizaciones.edit',$cotizacion->id) }}"><i class="fa fa-pencil"></i></a>
+                                            @else
+                                                    <button class="btn btn-primary" href="{{ route('ordenes.create_from_cotizacion',$cotizacion->id) }}" disabled><i class="fa fa-file-text"></i></button>
+                                                    <button class="btn btn-primary" href="{{ route('cotizaciones.edit',$cotizacion->id) }}" disabled><i class="fa fa-pencil"></i></button>
+                                            @endif
+                                            <a class="btn btn-info" href="{{ URL::to('cotizacion-pdf/'.$cotizacion->id) }}"><i class="fa fa-file-pdf-o"></i></a>
+                                            {!! Form::open(['method' => 'DELETE','route' => ['cotizaciones.destroy', $cotizacion->id],'style'=>'display:inline']) !!}
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            </button>
+                                            {!! Form::close() !!}
+                                        <div class="acciones-btn">
                         	        </td>
                         	    </tr>
                             @endforeach
@@ -84,10 +86,8 @@
                     </table>
                 </div>
             </div>
-
         	<!-- PAGINACION -->
            <center> {!! $cotizaciones->links() !!} </center>
-
         </div>
     </section>
 

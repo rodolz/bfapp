@@ -20,7 +20,7 @@
 		//Registro
 		Route::get('register','Auth\RegisterController@index');
 
-		Route::get('/',[
+		Route::get('/home',[
 			'as' => 'index',
 			'uses' =>'DashboardController@dashboard'
 			]

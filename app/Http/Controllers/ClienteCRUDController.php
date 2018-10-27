@@ -114,8 +114,7 @@ class ClienteCRUDController extends Controller
 
         Cliente::find($id)->update($request->all());
 
-        return redirect()->route('clientes.index')
-                        ->with('success','Cliente Modificado!');
+        return redirect()->to($request->url)->with('success','Cliente Modificado!');
     }
 
     /**
@@ -127,7 +126,6 @@ class ClienteCRUDController extends Controller
     public function destroy($id)
     {
         Cliente::find($id)->delete();
-        return redirect()->route('clientes.index')
-                        ->with('success','Cliente Borrado!');
+        return redirect()->to($request->url)->with('success','Cliente Borrado!');
     }
 }

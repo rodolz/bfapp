@@ -29,10 +29,6 @@
         </header>
         <div class="content-body">    
             <div class="row">
-                <div id="feedback">
-            
-                </div>
-
 	           {!! Form::open(array('id' => 'orden_form','method'=>'POST','class' => 'form-inline')) !!}
                     <div class="well transparent">
                         <div class="row">

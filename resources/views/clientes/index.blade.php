@@ -67,13 +67,15 @@
                                         <td>{{ $value->www }}</td>
                                         <td>{{ $value->ruc }}</td>
                             	        <td>
+                                            <div class="acciones-btn">
                                 	            <!-- <a class="btn btn-info" href="{{ route('clientes.show',$value->id) }}">Show</a> -->
                                 	            <a class="btn btn-info" href="{{ route('clientes.edit',$value->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                                 	            {!! Form::open(['method' => 'DELETE','route' => ['clientes.destroy', $value->id],'style'=>'display:inline']) !!}
                                                 <button type="submit" class="btn btn-danger">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </button>
-                                	            {!! Form::close() !!}
+                                                {!! Form::close() !!}
+                                            </div>
                             	        </td>
                             	    </tr>
                                 @endforeach

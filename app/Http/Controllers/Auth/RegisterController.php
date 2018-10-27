@@ -43,8 +43,9 @@ class RegisterController extends Controller
 
     public function index(){
 
-        $roles = Role::pluck('display_name','id');
-        return view('auth.register', compact('roles'));
+        // $roles = Role::pluck('display_name','id');
+        // return view('auth.register', compact('roles'));
+        return view('auth.register');
     }
 
     /**

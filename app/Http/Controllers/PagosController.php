@@ -32,6 +32,7 @@ class PagosController extends Controller
                             ->addColumn('action', function ($pago) {
                                 $token = csrf_token();
                             return "
+                            <div class='acciones-btn'>
                             <a class='btn btn-info' href='pagos/{$pago->id}'><i class='fa fa-list-alt' aria-hidden='true'></i></a>
                             <form id='delete_pago' method='POST' action='pagos/{$pago->id}' accept-charset='UTF-8' style='display:inline'>
                                 <input name='_method' type='hidden' value='DELETE'>
@@ -39,7 +40,8 @@ class PagosController extends Controller
                                 <button id='delete' type='submit' class='btn btn-danger'>
                                     <i class='fa fa-trash-o' aria-hidden='true'></i>
                                  </button>
-                            </form>";
+                            </form>
+                            </div>";
                              })
                             ->make(true);
     }

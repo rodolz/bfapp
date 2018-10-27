@@ -23,6 +23,7 @@
         <div class="content-body">    
             <div class="row">
                {!! Form::model($cliente, ['method' => 'PATCH','route' => ['clientes.update', $cliente->id]]) !!}
+               {{  Form::hidden('url',URL::previous())  }}
                 <div class="col-lg-8 col-md-8 col-sm-9 col-xs-12 col-lg-offset-2">
                    <!--  @if (count($errors) > 0)
                     <div class="alert alert-danger">

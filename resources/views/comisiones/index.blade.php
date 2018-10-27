@@ -50,14 +50,16 @@
                                     <td>{{ $comision->repartidor->nombre }}</td>
                                     <td>${{ number_format($comision->monto_comision, 2, '.', ',') }}</td>
                                     <td>
-                                        <!-- <a class="btn btn-info" href="{{ route('comisiones.show',$comision->id) }}">Show</a> -->
-                                        <!-- <a class="btn btn-primary" href="{{ route('comisiones.edit',$comision->id) }}">Modificar</a> -->
-                                        <a class="btn btn-info" href="{{ URL::to('comision-pdf/'.$comision->id) }}"><i class="fa fa-file-pdf-o"></i></a>
-                                        {!! Form::open(['method' => 'DELETE','route' => ['comisiones.destroy', $comision->id],'style'=>'display:inline']) !!}
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        </button>
-                                        {!! Form::close() !!}
+                                        <div class="acciones-btn">
+                                            <!-- <a class="btn btn-info" href="{{ route('comisiones.show',$comision->id) }}">Show</a> -->
+                                            <!-- <a class="btn btn-primary" href="{{ route('comisiones.edit',$comision->id) }}">Modificar</a> -->
+                                            <a class="btn btn-info" href="{{ URL::to('comision-pdf/'.$comision->id) }}"><i class="fa fa-file-pdf-o"></i></a>
+                                            {!! Form::open(['method' => 'DELETE','route' => ['comisiones.destroy', $comision->id],'style'=>'display:inline']) !!}
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            </button>
+                                            {!! Form::close() !!}
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

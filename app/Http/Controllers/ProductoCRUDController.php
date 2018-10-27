@@ -50,7 +50,7 @@ class ProductoCRUDController extends Controller
         return Datatables::of($productos)
                             ->addColumn('action', function ($producto) {
                                 $token = csrf_token();
-                            return "
+                            return "<div class='acciones-btn'>
                             <a class='btn btn-orange' href='productos/{$producto->id}'><i class='fa fa-eye' aria-hidden='true'></i></a>
                             <a class='btn btn-info' href='productos/{$producto->id}/edit'><i class='fa fa-pencil' aria-hidden='true'></i></a>
                             <form method='POST' action='productos/{$producto->id}' accept-charset='UTF-8' style='display:inline'>
@@ -59,7 +59,7 @@ class ProductoCRUDController extends Controller
                                 <button type='submit' class='btn btn-danger'>
                                     <i class='fa fa-trash-o' aria-hidden='true'></i>
                                  </button>
-                            </form>";
+                            </form></div>";
                              })
                             ->make(true);
     }

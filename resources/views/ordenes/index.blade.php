@@ -66,18 +66,20 @@
                                          <td><label class="bg-info"><a style="text-decoration: none; color: white;" href="/factura-pdf/0/{{ $orden->id }}" >{{ $orden->estado->ordenes_estado }}</label></td>
                                     @endif
                                     <td>
-                                        @if($orden->idOrdenEstado == 1)
-                                            <a class="btn btn-primary" href="{{ route('ordenes.edit',$orden->id) }}"><i class="fa fa-pencil"></i></a>
-                                        @else
-                                             <button class="btn btn-primary" href="{{ route('ordenes.edit',$orden->id) }}" disabled><i class="fa fa-pencil"></i></button>
-                                        @endif
+                                        <div class="acciones-btn">
+                                            @if($orden->idOrdenEstado == 1)
+                                                <a class="btn btn-primary" href="{{ route('ordenes.edit',$orden->id) }}"><i class="fa fa-pencil"></i></a>
+                                            @else
+                                                <button class="btn btn-primary" href="{{ route('ordenes.edit',$orden->id) }}" disabled><i class="fa fa-pencil"></i></button>
+                                            @endif
 
-                                        <a class="btn btn-info" href="{{ URL::to('orden-pdf/'.$orden->id) }}"><i class="fa fa-file-pdf-o"></i></a>
-                        	            {!! Form::open(['method' => 'DELETE','route' => ['ordenes.destroy', $orden->id],'style'=>'display:inline']) !!}
-                                       <button type="submit" class="btn btn-danger">
-                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        </button>
-                        	            {!! Form::close() !!}
+                                            <a class="btn btn-info" href="{{ URL::to('orden-pdf/'.$orden->id) }}"><i class="fa fa-file-pdf-o"></i></a>
+                                            {!! Form::open(['method' => 'DELETE','route' => ['ordenes.destroy', $orden->id],'style'=>'display:inline']) !!}
+                                        <button type="submit" class="btn btn-danger">
+                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            </button>
+                                            {!! Form::close() !!}
+                                        </div>
                         	        </td>
                         	    </tr>
                             @endforeach
