@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PurchaseOrder extends Model
 {
     public $fillable = [
-        'id',
-        'po_number'
+        'po_number',
         'created_at'
     ];
 

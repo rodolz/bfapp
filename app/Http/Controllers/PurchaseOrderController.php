@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\PurchaseOrder;
 
 class PurchaseOrderController extends Controller
 {
@@ -12,9 +13,12 @@ class PurchaseOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $purchase_orders = PurchaseOrder::orderBy('id','DESC')->paginate(10);
+
+        return view('purchase_orders.index',compact('purchase_orders'))
+                ->with('i', ($request->input('page', 1) - 1) * 10);
     }
 
     /**
