@@ -37,18 +37,18 @@
                                 <span class="title">Resumen</span>
                             </a>
                         </li>
-                        <li class="{{ Request::is('productos') || Request::is('productos/create') || Request::is('productos/inventario') || Request::is('categorias') || Request::is('categorias/create') ? 'open' : '' }}">
+                        <li class="{{ Request::is('productos','productos/create','productos/inventario','categorias','categorias/create') ? 'open' : '' }}">
                             <a href="javascript:;">
                                 <i class="fa fa-cubes"></i>
                                 <span class="title">Productos</span>
-                                <span class="{{ Request::is('productos') || Request::is('productos/create') || Request::is('productos/inventario') ? 'arrow open' : 'arrow' }}"></span>
+                                <span class="{{ Request::is('productos','productos/create','productos/inventario','categorias','categorias/create') ? 'arrow open' : 'arrow' }}"></span>
                             </a>
                             <ul class="sub-menu" style='display:none;'>
                                 <li>
-                                    <a class="{{ Request::is('productos') || Request::is('productos/create') ? 'active' : '' }}" href="{{ URL::to('productos') }}" >Lista de Productos</a>
+                                    <a class="{{ Request::is('productos','productos/create') ? 'active' : '' }}" href="{{ URL::to('productos') }}" >Lista de Productos</a>
                                 </li>
                                 <li>
-                                    <a class="{{ Request::is('categorias') || Request::is('categorias/create')? 'active' : '' }}" href="{{ URL::to('categorias') }}" >
+                                    <a class="{{ Request::is('categorias','categorias/create') ? 'active' : '' }}" href="{{ URL::to('categorias') }}" >
                                         <!-- <span class="label label-orange">NUEVO</span> -->
                                         <span class="title">Categorias</span>
                                     </a>
@@ -68,15 +68,15 @@
                             </a>
                         </li>
                         <!-- Proveedores -->
-                        <li class="{{ Request::is('proveedores') || Request::is('proveedores/create') || Request::is('proveedores/inventario') || Request::is('categorias') || Request::is('categorias/create') ? 'open' : '' }}">
+                        <li class="{{ Request::is('proveedores','proveedores/create','proveedores_producto/create','proveedores/*') ? 'open' : '' }}">
                             <a href="javascript:;">
                                 <i class="fa fa-industry"></i>
                                 <span class="title">Proveedores</span>
-                                <span class="{{ Request::is('proveedores') || Request::is('proveedores/create') || Request::is('proveedores/inventario') ? 'arrow open' : 'arrow' }}"></span>
+                                <span class="{{ Request::is('proveedores','proveedores/create','proveedores_producto/create','proveedores/*') ? 'arrow open' : 'arrow' }}"></span>
                             </a>
                             <ul class="sub-menu" style='display:none;'>
                                 <li>
-                                    <a class="{{ Request::is('proveedores') || Request::is('proveedores/create') ? 'active' : '' }}" href="{{ URL::to('proveedores') }}" >Lista de Proveedores</a>
+                                    <a class="{{ Request::is('proveedores','proveedores/create','proveedores/*') ? 'active' : '' }}" href="{{ URL::to('proveedores') }}" >Lista de Proveedores</a>
                                 </li>
                                 <li>
                                     <a class="{{ Request::is('proveedores_producto/create') ? 'active' : '' }}" href="{{ URL::to('proveedores_producto/create') }}" >
@@ -84,40 +84,34 @@
                                         <span class="title">Agregar Productos</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="{{ Request::is('proveedores/inventario') ? 'active' : '' }}" href="{{ URL::to('proveedores/inventario') }}" >
-                                        <!-- <span class="label label-orange">NUEVO</span> -->
-                                        <span class="title">Inventario</span>
-                                    </a>
-                                </li>
                             </ul>
                         </li>
-                        <li class="{{ Request::is('purchase_orders') || Request::is('purchase_orders/create') ? 'open' : '' }}">
+                        <li class="{{ Request::is('purchase_orders','purchase_orders/create') ? 'open' : '' }}">
                             <a href="{{ URL::to('purchase_orders') }}">
                                 <i class="fa fa-file-text-o fa-lg"></i>
                                 <span class="title">Ordenes de Compra</span>
                             </a>
                         </li> 
-                        <li class="{{ Request::is('ordenes') || Request::is('ordenes/create') ? 'open' : '' }}">
+                        <li class="{{ Request::is('ordenes','ordenes/create','ordenes/*') ? 'open' : '' }}">
                             <a href="javascript:;">
                                 <i class="fa fa-file-pdf-o"></i>
                                 <span class="title">Notas de Entrega</span>
-                                <span class="{{ Request::is('ordenes') || Request::is('ordenes/create') ? 'arrow open' : 'arrow' }}"></span>
+                                <span class="{{ Request::is('ordenes','ordenes/create','ordenes/*') ? 'arrow open' : 'arrow' }}"></span>
                             </a>
                             <ul class="sub-menu" style='display:none;'>
                                 <li>
-                                    <a class="{{ Request::is('ordenes') ? 'active' : '' }}" href="{{ URL::to('/ordenes') }}" >Ver Notas de entrega</a>
+                                    <a class="{{ Request::is('ordenes','ordenes/*') ? 'active' : '' }}" href="{{ URL::to('/ordenes') }}" >Ver Notas de entrega</a>
                                 </li>
                                 <li>
                                     <a class="{{ Request::is('ordenes/create') ? 'active' : '' }}" href="{{ URL::to('/ordenes/create') }}" > Nueva Nota de entrega</a>
                                 </li>
                             </ul>
                         </li>
-                        <li class="{{ Request::is('comisiones') || Request::is('comisiones/create') ? 'open' : '' }}">
+                        <li class="{{ Request::is('comisiones','comisiones/create') ? 'open' : '' }}">
                             <a href="javascript:;">
                                 <i class="fa fa-handshake-o" aria-hidden="true"></i>
                                 <span class="title">Comisiones</span>
-                                <span class="{{ Request::is('comisiones') || Request::is('comisiones/create') ? 'arrow open' : 'arrow' }}"></span>
+                                <span class="{{ Request::is('comisiones','comisiones/create') ? 'arrow open' : 'arrow' }}"></span>
                             </a>
                             <ul class="sub-menu" style='display:none;'>
                                 <li>
@@ -128,44 +122,43 @@
                                 </li>
                             </ul>
                         </li>
-                       <li class="{{ Request::is('facturas') || Request::is('facturas/create') ? 'open' : '' }}">
+                       <li class="{{ Request::is('facturas','facturas/create') ? 'open' : '' }}">
                             <a href="{{ URL::to('facturas') }}">
                                 <i class="fa fa-clipboard fa-lg"></i>
                                 <span class="title">Control</span>
                             </a>
                         </li> 
-                         <li class="{{ Request::is('pagos/cuentas_por_cobrar') || Request::is('pagos/nuevo_pago_index') || Request::is('pagos/nuevo_pago') || Request::is('pagos/cuentas_por_cobrar/resumen') || Request::is('pagos') ? 'open' : '' }}">
+                         <li class="{{ Request::is('pagos','pagos/*') ? 'open' : '' }}">
                             <a href="javascript:;">
                                 <i class="fa fa-money"></i>
                                 <span class="title">Pagos</span>
-                                <span class="{{ Request::is('pagos/cuentas_por_cobrar') || Request::is('pagos/nuevo_pago_index') || Request::is('pagos/nuevo_pago') ? 'arrow open' : 'arrow' }}"></span>
+                                <span class="{{ Request::is('pagos','pagos/*') ? 'arrow open' : 'arrow' }}"></span>
                             </a>
                             <ul class="sub-menu" style='display:none;'>
                                 <li>
                                     <a class="{{ Request::is('pagos') ? 'active' : '' }}" href="{{ URL::to('pagos') }}" >
-
-                                    <span class="title">Cobranza</span>
+                                        <span class="title">Cobranza</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="{{ Request::is('pagos/cuentas_por_cobrar') || Request::is('pagos/cuentas_por_cobrar/resumen') ? 'active' : '' }}" href="{{ URL::to('pagos/cuentas_por_cobrar') }}" >Cuentas por cobrar</a>
+                                    <a class="{{ Request::is('pagos/cuentas_por_cobrar','pagos/cuentas_por_cobrar/resumen') ? 'active' : '' }}" href="{{ URL::to('pagos/cuentas_por_cobrar') }}" >Cuentas por cobrar</a>
                                 </li>
                                 <li>
-                                    <a class="{{ Request::is('pagos/nuevo_pago_index') || Request::is('pagos/nuevo_pago') || Request::is('pagos/nuevo_pago/{$id}') ? 'active' : '' }}" href="{{ URL::to('pagos/nuevo_pago_index') }}" > Nuevo Pago</a>
+                                    <a class="{{ Request::is('pagos/nuevo_pago_index','pagos/nuevo_pago','pagos/nuevo_pago/*') ? 'active' : '' }}" href="{{ URL::to('pagos/nuevo_pago_index') }}" > Nuevo Pago</a>
                                 </li>
                             </ul>
                         </li>
-                        <li class="{{ Request::is('ventas/cotizaciones') || Request::is('ventas/lista_precios') || Request::is('ventas/cotizaciones/create') ? 'open' : '' }}">
+                        <li class="{{ Request::is('ventas','ventas/*') ? 'open' : '' }}">
                             <a href="javascript:;">
                                 <i class="fa fa-dollar" aria-hidden="true"></i>
                                 <span class="title">Ventas</span>
-                                <span class="{{ Request::is('ventas/cotizaciones') || Request::is('ventas/lista_precios') || Request::is('ventas/cotizaciones/create') ? 'arrow open' : 'arrow' }}"></span>
+                                <span class="{{ Request::is('ventas','ventas/*') ? 'arrow open' : 'arrow' }}"></span>
                             </a>
                             <ul class="sub-menu" style='display:none;'>
-                                <li class={{ Request::is('ventas/cotizaciones') || Request::is('ventas/cotizaciones/create') ? 'open' : '' }}>
-                                    <a href="javascript:;" class="{{ Request::is('ventas/cotizaciones') || Request::is('ventas/cotizaciones/create') ? 'active' : '' }}">
+                                <li class="{{ Request::is('ventas/cotizaciones','ventas/cotizaciones/*') ? 'open' : '' }}">
+                                    <a href="javascript:;" class="{{ Request::is('ventas/cotizaciones','ventas/cotizaciones/*')? 'active' : '' }}">
                                         <span class="title">Cotizaciones</span>
-                                        <span class="{{ Request::is('ventas/cotizaciones') || Request::is('ventas/cotizaciones/create') ? 'arrow open' : 'arrow' }}"></span>
+                                        <span class="{{ Request::is('ventas/cotizaciones','ventas/cotizaciones/*') ? 'arrow open' : 'arrow' }}"></span>
                                     </a>
                                     <ul class="sub-menu"">
                                         <li>
@@ -185,10 +178,10 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="{{ Request::is('stats') ? 'open' : '' || Request::is('stats/resumen') ? 'open' : ''}}">
+                        <li class="{{ Request::is('stats','stats/*') ? 'open' : ''}}">
                             <a href="{{ URL::to('/stats') }}">
                                 <i class="fa fa-line-chart"></i>
-                                <span class="label label-orange">NUEVO</span>
+                                <!-- <span class="label label-orange">NUEVO</span> -->
                                 <span class="title">Métricas</span>
                             </a>
                         </li>
@@ -199,7 +192,6 @@
                             </a>
                         </li>
                     </ul>
-
                 </div>
                 <!-- MAIN MENU - END -->
             </div>

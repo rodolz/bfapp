@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\PurchaseOrder;
+use App\Proveedor;
+use Validator;
+use Alert;
+use App\ProductoProveedor;
 
 class PurchaseOrderController extends Controller
 {
@@ -85,5 +89,34 @@ class PurchaseOrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function select_proveedor(){
+        $proveedores = Proveedor::all()->pluck('name','id');
+        return view('purchase_orders.select_proveedor', compact('proveedores'));
+    }
+
+
+    public function proveedor_productos(Request $request){
+        $customMessages = [
+            'idProveedor.required' => 'Debe escojer a un Proveedor!',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'idProveedor' => 'required',
+        ],$customMessages);
+
+        if ($validator->fails()) {
+            $errores = $validator->errors();
+            Alert::error($errores->first('idProveedor'));
+            return redirect()->back();
+        }  
+        
+        $proveedor = Proveedor::findOrfail($request->idProveedor);
+
+        // Se buscan las facturas por cobrar
+        $productos = ProductoProveedor::where('idProveedor', '=', $proveedor->id)
+                            ->pluck('codigo','id');
+        return view('purchase_orders.create', compact('proveedor','productos'));
     }
 }

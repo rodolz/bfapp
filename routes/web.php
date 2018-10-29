@@ -56,13 +56,16 @@
 			]]);
 
 			// RUTAS DE PRODUCTO PROVEEDORES
+			Route::post('producto_proveedor/check_precio', 'ProductoProveedorController@check_precio');
 			Route::resource('proveedores_producto', 'ProductoProveedorController', ['except' => [
-					'index',
+					'index','store'
 			]]);
 			Route::post('productos_proveedores_store', 'ProductoProveedorController@store');
 			
 			// RUTAS DE PURCHASE ORDERS
 			Route::get('purchase_orders','PurchaseOrderController@index')->name('purchase_orders.index');
+			Route::get('purchase_orders/select_proveedor','PurchaseOrderController@select_proveedor')->name('purchase_orders.select_proveedor');
+			Route::post('purchase_orders/proveedor_productos','PurchaseOrderController@proveedor_productos')->name('purchase_orders.proveedor_productos');
 			Route::resource('purchase_orders', 'PurchaseOrderController', ['except' => [
 				'index',
 			]]);

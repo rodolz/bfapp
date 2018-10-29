@@ -1,11 +1,11 @@
 @extends('layout.master')
 
     @section('page-title')
-        <h2 class="title bold">Notas de Entrega</h2>
+        <h2 class="title bold">Ordenes de Compra</h2>
     @endsection
 
     @section('panel-title')
-       <h2 class="title pull-left">Nueva Nota de Entrega</h2>
+       <h2 class="title pull-left">Nueva Orden de Compra para {{ $proveedor->name }}</h2>
     @endsection
 
 @section('add-styles')
@@ -29,20 +29,11 @@
         </header>
         <div class="content-body">    
             <div class="row">
-                <div id="feedback">
-            
-                </div>
-
-	           {!! Form::open(array('id' => 'orden_form','method'=>'POST','class' => 'form-inline')) !!}
-
+	           {!! Form::open(array('id' => 'purchase_order_from','method'=>'POST','class' => 'form-inline')) !!}
                     <div class="well transparent">
                         <div class="row">
                             <div class="form-group col-lg-8 col-md-8 col-sm-9 col-xs-12">
-                                <h2 class="bold">Clientes</h2>
-                                Seleccione al cliente
-                                <div class="controls">
-                                    {!! Form::select('idCliente', $clientes, null, ['id' => 'cliente', 'placeholder' => 'Seleccione...', 'class' => 'form-control top15']) !!}
-                                </div>
+                                <h2 class="bold">Proveedor - {{ $proveedor->name }}</h2>
                             </div>
                         </div>
                     </div>
@@ -58,8 +49,6 @@
                                                 <input class="form-control" type="number" id="cantidad" name="cantidad" min=1 value=1>
                                             </div>
                                             <div class="input-group col-lg-2 col-md-6 col-sm-9 col-xs-12 right15 top15">
-                                                {{-- <span class="input-group-addon"><i class='fa fa-usd'></i></span>
-                                                <input class="form-control" lang="en-150" type="number" step="0.000001" id="precio" name="precio" min=1.00 value=0.00> --}}
                                                 <span class="input-group-addon"><i class='fa fa-usd'></i></span>
                                                 <input type="text" id="precio" name="precio" class="autoNumeric form-control" placeholder="0.00">
                                             </div>
@@ -71,7 +60,7 @@
                         </div>
                         <!-- Lista de productos -->
                         <div class="row top15">
-                            <div class="form-group col-lg-4 col-md-6 col-sm-9 col-xs-12">
+                            <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="list-group" id="lista_productos" hidden="hidden">
                                     <div class="list-group-item">
                                         <h4 class="list-group-item-heading bold text-center">Productos Seleccionados</h4>
@@ -79,29 +68,8 @@
                                 </div>
                                 <h4 class="list-group-item-heading bold text-center" id="loading" hidden="hidden">Cargando ...</h4>
                             </div>
-                        </div>
-                    </div>
-                    <div class="well transparent">
-                        <div class="row">
-                            <div class="form-group col-lg-6 col-md-6 col-sm-9 col-xs-12">
-                                <h2 class="bold">Repartidores</h2>
-                                Escoja el repartidor y presione <kbd class="bg-primary">+</kbd>
-                                    <div class="controls">
-                                        {!! Form::select('repartidor', $repartidores, null, ['id' => 'repartidor', 'placeholder' => 'Seleccione...', 'class' => 'form-control right15 top15']) !!}
-                                        <button type="button" id="add_repartidor" class="btn btn-primary top15">
-                                            <span class="glyphicon glyphicon-plus"></span>
-                                        </button>
-                                    </div>
-                            </div>
-                        </div>
-                        <!-- Lista de repartidores -->
-                        <div class="row top15">
-                            <div class="form-group col-lg-4 col-md-4 col-sm-9 col-xs-12">
-                                <div class="list-group" id="lista_repartidores" hidden="hidden">
-                                    <div class="list-group-item">
-                                        <h4 class="list-group-item-heading bold text-center">Repartidores Seleccionados</h4>
-                                    </div>
-                                </div>
+                            <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <h4 class="list-group-item-heading bold text-center" id="subtotal">Subtotal: $0.00</h4><span id="loading" hidden="true">Calculando...</span>
                             </div>
                         </div>
                     </div>
@@ -135,6 +103,17 @@
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
     <!-- JS NECESARIO PARA ORDENES - START --> 
     <script type="text/javascript">
+
+        $('#lista_productos').on('DOMSubtreeModified',function(){
+            var lis = $('#lista_productos').find("li");
+            var subtotal = 0.00;
+            lis.each(function(index){
+                subtotal += parseFloat($(this).attr('precio').replace(',',''));
+            });
+            console.log(subtotal);
+            $('#subtotal').html("Subtotal: $"+subtotal);
+        });
+
         $('#producto').change(function(){
             var prod_id = $(this).val();
              $.ajax({
@@ -142,7 +121,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 type: 'POST',
-                url: '/check_precio',
+                url: '/producto_proveedor/check_precio',
                 data: {"idProducto": prod_id},
                 beforeSend: function(){
                     $("#add_producto").prop("disabled",true);
@@ -166,61 +145,20 @@
             var cantidad = $('#cantidad').val();
             var precio = $('#precio').val();
             $('#cantidad').val(1);
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                type: 'POST',
-                url: '/check_inventario',
-                data: {"idProducto": idProducto, "cantidad": cantidad},
-               beforeSend: function(){
-                 $("#loading").show();
-               },
-               complete: function(){
-                 $("#loading").hide();
-               },
-                success: function(data, textStatus){
-                    $("#add_producto").prop('disabled', false);
-                   if(data === 'Disponible'){
-                        $('#lista_productos').show();
-                        var item = $('#lista_productos').find('li[idProducto='+idProducto+']');
-                        if(item.html() !== undefined){
-                                item.remove();
-                        }
-                        var li = "<li idProducto="+idProducto+" cantidad="+cantidad+" precio="+precio+" class='list-group-item active'>";
-                        li += "<span class='badge'><a idProducto="+idProducto+"><i class='fa fa-times'></i></a></span>";
-                        li += "<span class='badge'>Qty: "+cantidad+"</span>";
-                        li += "<span class='badge'><i class='fa fa-usd'></i>"+precio+"</span>";
-                        li += codigo+"</li>";
-                        $('#lista_productos').append(li);
-                   } 
-                   else {
-                        showErrorMessage('Inventario no suficiente para este producto ('+codigo+')');
-                   }
-                } 
-            });
+            $("#add_producto").prop('disabled', false);
+            $('#lista_productos').show();
+            var item = $('#lista_productos').find('li[idProducto='+idProducto+']');
+            if(item.html() !== undefined){
+                    item.remove();
+            }
+            var li = "<li idProducto="+idProducto+" cantidad="+cantidad+" precio="+precio+" class='list-group-item active'>";
+            li += "<span class='badge'><a idProducto="+idProducto+"><i class='fa fa-times'></i></a></span>";
+            li += "<span class='badge'>Qty: "+cantidad+"</span>";
+            li += "<span class='badge'><i class='fa fa-usd'></i>"+precio+"</span>";
+            li += codigo+"</li>";
+            $('#lista_productos').append(li); 
         });
         // FIN DE LA ACCION DE AGREGAR PRODUCTOS A LA LISTA
-        // INICIO DE LA ACCION DE AGREGAR REPARTIDORES A LA LISTA
-        $('#add_repartidor').click(function(){
-            var idRepartidor = $('select[id=repartidor]').val();
-            var nombre_repartidor = $('select[id=repartidor] option:selected').html();
-            //Validacion del producto seleccionado
-            if (idRepartidor === '') {
-                showErrorMessage('Seleccione un Repartidor!');
-                return false;
-            }
-            else{
-                $('#lista_repartidores').show();
-                var item = $('#lista_repartidores').find('li[idRepartidor='+idRepartidor+']');
-                    if(item.html() !== undefined){
-                        item.remove();
-                    }
-                var li = "<li idRepartidor="+idRepartidor+" class='list-group-item active'><span class='badge'><a idRepartidor="+idRepartidor+"><i class='fa fa-times'></i></a></span>"+nombre_repartidor+"</li>";
-                $('#lista_repartidores').append(li);
-            }
-        });
-        // FIN DE LA ACCION DE AGREGAR REPARTIDORES A LA LISTA
 
         // INICIO Borrar Productos de la lista
         $("#lista_productos").on("click", "a", function(e) {
@@ -233,20 +171,10 @@
             $('li[idProducto='+id+']').remove();
         });
         // FIN BORRAR PRODUCTOS DE LA LISTA
-        // INICIO Borrar Productos de la lista
-        $("#lista_repartidores").on("click", "a", function(e) {
-            e.preventDefault();
-            var cantidad_hermanos = $(this).parent().parent().siblings().size();
-            if(cantidad_hermanos === 1){
-                $(this).parent().parent().parent().hide();
-            }
-            var id = $(this).attr('idRepartidor');
-            $('li[idRepartidor='+id+']').remove();
-        });
-        // FIN BORRAR PRODUCTOS DE LA LISTA
+
         // INICIO - PROCESAR EL FORMULARIO
 
-        $('#orden_form').submit(function(e){
+        $('#purchase_order_from').submit(function(e){
             e.preventDefault();
             var idCliente = $('select[id=cliente]').val();
 
@@ -297,8 +225,8 @@
                     success: function( data, textStatus, jQxhr ){
                         if(data === "ok"){
                             swal({
-                                title:"Nota de entrega creada!",
-                                text: "Al cerrar será redireccionado a las notas de entrega",
+                                title:"Orden de Compra creada!",
+                                text: "Al cerrar será redireccionado a las Ordenes de Compra",
                                 type: "success",
                                 confirmButtonText: "Cerrar",
                                 },
@@ -335,8 +263,6 @@
                     }
                 });     
         });
-
-        // FIN - PROCESAR EL FORMULARIO
-    </script> 
-    <!-- JS NECESARIO PARA ORDENES - END --> 
+</script> 
+<!-- JS NECESARIO PARA ORDENES - END --> 
 @endsection

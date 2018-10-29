@@ -114,4 +114,9 @@ class ProductoProveedorController extends Controller
         return redirect()->route('proveedores.show',['id' => $proveedor->id])
                         ->with('success','Producto Borrado!');
     }
+    
+    public function check_precio(Request $request){
+        $producto = ProductoProveedor::where('id', $request->idProducto)->first();
+        return number_format($producto->precio,2,'.',',');
+    }
 }

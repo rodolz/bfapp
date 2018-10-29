@@ -14,6 +14,7 @@ use Yajra\Datatables\Datatables;
 use PDF;
 use Validator;
 use Alert;
+
 class PagosController extends Controller
 {
 

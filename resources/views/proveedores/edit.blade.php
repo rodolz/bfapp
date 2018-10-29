@@ -24,16 +24,6 @@
             <div class="row">
                {!! Form::model($cliente, ['method' => 'PATCH','route' => ['clientes.update', $cliente->id]]) !!}
                 <div class="col-lg-8 col-md-8 col-sm-9 col-xs-12 col-lg-offset-2">
-                   <!--  @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Whoops!</strong> Hubo algunos errores.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                   @endif -->
                    <div class="form-group">
                         <label class="form-label" for="field-1">Empresa</label>
                         <span class="desc"></span>
@@ -41,8 +31,6 @@
                             {!! Form::text('empresa', null, array('placeholder' => 'Nombre de la Empresa','class' => 'form-control')) !!}
                         </div>
                     </div>
-
-
                     <div class="form-group">
                         <label class="form-label" for="field-1">Contacto</label>
                         <span class="desc"></span>
@@ -50,7 +38,6 @@
                             {!! Form::text('contacto', null, array('placeholder' => 'Nombre y Apellido','class' => 'form-control')) !!}
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label" for="field-6">Telefono Local</label>
                         <span class="desc"></span>
@@ -58,14 +45,6 @@
                             {!! Form::text('tel_local', null, array('placeholder' => '273-2134','class' => 'form-control')) !!}
                         </div>
                     </div>
-                    <!-- <div class="form-group">
-                        <label class="form-label" for="field-1">Image</label>
-                        <span class="desc"></span>
-                        <div class="controls">
-                            <input type="file" class="form-control" id="field-5">
-                        </div>
-                    </div> -->
-
                     <div class="form-group">
                         <label class="form-label" for="field-1">Telefono Celular</label>
                         <span class="desc"><i>"si no lo conoce escriba N/A"</i></span>
@@ -73,7 +52,6 @@
                             {!! Form::text('tel_celular', null, array('placeholder' => '6789-5143','class' => 'form-control')) !!}
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label" for="field-6">Direccion</label>
                         <span class="desc"><i>"descripcion breve de la direccion"</i></span>
@@ -81,7 +59,6 @@
                             {!! Form::textarea('direccion', null, array('size' => '50x3', 'class' => 'form-control')) !!}
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label" for="field-1">Email</label>
                         <span class="desc"><i>"si no lo conoce escriba N/A"</i></span>
@@ -89,7 +66,6 @@
                             {!! Form::text('email', null, array('placeholder' => 'nombre@email.com','class' => 'form-control')) !!}
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label" for="field-1">Pagina Web</label>
                         <span class="desc"></span>
@@ -97,7 +73,6 @@
                             {!! Form::text('www', null, array('class' => 'form-control')) !!}
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label" for="field-1">RUC</label>
                         <span class="desc"></span>
@@ -105,7 +80,6 @@
                             {!! Form::text('ruc', null, array('class' => 'form-control')) !!}
                         </div>
                     </div>
-
                     <div class="col-lg-8 col-md-8 col-sm-9 col-xs-12 col-lg-offset-4 padding-bottom-30">
                         <div class="row">
                             <button type="submit" class="btn btn-primary">Guardar</button>

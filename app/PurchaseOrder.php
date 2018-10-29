@@ -8,6 +8,11 @@ class PurchaseOrder extends Model
 {
     public $fillable = [
         'po_number',
+        'idProveedor',
+        'shipping_method',
+        'tax',
+        'po_subtotal',
+        'po_total_amount',
         'created_at'
     ];
 

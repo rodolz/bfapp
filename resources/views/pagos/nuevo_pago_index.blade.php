@@ -27,22 +27,14 @@
                             </div>
                         </div>
                     </div>
-
-
-
                     <div class="clearfix"></div><br>
-
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12 text-center">
                             <button type="submit" target="_blank" class="btn btn-primary btn-md"><i class="fa fa-arrow-right"></i> Siguiente </button>      
                         </div>
                     </div>
                     {!! Form::close() !!}
-
-
                     <!-- end -->
-
-
                 </div>
             </div>
         </div>
