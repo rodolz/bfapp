@@ -29,11 +29,11 @@
         </header>
         <div class="content-body">    
             <div class="row">
-	           {!! Form::open(array('id' => 'purchase_order_from','method'=>'POST','class' => 'form-inline')) !!}
+	           {!! Form::open(array('id' => 'purchase_order_form','method'=>'POST','class' => 'form-inline')) !!}
                     <div class="well transparent">
                         <div class="row">
                             <div class="form-group col-lg-8 col-md-8 col-sm-9 col-xs-12">
-                                <h2 class="bold">Proveedor - {{ $proveedor->name }}</h2>
+                                <h2 class="bold" id="proveedor" name={{ $proveedor->id }} >Proveedor - {{ $proveedor->name }}</h2>
                             </div>
                         </div>
                     </div>
@@ -103,15 +103,13 @@
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
     <!-- JS NECESARIO PARA ORDENES - START --> 
     <script type="text/javascript">
-
         $('#lista_productos').on('DOMSubtreeModified',function(){
             var lis = $('#lista_productos').find("li");
             var subtotal = 0.00;
             lis.each(function(index){
-                subtotal += parseFloat($(this).attr('precio').replace(',',''));
+                subtotal += parseFloat($(this).attr('precio').replace(',',''))*$(this).attr('cantidad');
             });
-            console.log(subtotal);
-            $('#subtotal').html("Subtotal: $"+subtotal);
+            $('#subtotal').html("Subtotal: $"+subtotal.toLocaleString());
         });
 
         $('#producto').change(function(){
@@ -174,12 +172,11 @@
 
         // INICIO - PROCESAR EL FORMULARIO
 
-        $('#purchase_order_from').submit(function(e){
+        $('#purchase_order_form').submit(function(e){
             e.preventDefault();
-            var idCliente = $('select[id=cliente]').val();
-
-            if(idCliente === ''){
-                showErrorMessage('Seleccione a un Cliente!');
+            var idProveedor = $('#proveedor').attr('name');
+            if(idProveedor === ''){
+                showErrorMessage('Seleccione a un idProveedor!');
                 return false;
             }
             var productos = [];
@@ -200,24 +197,14 @@
                 showErrorMessage('Escoja Al Menos Un Producto!');
                 return false;
             }
-            var repartidores = [];
-            var lista = $('#lista_repartidores');
-            $(lista).find('li').each(function(index, value){
-                id = $(this).attr('idrepartidor');
-                repartidores.push(id);
-            });
-            if(repartidores.length === 0){
-                showErrorMessage('Escoja Al Menos A Un Repartidor!');
-                return false;
-            }
             var jsondata = JSON.stringify(productos);
                 $.ajax({
                       headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },  
                     type : 'POST',
-                    url  : '/nueva_orden',
-                    data : {data: jsondata, idCliente: idCliente, repartidores: repartidores},
+                    url  : '{{ route("purchase_orders.store") }}',
+                    data : {data: jsondata, idProveedor: idProveedor},
                     beforeSend: function() { 
                       // $("#product_id").html('<option> Loading ...</option>');
                       $("#submit").prop('disabled', true);
@@ -232,11 +219,12 @@
                                 },
                                 function(){
                                   setTimeout(function(){
-                                    window.location.href = "{{URL::to('ordenes')}}";
+                                    window.location.href = "{{URL::to('purchase_orders')}}";
                                   }, 3000);
                                 });
                         }
                         else{
+                            console.log(data);
                             var errors = "<p>"+data+"</p>";
                             swal({
                                 type: 'error',
@@ -248,8 +236,6 @@
                         }
                     },
                     error: function( data ){
-                        // Error...
-                        console.log(errors);
                         console.log(data);
                         var errors = "<p>"+data.responseText+"</p>";
                         swal({

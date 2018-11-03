@@ -19,4 +19,8 @@ class PurchaseOrder extends Model
     public function po_pp(){
         return $this->belongsToMany('App\ProductoProveedor','purchaseOrders_productoProveedor','idPO','idProductoProveedor');
     }
+    
+    public function proveedor(){
+        return $this->belongsTo('App\Proveedor', 'idProveedor');
+    }
 }

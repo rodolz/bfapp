@@ -81,7 +81,7 @@ class DashboardController extends Controller
                 $productos_top5[$producto->sp] = Producto::find($producto->idProducto);
             }
         }
-        return view('clientes.index', compact('monto_por_cobrar','ordenes_totales','cliente','repartidor','clientes_top5','productos_top5'));
+        return view('index', compact('monto_por_cobrar','ordenes_totales','cliente','repartidor','clientes_top5','productos_top5'));
     }
 
 }
