@@ -212,12 +212,33 @@ class PurchaseOrderController extends Controller
         Fpdf::Ln(7);
         Fpdf::SetFillColor(255,255,255);
         Fpdf::SetFont('Arial', 'B', 9.5);
-        Fpdf::Cell(95, 7, "Name: ".$proveedor->name,"R L T",1,'L',1);
-        Fpdf::Cell(95, 7, "Address: ".$proveedor->address,"R L",1,'L',1);
-        Fpdf::Cell(95, 7, "Country: ".$proveedor->country,"R L",1,'L',1);
-        Fpdf::Cell(95, 7, "City: ".$proveedor->city,"R L",1,'L',1);
-        Fpdf::Cell(95, 7, "PostCode: ".$proveedor->postcode,"R L B",1,'L',1);
+        Fpdf::Cell(95, 7, "Name: ".$proveedor->name,"R L T",0,'L',1);
+        Fpdf::Cell(95, 7, "Name: BF Services S.A","R L T",0,'L',1);
+        Fpdf::Ln();
+        Fpdf::Cell(95, 7, "Address: ".$proveedor->address,"R L",0,'L',1);
+        Fpdf::Cell(95, 7, "Address: Parque Industrial Costa del Este, ","R L",0,'L',1);
+        Fpdf::Ln();
+        Fpdf::Cell(95, 7, "","R L",0,'L',1);
+        Fpdf::Cell(95, 7, "Edificio IStorage, Local #1234","R L",0,'L',1);
+        Fpdf::Ln();
+        Fpdf::Cell(95, 7, "Country: ".$proveedor->country,"R L",0,'L',1);
+        Fpdf::Cell(95, 7, "Country: Panama","R L",0,'L',1);
+        Fpdf::Ln();
+        Fpdf::Cell(95, 7, "City: ".$proveedor->city,"R L",0,'L',1);
+        Fpdf::Cell(95, 7, "City: Panama","R L",0,'L',1);
+        Fpdf::Ln();
+        Fpdf::Cell(95, 7, "PostCode: ".$proveedor->postcode,"R L B",0,'L',1);
+        Fpdf::Cell(95, 7, "Phone: (+507) 6371-0966 / (+507) 6964-7914","R L B",0,'L',1);
 
+        Fpdf::Ln(15);
+
+        Fpdf::SetFillColor(170,170,170);
+        Fpdf::Cell(50, 7, "REQUESTED BY",1,0,'C',1);
+        Fpdf::Cell(50, 7, "APPROVED BY",1,0,'C',1);
+        Fpdf::Cell(50, 7, "SHIPPED METHOD",1,0,'C',1);
+        Fpdf::Ln(7);
+        Fpdf::SetFillColor(255,255,255);
+        Fpdf::SetFont('Arial', 'B', 9.5);
         // Fpdf::Cell(10, 10,Fpdf::Image($icon,Fpdf::GetX(), Fpdf::GetY(), 10),0,0,'L',false);
         // Fpdf::Cell(50, 10, $converted_cliente,0,0,'L',1);
         // Fpdf::Cell(10, 10,Fpdf::Image($icon2,Fpdf::GetX(), Fpdf::GetY(), 10),0,0,'L',false);
