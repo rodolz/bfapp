@@ -19,16 +19,18 @@ class PagosController extends Controller
 {
 
     public function getdata(){
-        $pagos = Pago::orderBy('id','DESC')->get();
-
-        foreach ($pagos as $pago) {
-             foreach ($pago->facturas as $factura) {
-                $cliente = Cliente::where('id',$factura->pivot->idCliente)->get()->first();
-            }
-            // Se agrega un attributo cliente al objeto pago, con el nombre del cliente que hizo el pago
-            $pago['cliente'] = $cliente->empresa;
-            $pago['fecha'] = date_format($pago->created_at, "d-m-Y");
-        }
+        // $pagos = Pago::orderBy('id','DESC')->get();
+        $pagos = Pago::with('cliente')->orderBy('id','desc');
+        // foreach ($pagos as $pago) {
+        //      foreach ($pago->cliente as $cliente) {
+        //          // Se agrega un attributo cliente al objeto pago, con el nombre del cliente que hizo el pago 
+        //         $pago['cliente'] = $asd;
+        //         $pago['fecha'] = date_format($pago->created_at, "d-m-Y"); 
+        //     }
+                
+        // }
+            
+           
         return Datatables::of($pagos)
                             ->addColumn('action', function ($pago) {
                                 $token = csrf_token();
@@ -44,6 +46,9 @@ class PagosController extends Controller
                             </form>
                             </div>";
                              })
+                            ->editColumn('created_at', function ($pago) {
+                                return $pago->created_at->format('d/m/Y');
+                            })
                             ->make(true);
     }
 

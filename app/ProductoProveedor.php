@@ -8,6 +8,7 @@ class ProductoProveedor extends Model
 {
     public $fillable = [
         'idProveedor',
+        'idProducto',
         'codigo',
         'descripcion',
         'medidas',
@@ -19,4 +20,8 @@ class ProductoProveedor extends Model
             ->withPivot('cantidad_producto')
             ->withTimestamps();
     }
+
+    public function producto(){
+        return $this->belongsTo('App\Producto', 'idProducto');
+    }   
 }

@@ -77,7 +77,3 @@
             </div>
         </section>
     @endsection
-
-    @section('add-plugins')
-
-    @endsection

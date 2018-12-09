@@ -25,5 +25,4 @@ class Producto extends Model
             ->withPivot('cantidad_producto','precio_final')
             ->withTimestamps();
     }
-
 }

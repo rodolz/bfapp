@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Proveedor;
+use App\Producto;
 use App\ProductoProveedor;
 
 class ProductoProveedorController extends Controller
@@ -19,7 +20,6 @@ class ProductoProveedorController extends Controller
     {
         //
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -28,7 +28,9 @@ class ProductoProveedorController extends Controller
     public function create()
     {
         $proveedores = Proveedor::pluck('name', 'id');
-        return view('proveedores.productos_proveedores.create',compact('proveedores'));//
+        //productos registrados en la empresa
+        $productos = Producto::pluck('codigo','id');
+        return view('proveedores.productos_proveedores.create',compact('proveedores','productos'));//
     }
 
     /**
@@ -49,6 +51,7 @@ class ProductoProveedorController extends Controller
                 $producto['precio'] = str_replace(',', '', $producto['precio']);
                 $producto = ProductoProveedor::create([
                     'idProveedor' => $request->idProveedor,
+                    'idProducto' => $producto['producto_relacionado'],
                     'codigo' => $producto['codigo'],
                     'descripcion' => $producto['descripcion'],
                     'medidas' => "test",

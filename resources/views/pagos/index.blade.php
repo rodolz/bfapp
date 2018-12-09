@@ -64,7 +64,7 @@
                 url: "pagos/getdata",
             },
             columns: [
-                {data: 'cliente', name: 'cliente', title: 'Cliente', searchable: true, orderable:true },
+                {data: 'cliente.empresa', name: 'cliente.empresa', title: 'Cliente', searchable: true, orderable:false },
                 {data: 'numero_referencia', name: 'numero_referencia', title: '# Referencia' },
                 {data: 'descripcion', name: 'descripcion', title: 'Descripcion'},
                 {
@@ -72,7 +72,7 @@
                     render: $.fn.dataTable.render.number( ',', '.', 2, '$' )
                 },
                 {data: 'banco', name: 'banco', title: 'Banco'},
-                {data: 'fecha', name: 'fecha', title: 'Fecha'},
+                {data: 'created_at', header:'Y-m-d', name: 'created_at', title: 'Fecha', type: 'date',},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });

@@ -72,7 +72,7 @@
                             @foreach($clientes_top5 as $key => $value)
                                 <tr>
                                     <td> {{ $value->empresa }} </td>
-                                    <td>{{ $key }}</td>
+                                    <td>{{ $key}}</td>
                                 </tr>
                             @endforeach
                         @else
@@ -117,4 +117,5 @@
             </section>
         </div>
     </div>
+
     @endsection

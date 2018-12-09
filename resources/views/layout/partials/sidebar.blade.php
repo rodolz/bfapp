@@ -86,7 +86,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="{{ Request::is('purchase_orders','purchase_orders/create') ? 'open' : '' }}">
+                        <li class="{{ Request::is('purchase_orders','purchase_orders/*') ? 'open' : '' }}">
                             <a href="{{ URL::to('purchase_orders') }}">
                                 <i class="fa fa-file-text-o fa-lg"></i>
                                 <span class="title">Ordenes de Compra</span>

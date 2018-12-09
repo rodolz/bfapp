@@ -9,6 +9,7 @@ class PurchaseOrder extends Model
     public $fillable = [
         'po_number',
         'idProveedor',
+        'idPOStatus',
         'shipping_method',
         'tax',
         'po_subtotal',
@@ -17,7 +18,7 @@ class PurchaseOrder extends Model
     ];
 
     public function po_pp(){
-        return $this->belongsToMany('App\ProductoProveedor','purchaseOrders_productoProveedor','idPO','idProductoProveedor');
+        return $this->belongsToMany('App\ProductoProveedor','purchaseorders_productosproveedores','idPO','idProductoProveedor')->withPivot('cantidad_producto','precio_final');
     }
     
     public function proveedor(){

@@ -41,7 +41,7 @@
                                 <th>Proveedor</th>
                                 <th>Monto Total</th>
                                 <!-- <th>Estado</th> -->
-                                <th width="200px">Acciones</th>
+                                <th width="300px">Acciones</th>
                             </tr>
                     	</thead>
                         <tbody>
@@ -54,9 +54,11 @@
                                     <td>${{ number_format($purchase_order->po_total_amount, 2, '.', ',') }}</td>
                                     <td>
                                         <div class="acciones-btn">
-                                            @if($purchase_order->idpurchase_orderstado == 1)
+                                            @if($purchase_order->idPOStatus == 0)
+                                                <a class="btn btn-orange" href="{{ route('purchase_orders.load',$purchase_order->id) }}"><i class="fa fa-share"></i></a>
                                                 <a class="btn btn-primary" href="{{ route('purchase_orders.edit',$purchase_order->id) }}"><i class="fa fa-pencil"></i></a>
                                             @else
+                                                <button class="btn btn-orange" href="{{ route('purchase_orders.load',$purchase_order->id) }}" disabled><i class="fa fa-share"></i></button>
                                                 <button class="btn btn-primary" href="{{ route('purchase_orders.edit',$purchase_order->id) }}" disabled><i class="fa fa-pencil"></i></button>
                                             @endif
 

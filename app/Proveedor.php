@@ -16,5 +16,7 @@ class Proveedor extends Model
         'postcode'
         ];
 
-    
+        public function productos_proveedor(){
+            return $this->hasMany('App\ProductoProveedor','idProveedor');
+        }
 }

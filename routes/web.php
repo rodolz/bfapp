@@ -63,6 +63,7 @@
 			Route::post('productos_proveedores_store', 'ProductoProveedorController@store');
 			
 			// RUTAS DE PURCHASE ORDERS
+			Route::get('purchase_orders/load_into_stock/{id}','PurchaseOrderController@load')->name('purchase_orders.load');
 			Route::get('purchase_orders','PurchaseOrderController@index')->name('purchase_orders.index');
 			Route::get('po_pdf/{idPO}', 'PurchaseOrderController@po_pdf');
 			Route::get('purchase_orders/select_proveedor','PurchaseOrderController@select_proveedor')->name('purchase_orders.select_proveedor');

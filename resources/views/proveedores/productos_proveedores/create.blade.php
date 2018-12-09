@@ -1,11 +1,11 @@
 @extends('layout.master')
 
     @section('page-title')
-        <h2 class="title bold">Notas de Entrega</h2>
+        <h2 class="title bold">Productos de los Proveedores</h2>
     @endsection
 
     @section('panel-title')
-       <h2 class="title pull-left">Nueva Nota de Entrega</h2>
+       <h2 class="title pull-left">Nuevo Producto</h2>
     @endsection
 
 @section('add-styles')
@@ -52,7 +52,7 @@
                                     <h2 class="bold">Productos</h2>
                                     Escoja el producto, la cantidad y presione <kbd class="bg-primary">+</kbd>
                                         <div class="controls">
-                                            <div class="input-group col-lg-3 col-md-6 col-sm-9 col-xs-12 right15 top15">
+                                            <div class="input-group col-lg-2 col-md-6 col-sm-9 col-xs-12 right15 top15">
                                                 <span class="input-group-addon">Codigo:</span>
                                                 <input class="form-control" type="text" id="codigo" name="codigo">
                                             </div>
@@ -65,6 +65,10 @@
                                                 <input class="form-control" lang="en-150" type="number" step="0.000001" id="precio" name="precio" min=1.00 value=0.00> --}}
                                                 <span class="input-group-addon"><i class='fa fa-usd'></i></span>
                                                 <input type="text" id="precio" name="precio" class="autoNumeric form-control" placeholder="0.00">
+                                            </div>
+                                            <div class="input-group col-lg-3 col-md-6 col-sm-9 col-xs-12 right15 top15">
+                                            <span class="input-group-addon">Asociado a:</span>
+                                            {!! Form::select('idProducto_empresa', $productos, null, ['id' => 'idProducto_empresa', 'placeholder' => 'Seleccione...', 'class' => 'form-control']) !!}
                                             </div>
                                             <button type="button" id="add_producto" class="btn btn-primary top15">
                                                 <span class="glyphicon glyphicon-plus"></span>
@@ -120,9 +124,11 @@
             var attr = 'codigo';
             var codigo = $('#codigo').val();
             var descripcion = $('#descripcion').val();
+            var producto_relacionado = $('#idProducto_empresa option:selected').text();
+            var producto_relacionado_id = $('#idProducto_empresa option:selected').val();
             var precio = $('#precio').val();
             //Validacion del producto seleccionado
-            if (codigo === '' || descripcion === '' || precio === '') {
+            if (codigo === '' || descripcion === '' || precio === '' ||  producto_relacionado === '') {
                 showErrorMessage('Productos - Debe llenar todos los campos!');
                 return false;
             }
@@ -132,10 +138,10 @@
             if(item.html() !== undefined){
                     item.remove();
             }
-            var li = "<li codigo="+codigo+" descripcion="+descripcion+" precio="+precio+" class='list-group-item active'>";
+            var li = "<li codigo="+codigo+" descripcion="+descripcion+" precio="+precio+" producto_relacionado="+producto_relacionado_id+" class='list-group-item active'>";
             li += "<span class='badge'><a codigo="+codigo+"><i class='fa fa-times'></i></a></span>";
             li += "<span class='badge'><i class='fa fa-usd'></i>"+precio+"</span>";
-            li += codigo+" - "+descripcion+"</li>";
+            li += codigo+" - "+descripcion+" - "+producto_relacionado+"</li>";
             $('#lista_productos').append(li);
         });
         // FIN DE LA ACCION DE AGREGAR PRODUCTOS A LA LISTA
@@ -168,10 +174,12 @@
                 codigo = $(this).attr('codigo');
                 descripcion = $(this).attr('descripcion');
                 precio = $(this).attr('precio');
+                producto_relacionado = $(this).attr('producto_relacionado');
                 obj = {
                     codigo: codigo,
                     descripcion: descripcion,
-                    precio: precio
+                    precio: precio,
+                    producto_relacionado: producto_relacionado
                 };
                 productos.push(obj);
             });

@@ -66,6 +66,7 @@
                                             <th>Codigo</th>
                                             <th>Descripcion</th>
                                             <th>Precio</th>
+                                            <th>Producto Asociado</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -76,6 +77,7 @@
                                                 <th>{{ $producto->codigo }}</th>
                                                 <th>{{ $producto->descripcion }}</th>
                                                 <th>${{ number_format($producto->precio, 2, '.', ',') }}</th>
+                                                <th>{{ $producto->producto->codigo }} </th>
                                                 {!! Form::open(['method' => 'DELETE','route' => ['proveedores_producto.destroy', $producto->id],'style'=>'display:inline']) !!}
                                                 <th>
                                                 <button type="submit" class="btn btn-danger">

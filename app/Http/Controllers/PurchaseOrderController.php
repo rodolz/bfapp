@@ -10,6 +10,7 @@ use App\Proveedor;
 use Validator;
 use Alert;
 use App\ProductoProveedor;
+use App\Producto;
 use Codedge\Fpdf\Facades\Fpdf;
 
 class PurchaseOrderController extends Controller
@@ -72,10 +73,11 @@ class PurchaseOrderController extends Controller
             $nuevo_po = PurchaseOrder::create([
                 'po_number' => $po_num,
                 'idProveedor' => $proveedor->id,
+                'idPOStatus' => 0,
                 'shipping_method' => "testshipping",
                 'tax' => 7.3,
                 'po_subtotal' => $subtotal,
-                'po_total_amount' => $subtotal+($subtotal*7.3)
+                'po_total_amount' => $subtotal+($subtotal*0.073)
             ]);
             // FIN - Insertar el PO en la DB
 
@@ -152,6 +154,34 @@ class PurchaseOrderController extends Controller
         return view('purchase_orders.select_proveedor', compact('proveedores'));
     }
 
+    public function load($id){
+        $po = PurchaseOrder::findorfail($id);
+        if($po->idPOStatus == 1){
+            return redirect()->back()->with('errors', 'Profile updated!');
+        }
+        $po_productos = $po->po_pp;
+        // Inicio de la transaccion
+        DB::beginTransaction();
+        try{
+            foreach($po->po_pp as $po_producto){
+                echo "ID del Producto: ".$po_producto->id." | Cantidad: ".$po_producto->pivot->cantidad_producto."<br>";
+                $producto_del_inventario = $po_producto->producto;
+                $producto_del_inventario->cantidad = $producto_del_inventario->cantidad + $po_producto->pivot->cantidad_producto;
+                $producto_del_inventario->save();
+                echo "ID del Producto: ".$producto_del_inventario->id." | Cantidad: ".$producto_del_inventario->cantidad."<br>";
+            }
+            $po->idPOStatus = 1;
+            $po->save();
+        }   
+        catch (\Exception $e) {
+             DB::rollback();
+             return $e->getMessage();
+        }
+        // SE hace el commit
+        DB::commit();
+        return redirect()->back()->with('success', 'PO Cargado al inventario');
+    }
+
 
     public function proveedor_productos(Request $request){
         $customMessages = [
@@ -180,13 +210,13 @@ class PurchaseOrderController extends Controller
     public function po_pdf($idPO){
         $po = PurchaseOrder::find($idPO);
         $proveedor = Proveedor::find($po->idProveedor);
-
         //formatear el nombre del cliente, direccion en caracteres de castellano
         // $converted_contacto = utf8_decode($proveedor->contacto);
         // $converted_cliente = utf8_decode($proveedor->empresa);
         // $converted_direccion = utf8_decode($proveedor->direccion);
 
         Fpdf::AddPage();
+        Fpdf::SetAutoPageBreak(0);
         Fpdf::Image("images/banner.jpg",null,null,190,50);
         Fpdf::Ln(5);
         Fpdf::SetFont('Arial', 'B', 11);
@@ -195,22 +225,13 @@ class PurchaseOrderController extends Controller
         Fpdf::Cell(50, 10, 'PO #'.$po->po_number, 0);
         Fpdf::Ln(12);
         Fpdf::SetFont('Arial', 'B', 11);
-        Fpdf::SetTextColor(0,0,0);
-        Fpdf::SetFillColor(170,170,170);
-        // ICONOS
-        // $icon = "images/iconos/empresa.png";
-        // $icon2 = "images/iconos/direccion.png";
-        // $icon3 = "images/iconos/correo.png";
-        // $icon4 = "images/iconos/tlf.png";
-        // $icon5 = "images/iconos/contacto2.png";
-        // $icon6 = "images/iconos/camion.png";
-        // $icon7 = "images/iconos/maletin.png";
-
-
-        Fpdf::Cell(95, 7, "Supplier","T L B",0,'C',1);
-        Fpdf::Cell(95, 7, "Ship to","R T B",0,'C',1);
+        Fpdf::SetTextColor(255,255,255);
+        Fpdf::SetFillColor(130,130,130);
+        Fpdf::Cell(95, 7, "SUPPLIER","T L B",0,'C',1);
+        Fpdf::Cell(95, 7, "SHIP TO / BILL TO","R T B",0,'C',1);
         Fpdf::Ln(7);
         Fpdf::SetFillColor(255,255,255);
+        Fpdf::SetTextColor(0,0,0);
         Fpdf::SetFont('Arial', 'B', 9.5);
         Fpdf::Cell(95, 7, "Name: ".$proveedor->name,"R L T",0,'L',1);
         Fpdf::Cell(95, 7, "Name: BF Services S.A","R L T",0,'L',1);
@@ -227,93 +248,99 @@ class PurchaseOrderController extends Controller
         Fpdf::Cell(95, 7, "City: ".$proveedor->city,"R L",0,'L',1);
         Fpdf::Cell(95, 7, "City: Panama","R L",0,'L',1);
         Fpdf::Ln();
-        Fpdf::Cell(95, 7, "PostCode: ".$proveedor->postcode,"R L B",0,'L',1);
+        Fpdf::Cell(95, 7, "Postal Code: ".$proveedor->postcode,"R L B",0,'L',1);
         Fpdf::Cell(95, 7, "Phone: (+507) 6371-0966 / (+507) 6964-7914","R L B",0,'L',1);
 
         Fpdf::Ln(15);
 
-        Fpdf::SetFillColor(170,170,170);
-        Fpdf::Cell(50, 7, "REQUESTED BY",1,0,'C',1);
-        Fpdf::Cell(50, 7, "APPROVED BY",1,0,'C',1);
-        Fpdf::Cell(50, 7, "SHIPPED METHOD",1,0,'C',1);
+        Fpdf::SetFillColor(130,130,130);
+        Fpdf::SetTextColor(255,255,255);
+        Fpdf::Cell(63, 7, "REQUESTED BY",1,0,'C',1);
+        Fpdf::Cell(63, 7, "APPROVED BY",1,0,'C',1);
+        Fpdf::Cell(64, 7, "SHIPPED METHOD",1,0,'C',1);
         Fpdf::Ln(7);
+        Fpdf::SetTextColor(0,0,0);
         Fpdf::SetFillColor(255,255,255);
         Fpdf::SetFont('Arial', 'B', 9.5);
-        // Fpdf::Cell(10, 10,Fpdf::Image($icon,Fpdf::GetX(), Fpdf::GetY(), 10),0,0,'L',false);
-        // Fpdf::Cell(50, 10, $converted_cliente,0,0,'L',1);
-        // Fpdf::Cell(10, 10,Fpdf::Image($icon2,Fpdf::GetX(), Fpdf::GetY(), 10),0,0,'L',false);
-        // Fpdf::Cell(120, 10, $converted_direccion,0,0,'L',1);
-        // Fpdf::Ln(12);
-        // Fpdf::Cell(10, 10,Fpdf::Image($icon3,Fpdf::GetX(), Fpdf::GetY(), 10),0,0,'L',false);
-        // Fpdf::Cell(50, 10,$proveedor->email,0,0,'L',1);
-        // Fpdf::Cell(10, 10,Fpdf::Image($icon4,Fpdf::GetX(), Fpdf::GetY(), 10),0,0,'L',false);
-        // Fpdf::Cell(50, 10,$proveedor->tel_local,0,0,'L',1);
-        // Fpdf::Cell(10, 10,Fpdf::Image($icon5,Fpdf::GetX(), Fpdf::GetY(), 10),0,0,'L',false);
-        // Fpdf::Cell(60, 10,$converted_contacto,0,0,'L',1);
-        // Fpdf::Ln(12);
-        // Fpdf::Cell(10, 10,Fpdf::Image($icon6,Fpdf::GetX(), Fpdf::GetY(), 10),0,0,'L',false);
-        // // Fpdf::Cell(80, 10, ,0,0,'L',1);
-        // foreach ($po->ordenes_repartidores as $repartidor) {
-        //     Fpdf::Cell(35, 10,$repartidor->nombre,0,0,'L',1);
-        // }
-        // Fpdf::SetX(130);
-        // Fpdf::Cell(10, 10,Fpdf::Image($icon7,Fpdf::GetX(), Fpdf::GetY(), 10),0,0,'L',false);
-        // Fpdf::Cell(60, 10,$vendedor->nombre,0,0,'L',1);
-        // Fpdf::Ln(15);
-        // Fpdf::SetTextColor(0,0,0);
-        // Fpdf::SetFont('Arial', 'B', 11);
-        // Fpdf::Cell(190, 8, 'SE RECIBE:',0,0,'C');
-        // Fpdf::Ln(13);
-        // Fpdf::SetTextColor(255,255,255);
-        // Fpdf::SetFillColor(66,133,244);
-        // Fpdf::SetFont('Arial', 'B', 10);
-        // Fpdf::Cell(20, 8, 'Codigo', 1,0,'C',1);
-        // Fpdf::Cell(80, 8, 'Descripcion', 1,0,'C',1);
-        // Fpdf::Cell(25, 8, 'Medidas', 1,0,'C',1);
-        // Fpdf::Cell(20, 8, 'Cantidad', 1,0,'C',1);
-        // Fpdf::Cell(25, 8, 'Precio-Unid', 1,0,'C',1);
-        // Fpdf::Cell(20, 8, 'Totales', 1,0,'C',1);
-        // Fpdf::Ln(8);
-        // Fpdf::SetFont('Arial', 'B', 9);
-        // Fpdf::SetFillColor(255,255,255);
-        // Fpdf::SetTextColor(0,0,0);
-        // foreach ($po->ordenes_productos as $producto) {
-        //     $h = 8;
-        //     if(strlen($producto->descripcion)>47){
-        //         $h = 16;
-        //     }
-        //     Fpdf::Cell(20, $h, $producto->codigo, 1,0,'C',1);
-        //     $x = Fpdf::GetX();
-        //     $y = Fpdf::GetY();
-        //     Fpdf::MultiCell(80, 8,$producto->descripcion,1);
-        //     $H = Fpdf::GetY();
-        //     $diff_h= $H-$y;
-        //     $nuevo_h = $y + $diff_h;
-        //     Fpdf::SetXY($x + 80, $y);
-        //     Fpdf::Cell(25, $h,$producto->medidas, 1,0,'C',1);
-        //     // Obtener la cantidad de dicho producto de la orden
-        //     $cantidad_producto = $producto->pivot->cantidad_producto;
-        //     // Obtener el precio final de ordenes_productos
-        //     $precio_final = $producto->pivot->precio_final;
-        //     $precioT = $precioT + $precio_final * $cantidad_producto;    
-        //     Fpdf::Cell(20, $h,$cantidad_producto, 1,0,'C',1);
-        //     Fpdf::Cell(25, $h, '$'.number_format($precio_final,2), 1,0,'C',1);
-        //     Fpdf::Cell(20, $h, '$'.number_format(($precio_final*$cantidad_producto),2), 1,0,'C',1);
-        //     Fpdf::Ln(8);
-        //     Fpdf::SetY($nuevo_h);
-        // }
-        // Fpdf::Cell(170, 5, '',0,0,'C',0);
-        // Fpdf::SetFillColor(189,189,189);
-        // Fpdf::Cell(20, 5, '$'.number_format($precioT,2),1,0,'C',1);
+        Fpdf::Cell(63, 7, "Brais Sanmartin",1,0,'C',1);
+        Fpdf::Cell(63, 7, "Brais Sanmartin",1,0,'C',1);
+        Fpdf::Cell(64, 7, $po->shipping_method,1,0,'C',1);
+        Fpdf::Ln(15);
+        Fpdf::SetFillColor(42,112,224);
+        Fpdf::Cell(35, 7, "PRODUCT CODE","T L B",0,'C',1);
+        Fpdf::Cell(70, 7, "DESCRIPTION","T B",0,'C',1);
+        Fpdf::Cell(15, 7, "QTY","T B",0,'C',1);
+        Fpdf::Cell(35, 7, "UNIT PRICE","T B",0,'C',1);
+        Fpdf::Cell(35, 7, "TOTAL","T R B",0,'C',1);
+        Fpdf::Ln(7);
+        Fpdf::SetFont('Arial', '', 9);
+        Fpdf::SetFillColor(255,255,255);
+        foreach ($po->po_pp as $producto) {
+            $h = 7;
+            if(strlen($producto->descripcion)>47){
+                $h = 16;
+            }
+            Fpdf::Cell(35, $h, $producto->codigo, 1,0,'C',1);
+            $x = Fpdf::GetX();
+            $y = Fpdf::GetY();
+            Fpdf::MultiCell(70, 7,$producto->descripcion,1);
+            $H = Fpdf::GetY();
+            $diff_h= $H-$y;
+            $nuevo_h = $y + $diff_h;
+            Fpdf::SetXY($x + 70, $y);
+            // Obtener la cantidad de dicho producto de la orden
+            $cantidad_producto = $producto->pivot->cantidad_producto;
+            // Obtener el precio final de ordenes_productos
+            $precio_final = $producto->pivot->precio_final;
+            Fpdf::Cell(15, $h,$cantidad_producto, 1,0,'C',1);
+            Fpdf::Cell(35, $h, '$'.number_format($precio_final,2), 1,0,'C',1);
+            Fpdf::Cell(35, $h, '$'.number_format(($precio_final*$cantidad_producto),2), 1,0,'C',1);
+            Fpdf::Ln(7);
+            Fpdf::SetY($nuevo_h);
+        }
+        $y = Fpdf::GetY();
+        Fpdf::SetFillColor(255,255,255);
+        Fpdf::Cell(120);
+        Fpdf::Cell(35, 7, 'SUBTOTAL','T',0,'L',1);
+        Fpdf::Cell(35, 7, '$'.number_format($po->po_subtotal,2),1,0,'C',1);
+        Fpdf::SetY($y+4);
+        Fpdf::SetFillColor(130,130,130);
+        Fpdf::SetTextColor(255,255,255);
+        Fpdf::SetFont('Arial', 'B', 9);
+        Fpdf::Cell(100, 7, 'COMMENTS OR SPECIAL INSTRUCTIONS',1,0,'C',1);
+        Fpdf::ln(7);
+        Fpdf::SetTextColor(0,0,0);
+        Fpdf::SetFillColor(255,255,255);
+        Fpdf::SetFont('Arial', '', 9);
+        // Comments or instruccions part
+        Fpdf::MultiCell(100, 7, '',1,'L',1);
+        Fpdf::SetY($y);
+        Fpdf::Ln(7);
+        Fpdf::Cell(120);
+        Fpdf::Cell(35, 7, 'TAX',0,0,'L',1);
+        Fpdf::Cell(35, 7, $po->tax,1,0,'C',1);
+        Fpdf::Ln(7);
+        Fpdf::Cell(120, 7, '',0,0,'C',0);
+        Fpdf::Cell(35, 7, 'SHIPPING',0,0,'L',1);
+        Fpdf::Cell(35, 7, '-',1,0,'C',1);
+        Fpdf::Ln(7);
+        Fpdf::Cell(120, 7, '',0,0,'C',0);
+        Fpdf::Cell(35, 7, 'TOTAL',0,0,'L',1);
+        Fpdf::SetFillColor(130,130,130);
+        Fpdf::SetFont('Arial', 'B', 9.5);
+        Fpdf::Cell(35, 7, '$'.number_format($po->po_total_amount,2),1,0,'C',1);
+        Fpdf::SetFillColor(255,255,255);
         // Fpdf::Ln(3);
         // Fpdf::SetFont('Times', 'I', 8);
         // Fpdf::Cell(50, 9, 'Nota: los precios no incluyen ITBMS.', 0,0,'L',0);
-        // // FOOTER DEL PDF
-        // Fpdf::SetY(-30);
-        // Fpdf::SetFont('Arial', '', 9);
-        // Fpdf::Cell(110, 5, '', 0);
-        // Fpdf::Cell(70, 5, 'Recibido por:___________________________________', 0);
-
-        Fpdf::Output('I','Nota_de_entrega_'.$po->num_orden.'.pdf',true);
+        // FOOTER DEL PDF
+        Fpdf::SetY(-15);
+        Fpdf::SetFont('Arial', 'I', 9);
+        //Straight Line
+        Fpdf::Line(FPDF::GetX(),FPDF::GetY(),FPDF::GetX()+190,FPDF::Gety());
+        Fpdf::Ln(2);
+        Fpdf::Cell(70, 5, 'BF Services S.A - '. date("Y"), 0);
+        //Output
+        Fpdf::Output('I','PO_#'.$po->po_number.'.pdf',true);
     }
 }

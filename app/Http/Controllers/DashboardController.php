@@ -54,15 +54,16 @@ class DashboardController extends Controller
 
 
         // Top 5 clientes con mas ordenes, Relacion Clientes - # de ordenes
-        $idclientes = Orden::select('idCliente', DB::raw('count(idCliente) as count'))
-                            ->groupBy('idCliente')
-                            ->orderBy('count', 'desc')
-                            ->get();
+        $idclientes =   DB::table('ordens')
+                        ->select('idCliente', DB::raw('count(idCliente) as count'))
+                        ->groupBy('idCliente')
+                        ->orderBy('count', 'desc')
+                        ->get();
         //Checkear si el array esta vacio (evitar errores en el dashboard por DB vacia)                    
         if(!is_null($idclientes)){
-            foreach ($idclientes as $orden) {
+            foreach ($idclientes as $key => $value) {
                 // $orden->count representa el count de cuantas ordenes tiene dicho cliente
-                $clientes_top5[$orden->count] = Cliente::findOrFail($orden->idCliente);
+                $clientes_top5[$value->count] = Cliente::find($value->idCliente);
             }
         }
 
