@@ -44,45 +44,28 @@ class DashboardController extends Controller
         }
 
         //Repartidor con mas ordenes
-        $idrepartidor = DB::table('ordenes_repartidores')->select('idRepartidor', DB::raw('count(idRepartidor) as count'))
-                        ->groupBy('idRepartidor')
+        $repartidor_top1 = DB::table('ordenes_repartidores')->select('nombre', DB::raw('count(idRepartidor) as count'))
+                        ->join('users', 'ordenes_repartidores.idRepartidor','=','users.id')
+                        ->groupBy('nombre')
                         ->orderBy('count', 'desc')->first();
-        //Checkear si el array esta vacio (evitar errores en el dashboard por DB vacia)
-        if(!is_null($idrepartidor)){
-            $repartidor = User::findOrFail($idrepartidor->idRepartidor);
-        }
-
 
         // Top 5 clientes con mas ordenes, Relacion Clientes - # de ordenes
-        $idclientes =   DB::table('ordens')
-                        ->select('idCliente', DB::raw('count(idCliente) as count'))
-                        ->groupBy('idCliente')
+        $clientes_top =   DB::table('ordens')
+                        ->join('clientes','ordens.idCliente', '=', 'clientes.id')
+                        ->select('clientes.empresa', DB::raw('count(idCliente) as count'))
+                        ->groupBy('idCliente','clientes.empresa')
                         ->orderBy('count', 'desc')
                         ->get();
-        //Checkear si el array esta vacio (evitar errores en el dashboard por DB vacia)                    
-        if(!is_null($idclientes)){
-            foreach ($idclientes as $key => $value) {
-                // $orden->count representa el count de cuantas ordenes tiene dicho cliente
-                $clientes_top5[$value->count] = Cliente::find($value->idCliente);
-            }
-        }
 
         // Top 5 productos, Relacion Producto - cantidad vendida en ordenes
-
-        $idproductos = DB::table('ordenes_productos')->selectRaw('idProducto, sum(cantidad_producto) as sp')
+        $productos_top = DB::table('ordenes_productos')->selectRaw('codigo, descripcion, sum(cantidad_producto) as sp')
                                                     ->join('productos', 'ordenes_productos.idProducto','=','productos.id')
                                                     // ->where('idProducto', DB::raw('idProducto'))
-                                                    ->groupBy('idProducto')
+                                                    ->groupBy('codigo', 'descripcion')
                                                     ->orderBy('sp', 'desc')
                                                     ->get();
-        //Checkear si el array esta vacio (evitar errores en el dashboard por DB vacia)
-        if(!is_null($idproductos)){
-            foreach ($idproductos as $producto) {
-                // $$producto->sp representa la suma total de dicho producto
-                $productos_top5[$producto->sp] = Producto::find($producto->idProducto);
-            }
-        }
-        return view('index', compact('monto_por_cobrar','ordenes_totales','cliente','repartidor','clientes_top5','productos_top5'));
+
+        return view('index', compact('monto_por_cobrar','ordenes_totales','cliente','repartidor_top1','clientes_top','productos_top'));
     }
 
 }

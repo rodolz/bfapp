@@ -10,8 +10,8 @@ class PurchaseOrder extends Model
         'po_number',
         'idProveedor',
         'idPOStatus',
-        'shipping_method',
         'tax',
+        'comments',
         'po_subtotal',
         'po_total_amount',
         'created_at'

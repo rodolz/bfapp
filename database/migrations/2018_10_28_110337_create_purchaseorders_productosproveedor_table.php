@@ -18,6 +18,7 @@ class CreatePurchaseordersProductosproveedorTable extends Migration
             $table->integer('idPO')->unsigned();
             $table->integer('idProductoProveedor')->unsigned();
             $table->integer('cantidad_producto')->unsigned();
+            $table->decimal('precio_final',13,2);
             $table->timestamps();
         });
     }

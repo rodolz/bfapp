@@ -74,8 +74,8 @@ class PurchaseOrderController extends Controller
                 'po_number' => $po_num,
                 'idProveedor' => $proveedor->id,
                 'idPOStatus' => 0,
-                'shipping_method' => "testshipping",
-                'tax' => 7.3,
+                'comments' => $request->comments,
+                'tax' => $request->tax,
                 'po_subtotal' => $subtotal,
                 'po_total_amount' => $subtotal+($subtotal*0.073)
             ]);
@@ -219,53 +219,59 @@ class PurchaseOrderController extends Controller
         Fpdf::SetAutoPageBreak(0);
         Fpdf::Image("images/banner.jpg",null,null,190,50);
         Fpdf::Ln(5);
-        Fpdf::SetFont('Arial', 'B', 11);
-        Fpdf::Cell(40, 10, 'Date: '.$po->created_at->format('d-m-Y'), 0);
-        Fpdf::Cell(100, 10, '', 0);
-        Fpdf::Cell(50, 10, 'PO #'.$po->po_number, 0);
-        Fpdf::Ln(12);
+        Fpdf::SetFont('Arial', 'B', 15);
+        Fpdf::Cell(190, 10, 'PURCHASE ORDER', 0,0,'C');
+        Fpdf::Ln(15);
         Fpdf::SetFont('Arial', 'B', 11);
         Fpdf::SetTextColor(255,255,255);
         Fpdf::SetFillColor(130,130,130);
-        Fpdf::Cell(95, 7, "SUPPLIER","T L B",0,'C',1);
-        Fpdf::Cell(95, 7, "SHIP TO / BILL TO","R T B",0,'C',1);
+        Fpdf::Cell(95, 7, "SUPPLIER",1,0,'C',1);
+        Fpdf::SetTextColor(0,0,0);
+        Fpdf::Cell(95, 7, 'Date: '.$po->created_at->format('d-m-Y'),0,0,'R',0);
         Fpdf::Ln(7);
         Fpdf::SetFillColor(255,255,255);
         Fpdf::SetTextColor(0,0,0);
-        Fpdf::SetFont('Arial', 'B', 9.5);
         Fpdf::Cell(95, 7, "Name: ".$proveedor->name,"R L T",0,'L',1);
-        Fpdf::Cell(95, 7, "Name: BF Services S.A","R L T",0,'L',1);
+        Fpdf::Cell(95, 7, 'PO Number: '.$po->po_number, 0,0,'R',0);
         Fpdf::Ln();
         Fpdf::Cell(95, 7, "Address: ".$proveedor->address,"R L",0,'L',1);
-        Fpdf::Cell(95, 7, "Address: Parque Industrial Costa del Este, ","R L",0,'L',1);
-        Fpdf::Ln();
-        Fpdf::Cell(95, 7, "","R L",0,'L',1);
-        Fpdf::Cell(95, 7, "Edificio IStorage, Local #1234","R L",0,'L',1);
+        Fpdf::Cell(95, 7, 'Approved by: Brais Sanmartin',0,0,'R',0);
         Fpdf::Ln();
         Fpdf::Cell(95, 7, "Country: ".$proveedor->country,"R L",0,'L',1);
-        Fpdf::Cell(95, 7, "Country: Panama","R L",0,'L',1);
         Fpdf::Ln();
-        Fpdf::Cell(95, 7, "City: ".$proveedor->city,"R L",0,'L',1);
-        Fpdf::Cell(95, 7, "City: Panama","R L",0,'L',1);
+        Fpdf::Cell(95, 7, "City: ".$proveedor->city,"R L",0,'L',1);;
         Fpdf::Ln();
         Fpdf::Cell(95, 7, "Postal Code: ".$proveedor->postcode,"R L B",0,'L',1);
-        Fpdf::Cell(95, 7, "Phone: (+507) 6371-0966 / (+507) 6964-7914","R L B",0,'L',1);
-
         Fpdf::Ln(15);
 
-        Fpdf::SetFillColor(130,130,130);
+        Fpdf::SetFont('Arial', 'B', 11);
         Fpdf::SetTextColor(255,255,255);
-        Fpdf::Cell(63, 7, "REQUESTED BY",1,0,'C',1);
-        Fpdf::Cell(63, 7, "APPROVED BY",1,0,'C',1);
-        Fpdf::Cell(64, 7, "SHIPPED METHOD",1,0,'C',1);
-        Fpdf::Ln(7);
-        Fpdf::SetTextColor(0,0,0);
+        Fpdf::SetFillColor(130,130,130);
+        Fpdf::Cell(95, 7, "SHIP TO",1,0,'C',1);
+        Fpdf::Cell(95, 7, "BILL TO",1,0,'C',1);
         Fpdf::SetFillColor(255,255,255);
+        Fpdf::SetTextColor(0,0,0);
         Fpdf::SetFont('Arial', 'B', 9.5);
-        Fpdf::Cell(63, 7, "Brais Sanmartin",1,0,'C',1);
-        Fpdf::Cell(63, 7, "Brais Sanmartin",1,0,'C',1);
-        Fpdf::Cell(64, 7, $po->shipping_method,1,0,'C',1);
+        Fpdf::Ln(7);
+        Fpdf::Cell(95, 7, "Name: BF Services S.A","R L T",0,'L',1);
+        Fpdf::Cell(95, 7, "Name: BF Services S.A","R L T",0,'L',1);
+        Fpdf::Ln();
+        Fpdf::Cell(95, 7, "Address: Parque Industrial Costa del Este, ","R L",0,'L',1);
+        Fpdf::Cell(95, 7, "Address: Parque Industrial Costa del Este, ","R L",0,'L',1);
+        Fpdf::Ln();
+        Fpdf::Cell(95, 7, "Edificio IStorage, Local #1234","R L",0,'L',1);
+        Fpdf::Cell(95, 7, "Edificio IStorage, Local #1234","R L",0,'L',1);
+        Fpdf::Ln();
+        Fpdf::Cell(95, 7, "Country: Panama","R L",0,'L',1);
+        Fpdf::Cell(95, 7, "Country: Panama","R L",0,'L',1);
+        Fpdf::Ln();
+        Fpdf::Cell(95, 7, "City: Panama","R L",0,'L',1);
+        Fpdf::Cell(95, 7, "City: Panama","R L",0,'L',1);
+        Fpdf::Ln();
+        Fpdf::Cell(95, 7, "Phone: (+507) 6371-0966 / (+507) 6964-7914","R L B",0,'L',1);
+        Fpdf::Cell(95, 7, "Phone: (+507) 6371-0966 / (+507) 6964-7914","R L B",0,'L',1);
         Fpdf::Ln(15);
+
         Fpdf::SetFillColor(42,112,224);
         Fpdf::Cell(35, 7, "PRODUCT CODE","T L B",0,'C',1);
         Fpdf::Cell(70, 7, "DESCRIPTION","T B",0,'C',1);
@@ -313,16 +319,16 @@ class PurchaseOrderController extends Controller
         Fpdf::SetFillColor(255,255,255);
         Fpdf::SetFont('Arial', '', 9);
         // Comments or instruccions part
-        Fpdf::MultiCell(100, 7, '',1,'L',1);
+        Fpdf::MultiCell(100, 7, $po->comments,1,'L',1);
         Fpdf::SetY($y);
         Fpdf::Ln(7);
         Fpdf::Cell(120);
         Fpdf::Cell(35, 7, 'TAX',0,0,'L',1);
         Fpdf::Cell(35, 7, $po->tax,1,0,'C',1);
-        Fpdf::Ln(7);
-        Fpdf::Cell(120, 7, '',0,0,'C',0);
-        Fpdf::Cell(35, 7, 'SHIPPING',0,0,'L',1);
-        Fpdf::Cell(35, 7, '-',1,0,'C',1);
+        // Fpdf::Ln(7);
+        // Fpdf::Cell(120, 7, '',0,0,'C',0);
+        // Fpdf::Cell(35, 7, 'SHIPPING',0,0,'L',1);
+        // Fpdf::Cell(35, 7, '-',1,0,'C',1);
         Fpdf::Ln(7);
         Fpdf::Cell(120, 7, '',0,0,'C',0);
         Fpdf::Cell(35, 7, 'TOTAL',0,0,'L',1);
@@ -341,6 +347,6 @@ class PurchaseOrderController extends Controller
         Fpdf::Ln(2);
         Fpdf::Cell(70, 5, 'BF Services S.A - '. date("Y"), 0);
         //Output
-        Fpdf::Output('I','PO_#'.$po->po_number.'.pdf',true);
+        Fpdf::Output('I','PurchaseOrder_#'.$po->po_number.'.pdf',true);
     }
 }

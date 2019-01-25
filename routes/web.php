@@ -142,6 +142,7 @@
 			Route::get('pagos/getdata','PagosController@getdata');
 			Route::post('check_monto', 'PagosController@check_monto');
 			Route::get('pagos/estado_cuenta_pdf/{id}', 'PagosController@estado_cuenta_pdf');
+			Route::get('pagos/estado_cuenta_pdf_multiple/{id}', 'PagosController@estado_cuenta_pdf_multiple');
 			Route::get('pagos/cuentas_por_cobrar', 'PagosController@cuentas_por_cobrar_index');
 			Route::post('pagos/cuentas_por_cobrar/resumen','PagosController@cuentas_por_cobrar');
 			Route::get('pagos/nuevo_pago_index',[

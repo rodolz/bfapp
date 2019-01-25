@@ -303,6 +303,7 @@ class OrdenesController extends Controller
             if(strlen($producto->descripcion)>47){
                 $h = 16;
             }
+        
             Fpdf::Cell(20, $h, $producto->codigo, 1,0,'C',1);
             $x = Fpdf::GetX();
             $y = Fpdf::GetY();

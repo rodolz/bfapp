@@ -278,8 +278,7 @@ class ComisionesController extends Controller
         ]);
 
         Comision::find($id)->update($request->all());
-        return redirect()->route('comisiones.index')
-                        ->with('success','comision Modificada!');
+        return redirect()->back()->with('success','comision Modificada!');
     }
 
     /**
@@ -291,7 +290,6 @@ class ComisionesController extends Controller
     public function destroy($id)
     {
         Comision::find($id)->delete();
-        return redirect()->route('comisiones.index')
-                        ->with('success','comision Borrada!');
+        return redirect()->back()->with('success','comision Borrada!');
     }
 }

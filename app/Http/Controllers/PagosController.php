@@ -60,8 +60,7 @@ class PagosController extends Controller
     public function check_monto (Request $request){
 
 
-        $facturas = Factura::whereIn('id', $request->idFacturas)
-                            ->get();
+        $facturas = Factura::whereIn('id', $request->idFacturas)->get();
         $monto_total = 0;
         foreach ($facturas as $factura) {
             if($factura->idFacturaEstado == 3){
@@ -84,31 +83,30 @@ class PagosController extends Controller
     public function cuentas_por_cobrar(Request $request){
 
         $customMessages = [
-            'idCliente.required' => 'Debe escojer a un cliente',
+            'clientes.required' => 'Debe escojer a un cliente',
         ];
 
         $validator = Validator::make($request->all(), [
-            'idCliente' => 'required',
+            'clientes' => 'required',
         ],$customMessages);
 
         if ($validator->fails()) {
             $errores = $validator->errors();
             // dd($errores->get('idCliente'));
-            Alert::error($errores->first('idCliente'));
+            Alert::error($errores->first('clientes'));
             return redirect()->back();
         }     
 
-
-        $cliente = Cliente::findOrfail($request->idCliente);
-
         // Se buscan las facturas por cobrar
-        $facturas = Factura::where('idCliente', '=', $cliente->id)
+        $facturas = Factura::whereIn('idCliente', $request->clientes)
                             ->whereIn('idFacturaEstado', [1,3])
+                            ->orderBy('idCliente','ASC')
+                            ->orderBy('created_at','ASC')
                             ->get();
         // $monto_total =      Factura::where('idCliente', '=', $cliente->id)
         //                     ->where('idFacturaEstado', '=', 1)
         //                     ->orWhere('idFacturaEstado', '=', 3)
-        //                     ->sum('monto_factura');       
+        //                     ->sum('monto_factura');      
         $monto_total = 0;
         foreach ($facturas as $factura) {
             if($factura->idFacturaEstado == 3){
@@ -120,22 +118,28 @@ class PagosController extends Controller
             }
             $monto_total += $factura->monto_factura; 
         }
-        return view('pagos.cuentas_por_cobrar', compact('cliente','facturas','monto_total'));
+
+        if(count($request->clientes) == 1){
+            $cliente = Cliente::findorFail($request->clientes)->first();
+            return view('pagos.cuentas_por_cobrar', compact('cliente','facturas','monto_total'));
+        }
+        else{
+            $clientes = urlencode(serialize($request->clientes));
+            return view('pagos.cuentas_por_cobrar_multiple', compact('clientes','facturas','monto_total'));
+        }
     }
 
     public function estado_cuenta_pdf($id){
-        $cliente = Cliente::findOrfail($id);
+
+        $cliente = Cliente::findorFail($id);
         // Se buscan las facturas por cobrar
-        $facturas = Factura::where('idCliente', '=', $cliente->id)
+        $facturas = Factura::where('idCliente', $cliente->id)
                             ->whereIn('idFacturaEstado', [1,3])
-                            ->get();
-
-        // $monto_factura =    Factura::where('idCliente', '=', $cliente->id)
-        //                     ->where('idFacturaEstado', '=', 1)
-        //                     ->orWhere('idFacturaEstado', '=', 3)
-        //                     ->sum('monto_factura');       
-
-        $monto_factura = 0;
+                            ->orderBy('idCliente','ASC')
+                            ->orderBy('created_at','ASC')
+                            ->get();    
+        
+        $monto_total = 0;
         foreach ($facturas as $factura) {
             if($factura->idFacturaEstado == 3){
                 $monto_deducible = 0;
@@ -144,12 +148,40 @@ class PagosController extends Controller
                 }
                 $factura->monto_factura -= $monto_deducible;
             }
-            $monto_factura += $factura->monto_factura; 
+            $monto_total += $factura->monto_factura; 
         }
-        $pdf = PDF::loadView('pagos.estado_cuenta_pdf', compact('cliente','facturas','monto_factura'));
+        
+        $pdf = PDF::loadView('pagos.estado_cuenta_pdf', compact('cliente','facturas','monto_total'));
+        
         return $pdf->stream();
     }
 
+    public function estado_cuenta_pdf_multiple($ids){
+
+        $ids = unserialize(urldecode($ids));
+
+        // Se buscan las facturas por cobrar
+        $facturas = Factura::whereIn('idCliente', $ids)
+                            ->whereIn('idFacturaEstado', [1,3])
+                            ->orderBy('idCliente','ASC')
+                            ->orderBy('created_at','ASC')
+                            ->get();    
+
+        $monto_total = 0;
+        foreach ($facturas as $factura) {
+            if($factura->idFacturaEstado == 3){
+                $monto_deducible = 0;
+                foreach ($factura->pagos as $pago) {
+                    $monto_deducible += $pago->pivot->monto_pago;
+                }
+                $factura->monto_factura -= $monto_deducible;
+            }
+            $monto_total += $factura->monto_factura; 
+        }
+        
+        $pdf = PDF::loadView('pagos.estado_cuenta_pdf_multiple', compact('facturas','monto_total'));
+        return $pdf->stream('estado_de_cuenta_multiple.pdf');
+    }
     public function nuevo_pago_index(Request $request){
 
         $clientes = Cliente::pluck('empresa','id');
@@ -283,6 +315,7 @@ class PagosController extends Controller
                     $numero_referencia = $request->numero_referencia;
                     $pago = new Pago();
                     $pago->idTipoPago =  $tipo_pago;
+                    $pago->idCliente = $cliente->id;
                     $pago->banco = $banco;
                     $pago->numero_referencia = $numero_referencia;
                     $pago->monto_pago = $monto_pago;
@@ -293,6 +326,7 @@ class PagosController extends Controller
                 else if($tipo_pago == 2){
                     $pago = new Pago();
                     $pago->idTipoPago =  $tipo_pago;
+                    $pago->idCliente = $cliente->id;
                     $pago->banco = "N/A";
                     $pago->numero_referencia = "N/A";
                     $pago->monto_pago = $monto_pago;
@@ -304,21 +338,25 @@ class PagosController extends Controller
                     $banco = $request->banco;
                     $numero_referencia = $request->numero_referencia;
                     $pago = new Pago();
+                    $pago->idCliente = $cliente->id;
                     $pago->idTipoPago =  $tipo_pago;
                     $pago->banco = $banco;
                     $pago->numero_referencia = $numero_referencia;
                     $pago->monto_pago = $monto_pago;
                     $pago->descripcion = 'N/A';
+                    $pago->created_at = $fecha;
                     $pago->save();
                 }
                 else if($tipo_pago == 4){
                     $descripcion = $request->descripcion;
                     $pago = new Pago();
                     $pago->idTipoPago =  $tipo_pago;
+                    $pago->idCliente = $cliente->id;
                     $pago->banco = "N/A";
                     $pago->numero_referencia = "N/A";
                     $pago->monto_pago = $monto_pago;
                     $pago->descripcion = $descripcion;
+                    $pago->created_at = $fecha;
                     $pago->save();
                 }
                 // Se debe hacer un nuevo pull de las facturas para no sobreescribir el monto modificado anteriomente

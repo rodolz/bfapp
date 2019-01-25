@@ -20,4 +20,8 @@ class Cliente extends Model
     public function ordenes(){
     return $this->hasMany('App\Orden', 'idCliente');
     }
+
+    public function facturas(){
+        return $this->hasMany('App\Factura', 'idCliente');
+    }
 }

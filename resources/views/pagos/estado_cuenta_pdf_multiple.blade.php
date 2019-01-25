@@ -63,13 +63,13 @@
                 <center>
                     <h1>Estado de Cuenta</h1><br>
                 </center>
-                <h2>Cliente: {{$cliente->empresa}}</h2>
                 <h2>Monto Total: ${{number_format($monto_total,2,'.',',')}}</h2>
                 <label>Fecha: {{date('d-m-Y')}}</label>
                 <div class="table-responsive">
                     <table class="rwd-table">
                         <thead>
                             <tr>
+                                <th><h4>Cliente</h4></th>
                                 <th><h4>Fiscal #</h4></th>
                                 <th><h4>Control #</h4></th>
                                 <th><h4>Condición</h4></th>
@@ -89,10 +89,11 @@
                             @endphp
                             @foreach ($facturas as $factura)
                                     <tr>
-                                        <td class="bold">{{ $factura->num_fiscal }}</td>
-                                        <td class="text-center">{{ $factura->num_factura }}</td>
-                                        <td class="text-center">{{ $factura->condicion }}</td>
-                                        <td class="text-center">{{ $factura->created_at->format('d/m/Y') }}</td>
+                                        <td class="bold">{{ $factura->cliente->empresa }}</td>
+                                        <td>{{ $factura->num_fiscal }}</td>
+                                        <td>{{ $factura->num_factura }}</td>
+                                        <td>{{ $factura->condicion }}</td>
+                                        <td>{{ $factura->created_at->format('d/m/Y') }}</td>
                                         @php
                                         $date1 = new DateTime($factura->created_at->format('Y-m-d'));
                                         $date2 = new DateTime(date('Y-m-d', strtotime('TODAY')));
@@ -150,16 +151,15 @@
                                 <td class="thick-line"></td>
                                 <td class="thick-line"></td>
                                 <td class="thick-line"></td>
+                                <td class="thick-line"></td>
                                 <td class="thick-line text-center"><h4 style='margin:0px;' class="text-info">${{number_format($total_30dias,2,'.',',')}}</h4></td>
                                 <td class="thick-line text-center"><h4 style='margin:0px;' class="text-warning">${{number_format($total_60dias,2,'.',',') }}</h4></td>
                                 <td class="thick-line text-right"><h4 style='margin:0px;' class="text-danger">${{number_format($total_90dias,2,'.',',') }}</h4></td>
                             </tr>
                             @else
                                 <tr>
-                                    <td colspan="7">
-                                        <center>
-                                        <h2 class="bold text-success text-center"><i class="fa fa-check-circle" aria-hidden="true" style="font-size:30px"></i> No tiene facturas pendientes</h2>
-                                        </center>
+                                    <td colspan="8">
+                                        <center><h2 class="text-center"><i class="fa fa-check-circle" aria-hidden="true" style="font-size:30px"></i> No tiene facturas pendientes</h2></center>
                                     </td>
                                 </tr>
                             @endif

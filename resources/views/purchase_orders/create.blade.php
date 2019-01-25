@@ -21,11 +21,6 @@
         <!--  PANEL HEADER    -->      
         <header class="panel_header">
             @yield('panel-title')
-                <!--<div class="actions panel_actions pull-right">
-                <i class="box_toggle fa fa-chevron-down"></i>
-                <i class="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></i>
-                <i class="box_close fa fa-times"></i>
-                </div> -->
         </header>
         <div class="content-body">    
             <div class="row">
@@ -38,24 +33,24 @@
                         </div>
                     </div>
                     <div class="well transparent">
-                        <div class="row top15">
+                        <div class="row">
                             <div class="form-group col-lg-12 col-md-8 col-sm-9 col-xs-12">
                                     <h2 class="bold">Productos</h2>
                                     Escoja el producto, la cantidad y presione <kbd class="bg-primary">+</kbd>
-                                        <div class="controls">
-                                            {!! Form::select('producto', $productos, null, ['id' => 'producto', 'placeholder' => 'Seleccione...', 'class' => 'form-control right15 top15']) !!}
-                                            <div class="input-group col-lg-3 col-md-6 col-sm-9 col-xs-12 right15 top15">
-                                                <span class="input-group-addon">Cantidad:</span>
-                                                <input class="form-control" type="number" id="cantidad" name="cantidad" min=1 value=1>
-                                            </div>
-                                            <div class="input-group col-lg-2 col-md-6 col-sm-9 col-xs-12 right15 top15">
-                                                <span class="input-group-addon"><i class='fa fa-usd'></i></span>
-                                                <input type="text" id="precio" name="precio" class="autoNumeric form-control" placeholder="0.00">
-                                            </div>
-                                            <button type="button" id="add_producto" class="btn btn-primary top15">
-                                                <span class="glyphicon glyphicon-plus"></span>
-                                            </button>
+                                    <div class="controls">
+                                        {!! Form::select('producto', $productos, null, ['id' => 'producto', 'placeholder' => 'Seleccione...', 'class' => 'form-control right15 top15']) !!}
+                                        <div class="input-group col-lg-3 col-md-6 col-sm-9 col-xs-12 right15 top15">
+                                            <span class="input-group-addon">Cantidad:</span>
+                                            <input class="form-control" type="number" id="cantidad" name="cantidad" min=1 value=1>
                                         </div>
+                                        <div class="input-group col-lg-2 col-md-6 col-sm-9 col-xs-12 right15 top15">
+                                            <span class="input-group-addon"><i class='fa fa-usd'></i></span>
+                                            <input type="text" id="precio" name="precio" class="autoNumeric form-control" placeholder="0.00">
+                                        </div>
+                                        <button type="button" id="add_producto" class="btn btn-primary top15">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </div>
                             </div>
                         </div>
                         <!-- Lista de productos -->
@@ -70,6 +65,29 @@
                             </div>
                             <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <h4 class="list-group-item-heading bold text-center" id="subtotal">Subtotal: $0.00</h4><span id="loading" hidden="true">Calculando...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="well transparent">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-8 col-sm-9 col-xs-12">
+                                <h2 class="bold">Detalles</h2>
+                            </div>
+                            <div class="col-lg-12 col-md-8 col-sm-9 col-xs-12">
+                                {!! Form::label('taxlabel', 'Tax Rate', array('class' => 'form-label')) !!}
+                            </div>
+                            <div class="col-lg-12 col-md-8 col-sm-9 col-xs-12">
+                                <div class="input-group col-lg-2 col-md-6 col-sm-9 col-xs-12">
+                                <span class="input-group-addon"><i class="fa fa-percent" aria-hidden="true"></i></span>
+                                    {!! Form::number('tax', '7', array('id' => 'tax', 'class' => 'form-control', 'min'=>'0')) !!} 
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-12 col-md-8 col-sm-9 col-xs-12 top15">
+                                {!! Form::label('commentslabel', 'Comentarios', array('class' => 'form-label')) !!}
+                                <div class="controls">
+                                    {!! Form::textarea('comments', '', array('id' => 'comments', 'maxlength' => '200' , 'rows' => 6, 'cols' => 35, 'class' => 'form-control')) !!}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -175,8 +193,11 @@
         $('#purchase_order_form').submit(function(e){
             e.preventDefault();
             var idProveedor = $('#proveedor').attr('name');
-            if(idProveedor === ''){
-                showErrorMessage('Seleccione a un idProveedor!');
+            var tax = $('#tax').val();
+            var comments = $('#comments').val();
+
+            if(idProveedor === '' || tax === ''){
+                showErrorMessage('Llene los campos vacios');
                 return false;
             }
             var productos = [];
@@ -204,7 +225,7 @@
                 },  
                     type : 'POST',
                     url  : '{{ route("purchase_orders.store") }}',
-                    data : {data: jsondata, idProveedor: idProveedor},
+                    data : {data: jsondata, idProveedor: idProveedor, comments: comments, tax: tax},
                     beforeSend: function() { 
                       // $("#product_id").html('<option> Loading ...</option>');
                       $("#submit").prop('disabled', true);

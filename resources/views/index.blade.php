@@ -30,7 +30,7 @@
                             <div class="r4_counter db_box">
                                 <i class='pull-left fa fa-truck icon-md icon-rounded icon-primary'></i>
                                 <div class="stats">
-                                    <h4><strong>{{ isset($repartidor) ? $repartidor->nombre : "No se pudo encontrar"  }}</strong></h4>
+                                    <h4><strong>{{ isset($repartidor_top1) ? $repartidor_top1->nombre : "No se pudo encontrar"  }}</strong></h4>
                                     <span>Repartidor mas activo</span>
                                 </div>
                             </div>
@@ -68,15 +68,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @if(isset($clientes_top5))
-                            @foreach($clientes_top5 as $key => $value)
+                        @if(isset($clientes_top))
+                            @foreach($clientes_top as $cliente)
                                 <tr>
-                                    <td> {{ $value->empresa }} </td>
-                                    <td>{{ $key}}</td>
+                                    <td> {{ $cliente->empresa }} </td>
+                                    <td> {{ $cliente->count }} </td>
                                 </tr>
                             @endforeach
                         @else
-                            <tr><th scope="row">No se encuentran registros en la DB</th></tr>
+                            <tr><th scope="row">No hay registros en la DB</th></tr>
                         @endif
                         </tbody>
                     </table>
@@ -96,16 +96,18 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th style="width:60%">Producto</th>
-                                <th style="width:30%">Cantidad Vendida</th>
+                                <th style="width:20%">Codigo</th>
+                                <th style="width:60%">Descripcion</th>
+                                <th style="width:20%">Cantidad Vendida</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if(isset($productos_top5))
-                                @foreach($productos_top5 as $key => $value)
+                            @if(isset($productos_top))
+                                @foreach($productos_top as $producto)
                                     <tr>
-                                        <td> {{ $value->codigo }} </td>
-                                        <td>{{ $key }}</td>
+                                        <td>{{ $producto->codigo }}</td>
+                                        <td>{{ $producto->descripcion }}</td>
+                                        <td>{{ $producto->sp }}</td>
                                     </tr>
                                 @endforeach
                             @else
