@@ -78,7 +78,13 @@
 			Route::resource('categorias','CategoriaController', ['except' => [
 					'index',
 			]]);
-			
+
+			// RUTAS SHIPTO
+			Route::get('shipto','ShiptoController@index')->name('shipto.index');
+
+			Route::resource('shipto','ShiptoController', ['except' => [
+					'index',
+			]]);			
 
 			// RUTAS DE ORDENES
 			Route::get('ordenes','OrdenesController@index')->name('ordenes.index');

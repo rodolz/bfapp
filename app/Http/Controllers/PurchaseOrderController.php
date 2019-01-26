@@ -11,6 +11,7 @@ use Validator;
 use Alert;
 use App\ProductoProveedor;
 use App\Producto;
+use App\Shipto;
 use Codedge\Fpdf\Facades\Fpdf;
 
 class PurchaseOrderController extends Controller
@@ -73,7 +74,8 @@ class PurchaseOrderController extends Controller
             $nuevo_po = PurchaseOrder::create([
                 'po_number' => $po_num,
                 'idProveedor' => $proveedor->id,
-                'idPOStatus' => 0,
+                'idPOStatus' => 1,
+                'idShipto' => $request->shipto,
                 'comments' => $request->comments,
                 'tax' => $request->tax,
                 'po_subtotal' => $subtotal,
@@ -158,7 +160,7 @@ class PurchaseOrderController extends Controller
 
     public function load($id){
         $po = PurchaseOrder::findorfail($id);
-        if($po->idPOStatus == 1){
+        if($po->idPOStatus == 2){
             return redirect()->back()->with('errors', 'Profile updated!');
         }
         $po_productos = $po->po_pp;
@@ -172,7 +174,7 @@ class PurchaseOrderController extends Controller
                 $producto_del_inventario->save();
                 echo "ID del Producto: ".$producto_del_inventario->id." | Cantidad: ".$producto_del_inventario->cantidad."<br>";
             }
-            $po->idPOStatus = 1;
+            $po->idPOStatus = 2;
             $po->save();
         }   
         catch (\Exception $e) {
@@ -201,11 +203,12 @@ class PurchaseOrderController extends Controller
         }  
         
         $proveedor = Proveedor::findOrfail($request->idProveedor);
-
-        // Se buscan las facturas por cobrar
+        // Se buscan las direccione Shipto
+        $shipto = Shipto::pluck('nombre_shipto','id');
+        // Se buscan los productos del proveedor seleccionado
         $productos = ProductoProveedor::where('idProveedor', '=', $proveedor->id)
                             ->pluck('codigo','id');
-        return view('purchase_orders.create', compact('proveedor','productos'));
+        return view('purchase_orders.create', compact('proveedor','productos','shipto'));
     }
 
     //MOSTRAR EL PDF
@@ -219,8 +222,10 @@ class PurchaseOrderController extends Controller
 
         Fpdf::AddPage();
         Fpdf::SetAutoPageBreak(0);
-        Fpdf::Image("images/banner.jpg",null,null,190,50);
-        Fpdf::Ln(5);
+        Fpdf::Image("images/cintillo_control_old.jpg",0,-4,216,45);
+        Fpdf::SetY(40);
+        Fpdf::SetX(160);
+        Fpdf::Ln(2);
         Fpdf::SetFont('Arial', 'B', 15);
         Fpdf::Cell(190, 10, 'PURCHASE ORDER', 0,0,'C');
         Fpdf::Ln(15);
@@ -233,18 +238,18 @@ class PurchaseOrderController extends Controller
         Fpdf::Ln(6);
         Fpdf::SetFillColor(255,255,255);
         Fpdf::SetTextColor(0,0,0);
-        Fpdf::Cell(95, 7, "Name: ".$proveedor->name,"R L T",0,'L',1);
-        Fpdf::Cell(95, 7, 'PO # '.$po->po_number, 0,0,'R',0);
+        Fpdf::Cell(95, 6, "Name: ".$proveedor->name,"R L T",0,'L',1);
+        Fpdf::Cell(95, 6, 'PO # '.$po->po_number, 0,0,'R',0);
         Fpdf::Ln();
-        Fpdf::Cell(95, 7, "Address: ".$proveedor->address,"R L",0,'L',1);
-        Fpdf::Cell(95, 7, 'Approved by: Brais Sanmartin',0,0,'R',0);
+        Fpdf::Cell(95, 6, "Address: ".$proveedor->address,"R L",0,'L',1);
+        Fpdf::Cell(95, 6, 'Approved by: Brais Sanmartin',0,0,'R',0);
         Fpdf::Ln();
-        Fpdf::Cell(95, 7, "Country: ".$proveedor->country,"R L",0,'L',1);
+        Fpdf::Cell(95, 6, "Country: ".$proveedor->country,"R L",0,'L',1);
         Fpdf::Ln();
-        Fpdf::Cell(95, 7, "City: ".$proveedor->city,"R L",0,'L',1);;
+        Fpdf::Cell(95, 6, "City: ".$proveedor->city,"R L",0,'L',1);;
         Fpdf::Ln();
-        Fpdf::Cell(95, 7, "Postal Code: ".$proveedor->postcode,"R L B",0,'L',1);
-        Fpdf::Ln(15);
+        Fpdf::Cell(95, 6, "Postal Code: ".$proveedor->postcode,"R L B",0,'L',1);
+        Fpdf::Ln(10);
 
         Fpdf::SetFont('Arial', 'B', 11);
         Fpdf::SetTextColor(255,255,255);
@@ -256,22 +261,25 @@ class PurchaseOrderController extends Controller
         Fpdf::SetFont('Arial', 'B', 9);
         Fpdf::Ln(6);
         Fpdf::Cell(95, 5, "Name: BF Services S.A","R L T",0,'L',1);
-        Fpdf::Cell(95, 5, "Name: BF Services S.A","R L T",0,'L',1);
+        Fpdf::Cell(95, 5, "Name: ".$po->shipto->name,"R L T",0,'L',1);
         Fpdf::Ln();
-        Fpdf::Cell(95, 5, "Address: Parque Industrial Costa del Este, ","R L",0,'L',1);
-        Fpdf::Cell(95, 5, "Address: Parque Industrial Costa del Este, ","R L",0,'L',1);
+        Fpdf::Cell(95, 5, "Address: Parque Industrial Costa del Este","R L",0,'L',1);
+        Fpdf::Cell(95, 5, "Address: ".$po->shipto->address_line1,"R L",0,'L',1);
         Fpdf::Ln();
         Fpdf::Cell(95, 5, "Edificio IStorage, Local #1234","R L",0,'L',1);
-        Fpdf::Cell(95, 5, "Edificio IStorage, Local #1234","R L",0,'L',1);
+        Fpdf::Cell(95, 5, $po->shipto->address_line2,"R L",0,'L',1);
         Fpdf::Ln();
         Fpdf::Cell(95, 5, "Country: Panama","R L",0,'L',1);
-        Fpdf::Cell(95, 5, "Country: Panama","R L",0,'L',1);
+        Fpdf::Cell(95, 5, "Country: ".$po->shipto->country,"R L",0,'L',1);
+        Fpdf::Ln();
+        Fpdf::Cell(95, 5, "State: Panama","R L",0,'L',1);
+        Fpdf::Cell(95, 5, "State: ".$po->shipto->state,"R L",0,'L',1);
         Fpdf::Ln();
         Fpdf::Cell(95, 5, "City: Panama","R L",0,'L',1);
-        Fpdf::Cell(95, 5, "City: Panama","R L",0,'L',1);
+        Fpdf::Cell(95, 5, "City: ".$po->shipto->city,"R L",0,'L',1);
         Fpdf::Ln();
-        Fpdf::Cell(95, 5, "Phone: (+507) 6371-0966 / (+507) 6330-1307","R L B",0,'L',1);
-        Fpdf::Cell(95, 5, "Phone: (+507) 6371-0966 / (+507) 6330-1307","R L B",0,'L',1);
+        Fpdf::Cell(95, 5, "Phone: (+507) 6330-1307","R L B",0,'L',1);
+        Fpdf::Cell(95, 5, "Phone: ".$po->shipto->phone,"R L B",0,'L',1);
         Fpdf::Ln(10);
 
         Fpdf::SetFillColor(42,112,224);

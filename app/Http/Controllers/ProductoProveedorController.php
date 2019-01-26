@@ -29,7 +29,8 @@ class ProductoProveedorController extends Controller
     {
         $proveedores = Proveedor::pluck('name', 'id');
         //productos registrados en la empresa
-        $productos = Producto::pluck('codigo','id');
+        $productos = Producto::select(DB::raw("CONCAT(codigo,' | ',descripcion) as codigo_descripcion"),'id')
+                                ->pluck('codigo_descripcion','id');
         return view('proveedores.productos_proveedores.create',compact('proveedores','productos'));//
     }
 

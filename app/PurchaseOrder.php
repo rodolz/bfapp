@@ -10,6 +10,7 @@ class PurchaseOrder extends Model
         'po_number',
         'idProveedor',
         'idPOStatus',
+        'idShipto',
         'tax',
         'comments',
         'po_subtotal',
@@ -23,6 +24,14 @@ class PurchaseOrder extends Model
     
     public function proveedor(){
         return $this->belongsTo('App\Proveedor', 'idProveedor');
+    }
+
+    public function estado(){
+        return $this->belongsTo('App\POStatus', 'idPOStatus');
+    }
+
+    public function shipto(){
+        return $this->belongsTo('App\Shipto', 'idShipto');
     }
     // this is a recommended way to declare event handlers
     protected static function boot() {

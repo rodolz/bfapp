@@ -78,7 +78,7 @@
                             </div>
                             <div class="col-lg-12 col-md-8 col-sm-9 col-xs-12">
                                 <div class="input-group col-lg-2 col-md-6 col-sm-9 col-xs-12">
-                                    {!! Form::select('producto', $productos, null, ['id' => 'producto', 'placeholder' => 'Seleccione...', 'class' => 'form-control right15 top15']) !!}
+                                    {!! Form::select('shipto', $shipto, null, ['id' => 'shipto', 'placeholder' => 'Seleccione...', 'class' => 'form-control right15 top15']) !!}
                                 </div>
                             </div>
                         </div>    
@@ -215,9 +215,10 @@
             e.preventDefault();
             var idProveedor = $('#proveedor').attr('name');
             var tax = $('#tax').val();
+            var shipto = $('#shipto').val();
             var comments = $('#comments').val();
 
-            if(idProveedor === '' || tax === ''){
+            if(idProveedor === '' || tax === '' || shipto === ''){
                 showErrorMessage('Llene los campos vacios');
                 return false;
             }
@@ -246,7 +247,7 @@
                 },  
                     type : 'POST',
                     url  : '{{ route("purchase_orders.store") }}',
-                    data : {data: jsondata, idProveedor: idProveedor, comments: comments, tax: tax},
+                    data : {data: jsondata, idProveedor: idProveedor, comments: comments, tax: tax, shipto: shipto},
                     beforeSend: function() { 
                       // $("#product_id").html('<option> Loading ...</option>');
                       $("#submit").prop('disabled', true);

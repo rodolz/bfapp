@@ -28,6 +28,7 @@
                         </div> --}}
                         <div class="pull-right">
                             <a class="btn btn-info" href="{{ route('purchase_orders.select_proveedor') }}">Nueva Orden de Compra</a>
+                            <a class="btn btn-orange" href="{{ route('shipto.create') }}">Nueva Direccion <i><strong>Shipto</strong></i></a>
                         </div>
                 </div>
             </div>
@@ -40,7 +41,7 @@
                                 <th>Fecha Creación</th>
                                 <th>Proveedor</th>
                                 <th>Monto Total</th>
-                                <!-- <th>Estado</th> -->
+                                <th>Estado</th>
                                 <th width="300px">Acciones</th>
                             </tr>
                     	</thead>
@@ -52,9 +53,14 @@
                         	        <td>{{ $purchase_order->created_at->format('d-m-Y') }}</td>
                         	        <td>{{ $purchase_order->proveedor->name }}</td>
                                     <td>${{ number_format($purchase_order->po_total_amount, 2, '.', ',') }}</td>
+                                    @if($purchase_order->idPOStatus == 1)
+                                        <td><label class="bg-warning">{{ $purchase_order->estado->po_status }}</label></td>
+                                    @else
+                                        <td><label class="bg-info">{{ $purchase_order->estado->po_status }}</label></td>
+                                    @endif
                                     <td>
                                         <div class="acciones-btn">
-                                            @if($purchase_order->idPOStatus == 0)
+                                            @if($purchase_order->idPOStatus == 1)
                                                 <a class="btn btn-orange" href="{{ route('purchase_orders.load',$purchase_order->id) }}"><i class="fa fa-share"></i></a>
                                                 <a class="btn btn-primary" href="{{ route('purchase_orders.edit',$purchase_order->id) }}"><i class="fa fa-pencil"></i></a>
                                             @else
