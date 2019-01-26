@@ -24,4 +24,14 @@ class PurchaseOrder extends Model
     public function proveedor(){
         return $this->belongsTo('App\Proveedor', 'idProveedor');
     }
+    // this is a recommended way to declare event handlers
+    protected static function boot() {
+        parent::boot();
+
+        // Eliminando los records sobrantes de las tablas pivote
+        static::deleting(function($po) {
+            $po->po_pp()->detach();
+
+        });
+    }
 }

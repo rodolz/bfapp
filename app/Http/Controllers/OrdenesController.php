@@ -74,11 +74,10 @@ class OrdenesController extends Controller
         return view('ordenes.edit',compact('orden','clientes','productos','productos_seleccionados','repartidores','repartidores_seleccionados'));
     }
 
-    public function nueva_orden_cotizacion(Request $request, $id)
+    public function nueva_orden_cotizacion($id)
     {
         $cotizacion = Cotizacion::findOrfail($id);
-        $clientes = Cliente::pluck('empresa','id');
-
+        $cliente_seleccionado = Cliente::where('id',$cotizacion->idCliente)->pluck('empresa','id');
         $productos = Producto::select(DB::raw("CONCAT(codigo,' | ',descripcion) as codigo_descripcion"),'id')
                                 ->where('cantidad','>','0')
                                 ->pluck('codigo_descripcion','id');
@@ -86,15 +85,8 @@ class OrdenesController extends Controller
         $repartidores = User::pluck('nombre','id');
 
         $productos_seleccionados = $cotizacion->cotizacion_producto;
-        $cliente_seleccionado = Cliente::where('id',$cotizacion->idCliente)
-                            ->get()
-                            ->pluck('empresa','id');
-                            
-        // foreach ($productos_seleccionados as $producto) {
-        //     dd($producto->pivot->cantidad_producto);
-        //     // dd($producto->codigo);
-        // }
-        return view('ordenes.create_from_cotizacion',compact('cotizacion','clientes','productos','productos_seleccionados','repartidores','cliente_seleccionado'));
+        
+        return view('ordenes.create_from_cotizacion',compact('cotizacion','productos_seleccionados','repartidores','cliente_seleccionado'));
     }
 
     public function update_orden(Request $request)

@@ -50,8 +50,8 @@
             </div>
         </div>
     </section>
-
-    <div class="col-lg-12">
+    <div class="row">
+        <div class="col-lg-12">
             <section class="box ">
                 <header class="panel_header">
                     <h2 class="title pull-left">Ventas - Octobre 2018</h2>
@@ -60,43 +60,45 @@
                     </div>
                 </header>
                 <div class="content-body">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Control #</th>
-                                <th>Fiscal #</th>
-                                <th>Fecha</th>
-                                <th>SubTotal</th>
-                                <th>ITBMS</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if(count($facturas) > 0)
-                                @foreach($facturas as $factura)
-                                    <tr>
-                                        <td>{{ $factura->num_factura }}</td>
-                                        <td>{{ $factura->num_fiscal }}</td>
-                                        <td>{{ $factura->created_at->format('d-m-Y') }}
-                                        <td>${{ number_format($factura->subtotal, 2, '.', ',') }}</td>
-                                        <td>${{ number_format(($factura->monto_factura*$factura->itbms)/100, 2, '.', ',') }}</td>
-                                        <td>${{ $factura->monto_factura }}</td>
-                                    </tr>
-                                @endforeach
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
                                 <tr>
-                                
-                                    <th class="thick-line" scope="row">Totales</th>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td>${{ number_format($sum_subtotal, 2, '.', ',') }}</td>
-                                    <td>${{ number_format($sum_itbms, 2, '.', ',') }}</td>
-                                    <td>${{ number_format($sum_total, 2, '.', ',') }}</td>
+                                    <th>Control #</th>
+                                    <th>Fiscal #</th>
+                                    <th>Fecha</th>
+                                    <th>SubTotal</th>
+                                    <th>ITBMS</th>
+                                    <th>Total</th>
                                 </tr>
-                            @else
-                                <tr><th colspan="7" scope="row" class="text-center">No se encontraron registros para este periodo</th></tr>
-                            @endif
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @if(count($facturas) > 0)
+                                    @foreach($facturas as $factura)
+                                        <tr>
+                                            <td>{{ $factura->num_factura }}</td>
+                                            <td>{{ $factura->num_fiscal }}</td>
+                                            <td>{{ $factura->created_at->format('d-m-Y') }}
+                                            <td>${{ number_format($factura->subtotal, 2, '.', ',') }}</td>
+                                            <td>${{ number_format(($factura->monto_factura*$factura->itbms)/100, 2, '.', ',') }}</td>
+                                            <td>${{ $factura->monto_factura }}</td>
+                                        </tr>
+                                    @endforeach
+                                    <tr>
+                                    
+                                        <th class="thick-line" scope="row">Totales</th>
+                                        <td class="thick-line"></td>
+                                        <td class="thick-line"></td>
+                                        <td>${{ number_format($sum_subtotal, 2, '.', ',') }}</td>
+                                        <td>${{ number_format($sum_itbms, 2, '.', ',') }}</td>
+                                        <td>${{ number_format($sum_total, 2, '.', ',') }}</td>
+                                    </tr>
+                                @else
+                                    <tr><th colspan="7" scope="row" class="text-center">No se encontraron registros para este periodo</th></tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
         </div>
@@ -112,39 +114,41 @@
                     </div>
                 </header>
                 <div class="content-body">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th style=>Cliente</th>
-                                <th style=>Cantidad de Ordenes</th>
-                                <th style=>Deuda</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @if(isset($clientes_top))
-                            @foreach($clientes_top as $cliente)
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
                                 <tr>
-                                    <td>{{ $cliente->empresa }}</td>
-                                    <td>{{ $cliente->ordenes->count() }}</td>
-                                    <td>
-                                        @if($cliente->deuda == 0)
-                                            <a class="text text-success" href="/pagos/estado_cuenta_pdf/{{$cliente->id}}">${{ number_format($cliente->deuda, 2, '.', ',')}}</a>
-                                        @else
-                                            <a class="text text-danger" href="/pagos/estado_cuenta_pdf/{{$cliente->id}}">${{ number_format($cliente->deuda, 2, '.', ',')}}</a>
-                                        @endif
-                                    </td>
+                                    <th style=>Cliente</th>
+                                    <th style=>Cantidad de Ordenes</th>
+                                    <th style=>Deuda</th>
                                 </tr>
-                            @endforeach
-                        @else
-                            <tr><th scope="row">No hay registros en la DB</th></tr>
-                        @endif
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            @if(isset($clientes_top))
+                                @foreach($clientes_top as $cliente)
+                                    <tr>
+                                        <td>{{ $cliente->empresa }}</td>
+                                        <td>{{ $cliente->ordenes->count() }}</td>
+                                        <td>
+                                            @if($cliente->deuda == 0)
+                                                <a class="text text-success" href="/pagos/estado_cuenta_pdf/{{$cliente->id}}">${{ number_format($cliente->deuda, 2, '.', ',')}}</a>
+                                            @else
+                                                <a class="text text-danger" href="/pagos/estado_cuenta_pdf/{{$cliente->id}}">${{ number_format($cliente->deuda, 2, '.', ',')}}</a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr><th scope="row">No hay registros en la DB</th></tr>
+                            @endif
+                            </tbody>
+                        </table>
+                    </div>  
                 </div>
             </section>
         </div>
 
-    <div class="col-lg-6">
+        <div class="col-lg-6">
             <section class="box ">
                 <header class="panel_header">
                     <h2 class="title pull-left">Top Productos</h2>
@@ -153,28 +157,30 @@
                     </div>
                 </header>
                 <div class="content-body">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th style="width:20%">Codigo</th>
-                                <th style="width:60%">Descripcion</th>
-                                <th style="width:20%">Cantidad Vendida</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if(isset($productos_top))
-                                @foreach($productos_top as $producto)
-                                    <tr>
-                                        <td>{{ $producto->codigo }}</td>
-                                        <td>{{ $producto->descripcion }}</td>
-                                        <td>{{ $producto->sp }}</td>
-                                    </tr>
-                                @endforeach
-                            @else
-                                <tr><th scope="row">No se encuentran registros en la DB</th></tr>
-                            @endif
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width:20%">Codigo</th>
+                                    <th style="width:60%">Descripcion</th>
+                                    <th style="width:20%">Cantidad Vendida</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if(isset($productos_top))
+                                    @foreach($productos_top as $producto)
+                                        <tr>
+                                            <td>{{ $producto->codigo }}</td>
+                                            <td>{{ $producto->descripcion }}</td>
+                                            <td>{{ $producto->sp }}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr><th scope="row">No se encuentran registros en la DB</th></tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
         </div>

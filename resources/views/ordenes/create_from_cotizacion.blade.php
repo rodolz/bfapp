@@ -45,7 +45,7 @@
                             <div class="form-group col-lg-8 col-md-8 col-sm-9 col-xs-12">
                                 <h2 class="bold">Cliente</h2>
                                 <div class="controls">
-                                    {!! Form::select('idCliente', $cliente_seleccionado, $cliente_seleccionado, ['id' => 'cliente', 'placeholder' => 'Seleccione...', 'class' => 'form-control top15']) !!}
+                                    {!! Form::select('idCliente', $cliente_seleccionado, $cliente_seleccionado, ['id' => 'cliente','class' => 'form-control top15']) !!}
                                 </div>
                             </div>
                         </div>

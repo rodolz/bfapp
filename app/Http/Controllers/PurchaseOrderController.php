@@ -77,7 +77,7 @@ class PurchaseOrderController extends Controller
                 'comments' => $request->comments,
                 'tax' => $request->tax,
                 'po_subtotal' => $subtotal,
-                'po_total_amount' => $subtotal+($subtotal*0.073)
+                'po_total_amount' => $subtotal+($subtotal*($request->tax/100))
             ]);
             // FIN - Insertar el PO en la DB
 
@@ -146,7 +146,9 @@ class PurchaseOrderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $po = PurchaseOrder::findorFail($id)->delete();
+        return redirect()->route('purchase_orders.index')
+                        ->with('success', 'PO Borrada!');
     }
 
     public function select_proveedor(){
@@ -324,7 +326,7 @@ class PurchaseOrderController extends Controller
         Fpdf::Ln(7);
         Fpdf::Cell(120);
         Fpdf::Cell(35, 7, 'TAX',0,0,'L',1);
-        Fpdf::Cell(35, 7, $po->tax,1,0,'C',1);
+        Fpdf::Cell(35, 7, '$'.number_format($po->tax/100*$po->po_subtotal,2),1,0,'C',1);
         // Fpdf::Ln(7);
         // Fpdf::Cell(120, 7, '',0,0,'C',0);
         // Fpdf::Cell(35, 7, 'SHIPPING',0,0,'L',1);

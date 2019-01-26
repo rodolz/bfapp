@@ -59,10 +59,10 @@
                                     <td>
                                         <div class="acciones-btn">
                                             @if($cotizacion->idCotizacionEstado == 1)
-                                                <a class="btn btn-primary" href="{{ route('ordenes.create_from_cotizacion',$cotizacion->id) }}"><i class="fa fa-file-text"></i></a>
+                                                <a class="btn btn-orange" href="{{ route('ordenes.create_from_cotizacion',$cotizacion->id) }}"><i class="fa fa-file-text"></i></a>
                                                 <a class="btn btn-primary" href="{{ route('cotizaciones.edit',$cotizacion->id) }}"><i class="fa fa-pencil"></i></a>
                                             @else
-                                                    <button class="btn btn-primary" href="{{ route('ordenes.create_from_cotizacion',$cotizacion->id) }}" disabled><i class="fa fa-file-text"></i></button>
+                                                    <button class="btn btn-orange" href="{{ route('ordenes.create_from_cotizacion',$cotizacion->id) }}" disabled><i class="fa fa-file-text"></i></button>
                                                     <button class="btn btn-primary" href="{{ route('cotizaciones.edit',$cotizacion->id) }}" disabled><i class="fa fa-pencil"></i></button>
                                             @endif
                                             <a class="btn btn-info" href="{{ URL::to('cotizacion-pdf/'.$cotizacion->id) }}"><i class="fa fa-file-pdf-o"></i></a>
