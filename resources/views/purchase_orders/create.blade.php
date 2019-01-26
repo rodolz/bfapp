@@ -71,9 +71,24 @@
                     <div class="well transparent">
                         <div class="row">
                             <div class="col-lg-12 col-md-8 col-sm-9 col-xs-12">
-                                <h2 class="bold">Detalles</h2>
+                                <h2 class="bold">Ship to</h2>
+                            </div>
+                            <div class="col-lg-12 col-md-8 col-sm-9 col-xs-12 top15">
+                                {!! Form::label('taxlabel', 'Seleccionar la direccion a donde sera enviado', array('class' => 'form-label')) !!}
                             </div>
                             <div class="col-lg-12 col-md-8 col-sm-9 col-xs-12">
+                                <div class="input-group col-lg-2 col-md-6 col-sm-9 col-xs-12">
+                                    {!! Form::select('producto', $productos, null, ['id' => 'producto', 'placeholder' => 'Seleccione...', 'class' => 'form-control right15 top15']) !!}
+                                </div>
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="well transparent">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-8 col-sm-9 col-xs-12">
+                                <h2 class="bold">Impuestos</h2>
+                            </div>
+                            <div class="col-lg-12 col-md-8 col-sm-9 col-xs-12 top15">
                                 {!! Form::label('taxlabel', 'Tax Rate', array('class' => 'form-label')) !!}
                             </div>
                             <div class="col-lg-12 col-md-8 col-sm-9 col-xs-12">
@@ -82,7 +97,13 @@
                                     {!! Form::number('tax', '7', array('id' => 'tax', 'class' => 'form-control', 'min'=>'0')) !!} 
                                 </div>
                             </div>
-
+                        </div>    
+                    </div>
+                    <div class="well transparent">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-8 col-sm-9 col-xs-12">
+                                <h2 class="bold">Detalles</h2>
+                            </div>
                             <div class="form-group col-lg-12 col-md-8 col-sm-9 col-xs-12 top15">
                                 {!! Form::label('commentslabel', 'Comentarios', array('class' => 'form-label')) !!}
                                 <div class="controls">
