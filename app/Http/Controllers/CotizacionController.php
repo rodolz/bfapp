@@ -194,10 +194,13 @@ class CotizacionController extends Controller
         $cliente = Cliente::find($cotizacion->idCliente);
         $vendedor = User::find($cotizacion->idUsuario);
         Fpdf::SetTopMargin(1);
-        Fpdf::SetAutoPageBreak(false);
+        // Fpdf::SetAutoPageBreak(false);
         Fpdf::AddPage();
         //BANNER
-        Fpdf::Image("images/cintillo_control.jpg",null,null,210,50);
+        Fpdf::Image("images/cintillo_control_old.jpg",0,-4,216,45);
+        // $nueva_y = Fpdf::GetY();
+        Fpdf::SetY(40);
+        Fpdf::SetX(160);
 
         //formatear el nombre del cliente, direccion en caracteres de castellano
         $converted_contacto = utf8_decode($cliente->contacto);
@@ -323,16 +326,16 @@ class CotizacionController extends Controller
         Fpdf::Ln(5);
         Fpdf::SetX(145);
         Fpdf::SetFont('Arial', '', 8);
-        foreach ($vendedor->roles as $role) {
-            $nombre_rol = $role->display_name;
-        }
-        Fpdf::Cell(50, 12, $nombre_rol, 0,0,'C',0);
-        Fpdf::Ln(30);
-        Fpdf::Cell(60, 8, 'Parque industrial de Costa del Este, Edif. Istorage', 'T',0,'L',0);
-        FPDF::Cell(90,8, '','T',0,'L',0);
-        Fpdf::Cell(45, 8, 'Email: sgpreprensa@gmail.com', 'T',0,'L',0);
-        Fpdf::Ln(4);
-        Fpdf::Cell(75, 8, utf8_decode('Ciudad de Panamá / Panamá. Teléfono: (+507) 6371-0966'), 0,0,'L',0);
+        // foreach ($vendedor->roles as $role) {
+        //     $nombre_rol = $role->display_name;
+        // }
+        // Fpdf::Cell(50, 12, $nombre_rol, 0,0,'C',0);
+        // Fpdf::Ln(30);
+        // Fpdf::Cell(60, 8, 'Parque industrial de Costa del Este, Edif. Istorage', 'T',0,'L',0);
+        // FPDF::Cell(90,8, '','T',0,'L',0);
+        // Fpdf::Cell(45, 8, 'Email: sgpreprensa@gmail.com', 'T',0,'L',0);
+        // Fpdf::Ln(4);
+        // Fpdf::Cell(75, 8, utf8_decode('Ciudad de Panamá / Panamá. Teléfono: (+507) 6371-0966'), 0,0,'L',0);
 
         //Se debe convertir lo que retorna el output en un string base64 para poder mostrarlo con ajax
         // $pdfString = Fpdf::Output('', 'S', true);
