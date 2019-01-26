@@ -39,7 +39,7 @@
                             <div class="r4_counter db_box">
                                 <i class='pull-left fa fa-user icon-md icon-rounded icon-warning'></i>
                                 <div class="stats">
-                                    <h4><strong>{{ isset($cliente) ? $cliente->empresa : "No se pudo encontrar"  }}</strong></h4>
+                                    <h4><strong>{{ isset($cliente_top1) ? $cliente_top1->empresa : "No se pudo encontrar"  }}</strong></h4>
                                     <span>Cliente con mas ordenes</span>
                                 </div>
                             </div>
@@ -50,6 +50,58 @@
             </div>
         </div>
     </section>
+
+    <div class="col-lg-12">
+            <section class="box ">
+                <header class="panel_header">
+                    <h2 class="title pull-left">Ventas</h2>
+                    <div class="actions panel_actions pull-right">
+                        <i class="box_toggle fa fa-chevron-down"></i>
+                    </div>
+                </header>
+                <div class="content-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Control #</th>
+                                <th>Fiscal #</th>
+                                <th>Fecha</th>
+                                <th>SubTotal</th>
+                                <th>ITBMS</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(count($facturas) > 0)
+                                @foreach($facturas as $factura)
+                                    <tr>
+                                        <td>{{ $factura->num_factura }}</td>
+                                        <td>{{ $factura->num_fiscal }}</td>
+                                        <td>{{ $factura->created_at->format('d-m-Y') }}
+                                        <td>${{ number_format($factura->subtotal, 2, '.', ',') }}</td>
+                                        <td>${{ number_format(($factura->monto_factura*$factura->itbms)/100, 2, '.', ',') }}</td>
+                                        <td>${{ $factura->monto_factura }}</td>
+                                    </tr>
+                                @endforeach
+                                <tr>
+                                
+                                    <th class="thick-line" scope="row">Totales</th>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td>{{ $sum_subtotal }}</td>
+                                    <td>{{ $sum_itbms }}</td>
+                                    <td>{{ $sum_total }}</td>
+                                </tr>
+                            @else
+                                <tr><th colspan="7" scope="row" class="text-center">No se encontraron registros para este periodo</th></tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-lg-6">
             <section class="box ">
@@ -63,16 +115,24 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th style="width:60%">Cliente</th>
-                                <th style="width:30%">Cantidad de Ordenes</th>
+                                <th style=>Cliente</th>
+                                <th style=>Cantidad de Ordenes</th>
+                                <th style=>Deuda</th>
                             </tr>
                         </thead>
                         <tbody>
                         @if(isset($clientes_top))
                             @foreach($clientes_top as $cliente)
                                 <tr>
-                                    <td> {{ $cliente->empresa }} </td>
-                                    <td> {{ $cliente->count }} </td>
+                                    <td>{{ $cliente->empresa }}</td>
+                                    <td>{{ $cliente->ordenes->count() }}</td>
+                                    <td>
+                                        @if($cliente->deuda == 0)
+                                            <a class="text text-success" href="/pagos/estado_cuenta_pdf/{{$cliente->id}}">${{ number_format($cliente->deuda, 2, '.', ',')}}</a>
+                                        @else
+                                            <a class="text text-danger" href="/pagos/estado_cuenta_pdf/{{$cliente->id}}">${{ number_format($cliente->deuda, 2, '.', ',')}}</a>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         @else
@@ -119,5 +179,4 @@
             </section>
         </div>
     </div>
-
     @endsection

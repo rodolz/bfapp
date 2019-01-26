@@ -4165,17 +4165,17 @@ a.cke_button_off:hover, .cke_hc a.cke_button_off:focus, .cke_hc a.cke_button_off
 
 
 .loginpage h1 a {
-    height: 92px;
+    height: 50px;
     margin: 0px auto 0px auto;
     padding: 0;
     text-decoration: none;
-    -moz-background-size: 345px 92px;
-    -o-background-size: 345px 92px;
-    background-size: 345px 92px;
+    /* -moz-background-size: 345px 92px;
+    -o-background-size: 345px 92px; */
+    /* background-size: 345px 92px; */
     background-color: transparent;
-    min-height: 92px;
-    width: auto;
-    background-image: url("../images/login-logo.png");
+    min-height: 50px;
+    width: 50px;
+    background-image: url("../images/logo.ico");
     background-position: center top;
     background-repeat: no-repeat;
     text-indent: -9999px;
@@ -6805,7 +6805,7 @@ border-left: 3px solid transparent;
 ----------------------------------------------------------*/
 
 .logo-area {
-    background-image: url('../images/logo.png');
+    background-image: url('../images/logo.ico');
     background-repeat: no-repeat;
     background-position: center;
 
@@ -6816,12 +6816,12 @@ border-left: 3px solid transparent;
 
 }*/
 .page-topbar.sidebar_shift .logo-area {
-    background-image: url('../images/logo-folded.png');
+    background-image: url('../images/logo-folded.ico');
     background-repeat: no-repeat;
     background-position: center;
 }
 .page-topbar.chat_shift .logo-area {
-    background-image: url('../images/logo-folded.png');
+    background-image: url('../images/logo-folded.ico');
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -7671,7 +7671,7 @@ border-left: 3px solid transparent;
         }
 
         .page-topbar .logo-area {
-            background-image: url('../images/logo-folded.png');
+            background-image: url('../images/logo-folded.ico');
             background-repeat: no-repeat;
             background-position: left top;
         }

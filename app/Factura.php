@@ -15,6 +15,7 @@ class Factura extends Model
     'num_fiscal',
     'itbms',
     'monto_factura',
+    'subtotal',
     'created_at'
     ];
 

@@ -27,6 +27,7 @@ class ProductoCRUDController extends Controller
         return view('productos.index');
     }
 
+    
     public function actualizar_producto(Request $request){
         // Inicio de la transaccion
         DB::beginTransaction();
