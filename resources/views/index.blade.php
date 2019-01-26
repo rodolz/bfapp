@@ -54,7 +54,7 @@
     <div class="col-lg-12">
             <section class="box ">
                 <header class="panel_header">
-                    <h2 class="title pull-left">Ventas</h2>
+                    <h2 class="title pull-left">Ventas - Octobre 2018</h2>
                     <div class="actions panel_actions pull-right">
                         <i class="box_toggle fa fa-chevron-down"></i>
                     </div>
@@ -88,9 +88,9 @@
                                     <th class="thick-line" scope="row">Totales</th>
                                     <td class="thick-line"></td>
                                     <td class="thick-line"></td>
-                                    <td>{{ $sum_subtotal }}</td>
-                                    <td>{{ $sum_itbms }}</td>
-                                    <td>{{ $sum_total }}</td>
+                                    <td>${{ number_format($sum_subtotal, 2, '.', ',') }}</td>
+                                    <td>${{ number_format($sum_itbms, 2, '.', ',') }}</td>
+                                    <td>${{ number_format($sum_total, 2, '.', ',') }}</td>
                                 </tr>
                             @else
                                 <tr><th colspan="7" scope="row" class="text-center">No se encontraron registros para este periodo</th></tr>

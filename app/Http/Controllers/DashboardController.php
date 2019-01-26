@@ -91,6 +91,7 @@ class DashboardController extends Controller
                     ->whereYear('created_at', 2018)
                     ->whereMonth('created_at', 10)
                     ->get();
+                    
         $sum_subtotal = $facturas->sum('subtotal');
         $sum_itbms = $sum_subtotal * 0.07;
         $sum_total = $facturas->sum('monto_factura');
