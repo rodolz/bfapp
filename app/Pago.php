@@ -23,7 +23,7 @@ class Pago extends Model
 
     public function facturas(){
         return $this->belongsToMany('App\Factura', 'facturas_pagos','idPago','idFactura')
-            ->withPivot('idFactura','idCliente')
+            ->withPivot('idFactura')
             ->withTimestamps();
     }
 

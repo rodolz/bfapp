@@ -242,7 +242,7 @@ class PagosController extends Controller
     public function show($id)
     {
         $monto_total = 0;
-        $pago = pago::find($id);
+        $pago = Pago::find($id);
 
         foreach ($pago->facturas as $factura) {
             $monto_total += $factura->monto_factura;

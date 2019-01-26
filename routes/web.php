@@ -109,12 +109,18 @@
 			Route::post('nueva_comision', 'ComisionesController@nueva_comision');
 			Route::post('comisiones_repartidor', 'ComisionesController@comisiones_repartidor');
 
+			// RUTAS DE NOTA DE CREDITOS
+			Route::get('nota_creditos','NotaCreditosController@index')->name('nota_creditos.index');
+			Route::resource('nota_creditos','NotaCreditosController', ['except' => [
+					'index',
+			]]);
 
 			// RUTAS DE FACTURAS
 			Route::get('facturas','FacturasController@index')->name('facturas.index');
 			Route::resource('facturas','FacturasController', ['except' => [
 					'index',
 			]]);
+
 			Route::post('nueva_factura', 'FacturasController@nueva_factura');
 			Route::get('factura-pdf/{idFactura}/{idOrden}', 'FacturasController@pdf');
 			Route::get('factura-pdf/{idFactura}', 'FacturasController@pdf');

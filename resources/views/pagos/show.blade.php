@@ -23,9 +23,7 @@
                     </div>
                 </div>
             </div>
-
             <div class="well row top15">
-                {{-- Detalle del pago --}}
             	<div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -59,7 +57,6 @@
                 </div>
             </div>
             <div class="well row top15">
-                {{-- Detalle de cada factura/control --}}
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
