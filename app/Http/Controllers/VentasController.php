@@ -43,7 +43,7 @@ class VentasController extends Controller
         Fpdf::SetAutoPageBreak(true, 0.5);
         Fpdf::AddPage();
         //BANNER
-        Fpdf::Image("images/cintillo_control.jpg",null,null,205,50);
+        Fpdf::Image("images/cintillo_control_old.jpg",null,null,205,50);
 
         //formatear el nombre del cliente, direccion en caracteres de castellano
         $converted_contacto = utf8_decode($cliente->contacto);
@@ -154,9 +154,9 @@ class VentasController extends Controller
         Fpdf::Ln(5);
         Fpdf::SetX(145);
         Fpdf::SetFont('Arial', '', 8);
-        foreach (Auth::user()->roles as $role) {
-            $nombre_rol = $role->display_name;
-        }
+        // foreach (Auth::user()->roles as $role) {
+        //     $nombre_rol = $role->display_name;
+        // }
         Fpdf::Cell(50, 12, $nombre_rol, 0,0,'C',0);
         Fpdf::Ln(55);
         Fpdf::Cell(60, 8, 'Via Espana, PH Las Hortencias, Piso 10, 10A', 'T',0,'L',0);
@@ -197,7 +197,7 @@ class VentasController extends Controller
         Fpdf::SetTopMargin(5);
         Fpdf::SetAutoPageBreak(false);
         Fpdf::AddPage();
-        Fpdf::Image("images/cintillo_control.jpg",null,null,195,50);
+        Fpdf::Image("images/cintillo_control_old.jpg",null,null,195,50);
         Fpdf::SetFont('Times', 'B', 15);
 
         Fpdf::Cell(35, 15, 'Lista de Precios', 0,0,'L',false);

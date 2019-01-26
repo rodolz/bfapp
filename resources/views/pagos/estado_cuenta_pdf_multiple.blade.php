@@ -58,7 +58,7 @@
 </header>
     <body>
         <div class="row">
-            <img src="{{ public_path() }}/images/cintillo_control.jpg" alt="bf_cintillo" width="725px" />
+            <img src="{{ public_path() }}/images/cintillo_control_old.jpg" alt="bf_cintillo" width="725px" />
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <center>
                     <h1>Estado de Cuenta</h1><br>
