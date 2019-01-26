@@ -178,13 +178,12 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="{{ Request::is('stats','stats/*') ? 'open' : ''}}">
+                        <!-- <li class="{{ Request::is('stats','stats/*') ? 'open' : ''}}">
                             <a href="{{ URL::to('/stats') }}">
                                 <i class="fa fa-line-chart"></i>
-                                <!-- <span class="label label-orange">NUEVO</span> -->
                                 <span class="title">Métricas</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="{{ Request::is('register') ? 'open' : '' }}">
                             <a href="{{ URL::to('/register') }}">
                                 <i class="fa fa-check-square-o"></i>
