@@ -21,6 +21,7 @@ class PagosController extends Controller
     public function getdata(){
         // $pagos = Pago::orderBy('id','DESC')->get();
         $pagos = Pago::with('cliente')->orderBy('id','desc');
+
         // foreach ($pagos as $pago) {
         //      foreach ($pago->cliente as $cliente) {
         //          // Se agrega un attributo cliente al objeto pago, con el nombre del cliente que hizo el pago 
@@ -30,7 +31,7 @@ class PagosController extends Controller
                 
         // }
             
-           
+        
         return Datatables::of($pagos)
                             ->addColumn('action', function ($pago) {
                                 $token = csrf_token();

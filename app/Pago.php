@@ -20,6 +20,7 @@ class Pago extends Model
     public function cliente(){
         return $this->belongsTo('App\Cliente', 'idCliente');
     }
+
     public function facturas(){
         return $this->belongsToMany('App\Factura', 'facturas_pagos','idPago','idFactura')
             ->withPivot('idFactura','idCliente')
