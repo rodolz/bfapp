@@ -221,19 +221,24 @@ class NotaCreditosController extends Controller
 
     public function destroy($id)
     {
-        //Buscar la factura
-        $factura = Factura::find($id);
+        try{
+            //Buscar la nota_credito
+            $nota_credito = NotaCredito::find($id);
+            $pago = $nota_credito->pago;
+            //Borrar la factura
 
-        //Buscar la orden ligada a la factura
-        $orden = Orden::find($factura->idOrden);
+            $factura = $pago->facturas()->first();
+            $factura->update(['idFacturaEstado' => 1]);
 
-        //Modificar el estado de la orden
-        $orden->idOrdenEstado = 1;
-        $orden->save();
+            $nota_credito->delete();
+            $pago->delete();
+        } catch(\Exception $e){
+            DB::rollback();
+            return $e->getMessage();
+        }
 
-        //Borrar la factura
-        $factura->delete();
-        return redirect()->route('facturas.index')
-                        ->with('success','Factura Borrada!');
+        DB::commit();
+        return redirect()->route('nota_creditos.index')
+                        ->with('success','Nota de Credito Borrada!');
     }
 }
