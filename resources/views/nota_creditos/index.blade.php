@@ -37,11 +37,11 @@
                         <thead>
                             <tr>
                                 <th># Nota de Credito</th>
-                                <th>Fecha Creación</th>
-                                <th>Cliente</th>
-                                <th>Monto Total</th>
                                 <th># Fiscal</th>
-                                <th>Estado</th>
+                                <th>Fecha Creación</th>
+                                <th># Control</th>
+                                <th>Cliente</th>
+                                <th>Monto</th>
                                 <th width="150px">Acciones</th>
                             </tr>
                         </thead>
@@ -50,23 +50,13 @@
                             @foreach ($nota_creditos as $nota_credito)
                                 <tr>
                                     <th scope="row">{{ $nota_credito->num_nota_credito }}</th>
+                                    <td>{{ $nota_credito->num_fiscal }}</td>
                                     <td>{{ $nota_credito->created_at->format('d-m-Y') }}</td>
-                                    <td>{{ $nota_credito->pago->id }}</td>
-                                    <td>{{ $nota_credito->condicion }}</td>
-                                    <td>${{ number_format($nota_credito->monto_nota_credito,2) }}</td>
-                                    <td width="125px"><input  class="form-control bg-muted" type="number" name="{{ $nota_credito->id }}" id="num_fiscal" value="{{ $nota_credito->num_fiscal}}"></td>
-                                    <!-- @if($nota_credito->idnota_creditoEstado == 1)
-                                        <td><label class="bg-warning">{{ $nota_credito->estado->nota_credito_estado }}</label></td>
-                                    @elseif($nota_credito->idnota_creditoEstado == 2)
-                                        <td><label class="bg-success">{{ $nota_credito->estado->nota_credito_estado }}</label></td>
-                                    @else
-                                        <td><label class="bg-purple">{{ $nota_credito->estado->nota_credito_estado }}</label></td>
-                                    @endif -->
+                                    <td>{{ $nota_credito->pago->facturas->first()->num_factura }}</td>
+                                    <td>{{ $nota_credito->pago->cliente->empresa }}</td>
+                                    <td>${{ number_format($nota_credito->pago->monto_pago,2) }}</td>
                                     <td>
                                         <div class="acciones-btn">
-                                            <!-- <a class="btn btn-info" href="{{ route('nota_creditos.show',$nota_credito->id) }}">Show</a> -->
-                                            <!-- <a class="btn btn-primary" href="{{ route('nota_creditos.edit',$nota_credito->id) }}">Modificar</a> -->
-                                            <a class="btn btn-info" href="{{ URL::to('nota_credito-pdf/'.$nota_credito->id) }}"><i class="fa fa-file-pdf-o"></i></a>
                                             {!! Form::open(['method' => 'DELETE','route' => ['nota_creditos.destroy', $nota_credito->id],'style'=>'display:inline']) !!}
                                             <button type="submit" class="btn btn-danger">
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>

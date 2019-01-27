@@ -151,7 +151,48 @@ class NotaCreditosController extends Controller
         ]);
 
         $factura = Factura::find($request->idFactura);
+        $cliente = $factura->cliente;
 
+        DB::beginTransaction();
+        try{
+            //INICIO - INSERTAR la nota de credito en la DB
+            $nc_max = DB::table('nota_creditos')->max('num_nota_credito');
+            if(is_null($nc_max)){
+                $nc_num = 1;
+            }
+            else{
+                $nc_num = $nc_max + 1;
+            }
+            $nota_credito = NotaCredito::create([
+                'num_nota_credito' => $nc_num
+            ]);
+            // FIN - Insertar la nota de credito en la DB
+
+            //Crear el pago para la factura
+            $pago = Pago::create([
+                'idTipoPago' => 5,
+                'idCliente' => $cliente->id,
+                'banco' => 'N/A',
+                'numero_referencia' => 'N.C #'.$nota_credito->num_nota_credito,
+                'monto_pago' => $factura->monto_factura,
+                'descripcion' => 'Pago automatizado por Nota de Credito #'.$nota_credito->num_nota_credito
+            ]);
+
+            //actualizar la nota credito con el pago creado
+            $nota_credito->idPago = $pago->id;
+            $nota_credito->save();
+
+            //Actualizar la factura acreditada y crear el registro en el pivot table
+            
+            $factura->update(['idFacturaEstado' => 4]);
+            $factura->pagos()->attach($pago->id, ['monto_pago' => $factura->monto_factura]);
+
+        } catch(\Exception $e){
+            DB::rollback();
+            return $e->getMessage();
+        }
+
+        DB::commit();
         return redirect()->route('nota_creditos.index')
                         ->with('success','Nota de Credito Creada!');
     }

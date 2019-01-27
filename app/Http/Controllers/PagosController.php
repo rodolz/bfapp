@@ -367,7 +367,7 @@ class PagosController extends Controller
                 if($monto_total == $monto_pago){
                     foreach ($facturas_original as $factura_original) {
                         $factura_original->update(['idFacturaEstado' => 2]);
-                        $factura_original->pagos()->attach($pago->id, ['idCliente' => $cliente->id, 'monto_pago' => $monto_pago]);
+                        $factura_original->pagos()->attach($pago->id, ['monto_pago' => $monto_pago]);
                     }
                 }
                 else{
@@ -380,7 +380,7 @@ class PagosController extends Controller
                             $facturas_original->where('id', $factura->id)
                                             ->first()
                                             ->pagos()
-                                            ->attach($pago->id, ['idCliente' => $cliente->id, 'monto_pago' => $factura->monto_factura]);
+                                            ->attach($pago->id, ['monto_pago' => $factura->monto_factura]);
                         }
                         else if($factura->monto_factura >= $monto_pago && $monto_pago != 0){
                             $facturas_original->where('id', $factura->id)
@@ -390,7 +390,7 @@ class PagosController extends Controller
                             $facturas_original->where('id', $factura->id)
                                                 ->first()
                                                 ->pagos()
-                                                ->attach($pago->id, ['idCliente' => $cliente->id, 'monto_pago' => $monto_pago]);
+                                                ->attach($pago->id, ['monto_pago' => $monto_pago]);
                             $monto_pago = 0;
                         }
                     }
