@@ -122,10 +122,16 @@
                                 </li>
                             </ul>
                         </li>
-                       <li class="{{ Request::is('facturas','facturas/create') ? 'open' : '' }}">
-                            <a href="{{ URL::to('facturas') }}">
+                       <li class="{{ Request::is('notas_credito','notas_credito/create') ? 'open' : '' }}">
+                            <a href="{{ URL::to('notas_credito') }}">
                                 <i class="fa fa-clipboard fa-lg"></i>
                                 <span class="title">Control</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('nota_creditos','nota_creditos/create') ? 'open' : '' }}">
+                            <a href="{{ URL::to('nota_creditos') }}">
+                                <i class="fa fa-clipboard fa-lg"></i>
+                                <span class="title">Notas de Crédito</span>
                             </a>
                         </li> 
                          <li class="{{ Request::is('pagos','pagos/*') ? 'open' : '' }}">

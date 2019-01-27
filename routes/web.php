@@ -114,6 +114,8 @@
 			Route::resource('nota_creditos','NotaCreditosController', ['except' => [
 					'index',
 			]]);
+			Route::post('nota_creditos/update/num_fiscal','NotaCreditosController@actualizar_num_fiscal');
+			Route::get('nota_creditos-pdf/{idNotaCredito}', 'NotaCreditosController@pdf');
 
 			// RUTAS DE FACTURAS
 			Route::get('facturas','FacturasController@index')->name('facturas.index');

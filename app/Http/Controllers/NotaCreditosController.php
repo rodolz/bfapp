@@ -22,7 +22,7 @@ class NotaCreditosController extends Controller
         DB::beginTransaction();
         try{
             //FORZAR EL UPDATE
-            Factura::where('id', $request->idFactura)->update($request->except(['_method', '_token','idFactura']));
+            NotaCredito::where('id', $request->idNotaCredito)->update($request->except(['_method', '_token','idNotaCredito']));
         }   
         catch (\Exception $e) {
              DB::rollback();
@@ -35,18 +35,14 @@ class NotaCreditosController extends Controller
     }
 
     //MOSTRAR EL PDF
-    public function pdf($idFactura, $idOrden=null){
+    public function pdf($idNotaCredito){
 
-        if(!is_null($idOrden)){
-            $orden = Orden::find($idOrden);
-            $factura = Factura::where('idOrden',$idOrden)->first();
-            $cliente = Cliente::find($factura->idCliente);
-        }
-        else{
-            $factura = Factura::find($idFactura);
-            $cliente = Cliente::find($factura->idCliente);
-            $orden = Orden::find($factura->idOrden);
-        }
+        $nota_credito = NotaCredito::findOrfail($idNotaCredito);
+
+        $cliente = $nota_credito->pago->cliente;
+        
+        $factura = $nota_credito->pago->facturas()->first();
+
         //formatear el nombre del cliente, direccion en caracteres de castellano
         $converted_cliente = utf8_decode($cliente->empresa);
         $converted_direccion = utf8_decode($cliente->direccion);
@@ -57,11 +53,11 @@ class NotaCreditosController extends Controller
         Fpdf::Image("images/cintillo_control_old.jpg",0,-4,216,45);
         // $nueva_y = Fpdf::GetY();
         Fpdf::SetY(40);
-        Fpdf::SetX(160);
-        $string = utf8_decode('Control N° ');
+        Fpdf::SetX(140);
+        $string = utf8_decode('Control de Crédito N° ');
         Fpdf::SetFont('Arial','B', 13);
         Fpdf::SetTextColor(0,0,0);
-        Fpdf::Cell(40, 15, $string. $factura->num_factura ,0,0,'L',false);
+        Fpdf::Cell(60, 15, $string. $factura->num_factura ,0,0,'L',false);
         Fpdf::SetTextColor(0,0,0);
         // Fpdf::SetY($nueva_y);
         Fpdf::Ln(12);
@@ -86,7 +82,7 @@ class NotaCreditosController extends Controller
         Fpdf::Cell(25, 8, 'Importe',1,0,'C',false);
         Fpdf::Ln(8);
         Fpdf::SetFont('Arial','', 9);
-        foreach ($orden->ordenes_productos as $producto) {
+        foreach ($factura->orden->ordenes_productos as $producto) {
             Fpdf::Cell(25, 10,$producto->codigo,'L,R',0,'C',false);
             Fpdf::Cell(95, 10,$producto->descripcion,'R',0,'L',false);
             $cantidad_producto = $producto->pivot->cantidad_producto;
@@ -102,17 +98,17 @@ class NotaCreditosController extends Controller
         Fpdf::Cell(95, 8,'Condicion de pago: '.$factura->condicion,'T',0,'L',false);
         Fpdf::Cell(20,8,'','T',0,'C',false);
         Fpdf::Cell(25, 8,'SUB-TOTAL:','T',0,'L',false);
-        Fpdf::Cell(25, 8,'B/.'.number_format($orden->monto_orden,2,'.',','),1,0,'R',false);
+        Fpdf::Cell(25, 8,'B/.'.number_format($factura->orden->monto_orden,2,'.',','),1,0,'R',false);
         Fpdf::Ln(8);
         Fpdf::Cell(140,8,'',0,0,'C',false);
         Fpdf::Cell(25, 8,'ITBMS '.$factura->itbms.'% :',0,0,'L',false);
-        $impuesto = ($orden->monto_orden * $factura->itbms)/100;
+        $impuesto = ($factura->orden->monto_orden * $factura->itbms)/100;
         $impuesto_formateado = number_format($impuesto,2,'.',',');
         Fpdf::Cell(25, 8,'B/.'.$impuesto_formateado,1,0,'R',false);
         Fpdf::Ln(8);
         Fpdf::Cell(140,8,'',0,0,'C',false);
         Fpdf::Cell(25, 8,'TOTAL:',0,0,'L',false);
-        $total = number_format($orden->monto_orden + $impuesto,2,'.',',');
+        $total = number_format($factura->orden->monto_orden + $impuesto,2,'.',',');
         Fpdf::Cell(25, 8,'B/.'.$total,1,0,'R',false);
 
         // FOOTER

@@ -50,13 +50,16 @@
                             @foreach ($nota_creditos as $nota_credito)
                                 <tr>
                                     <th scope="row">{{ $nota_credito->num_nota_credito }}</th>
-                                    <td>{{ $nota_credito->num_fiscal }}</td>
+                                    <td width="125px">
+                                        <input  class="form-control bg-muted" type="number" name="{{ $nota_credito->id }}" id="num_fiscal" value="{{ $nota_credito->num_fiscal}}">
+                                    </td>
                                     <td>{{ $nota_credito->created_at->format('d-m-Y') }}</td>
                                     <td>{{ $nota_credito->pago->facturas->first()->num_factura }}</td>
                                     <td>{{ $nota_credito->pago->cliente->empresa }}</td>
                                     <td>${{ number_format($nota_credito->pago->monto_pago,2) }}</td>
                                     <td>
                                         <div class="acciones-btn">
+                                            <a class="btn btn-info" href="{{ URL::to('nota_creditos-pdf/'.$nota_credito->id) }}"><i class="fa fa-file-pdf-o"></i></a>
                                             {!! Form::open(['method' => 'DELETE','route' => ['nota_creditos.destroy', $nota_credito->id],'style'=>'display:inline']) !!}
                                             <button type="submit" class="btn btn-danger">
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -96,7 +99,7 @@
         if(num_fiscal == window.currentValue){
             return false;
         }
-        var idnota_credito = $(this).attr('name');
+        var idNotaCredito = $(this).attr('name');
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -105,7 +108,7 @@
             url  : '/nota_creditos/update/num_fiscal',
             data : { 
                 'num_fiscal' : num_fiscal,
-                'idnota_credito' : idnota_credito
+                'idNotaCredito' : idNotaCredito
             },
             success: function( data, textStatus, jQxhr ){
                 if(data === "ok"){
