@@ -201,18 +201,7 @@ class NotaCreditosController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'codigo' => 'required',
-            'nombre_producto' => 'required',
-            'descripcion' => 'required',
-            'medidas' => 'required',
-            'precio' => 'required',
-            'cantidad' => 'required',
-        ]);
-
-        Factura::find($id)->update($request->all());
-        return redirect()->route('facturas.index')
-                        ->with('success','Factura Modificada!');
+        
     }
 
     public function destroy($id)

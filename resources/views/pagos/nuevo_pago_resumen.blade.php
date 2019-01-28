@@ -118,8 +118,10 @@
                                                 </div>
                                                 <div class="form-group has-warning">
                                                     <label class="form-label" for="monto_pago_cheque">Monto Pago:</label>
-                                                        <input type="number" step="0.01" min="1" class="form-control" id="monto_pago_cheque">
+                                                        <input type="number" step="0.01" min="0" class="form-control" id="monto_pago_cheque">
                                                 </div>
+                                                <div class="controls"> 
+                                                <input type="text" class="autoNumeric form-control" id="field-13" data-a-sign="$ "></div>
                                             </div>
                                         </div>
                                     </div>

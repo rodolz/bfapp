@@ -80,7 +80,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="5">
+                                <td colspan="6">
                                     <h2 class="bold text-warning text-center"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:30px"></i> No se han creado Ordenes de Compra</h2>
                                 </td>
                             </tr>

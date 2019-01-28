@@ -130,7 +130,7 @@
                         </li>
                         <li class="{{ Request::is('nota_creditos','nota_creditos/create') ? 'open' : '' }}">
                             <a href="{{ URL::to('nota_creditos') }}">
-                                <i class="fa fa-clipboard fa-lg"></i>
+                                <i class="fa fa-credit-card fa-lg"></i>
                                 <span class="title">Notas de Crédito</span>
                             </a>
                         </li> 
