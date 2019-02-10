@@ -67,8 +67,8 @@
             aaSorting: [],
             autoWidth: true,
             language: {
-                "decimal": ",",
-                "thousands": "."
+                "decimal": ".",
+                "thousands": ","
             },
             processing: true,
             bServerSide: true,
@@ -84,16 +84,15 @@
                 {data: 'medidas', name: 'medidas'},
                 {
                     data: 'precio', name: 'precio',
-                    // render: $.fn.dataTable.render.number( ',', '.', 2, '$' )
                     render: function ( data, type, full, meta ) {
-                                return '<div class="input-group"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input class="form-control" style="width: 7.5em" maxlength="4" size="4" type="number" name="'+full.id+'" id="precio" value="'+ data+'" />';
+                                // var num = $.fn.dataTable.render.number( ',', '.', 2).display(data);
+                                return '<div class="input-group"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input class="form-control" style="width: 7.5em" maxlength="4" size="4" type="number" name="'+full.id+'" id="precio" value="'+data+'"/>';
                             }
                 },
                 {
                     data: 'precio_costo', name: 'precio_costo',
-                    // render: $.fn.dataTable.render.number( ',', '.', 2, '$' )
                     render: function ( data, type, full, meta ) {
-                                return '<div class="input-group"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input class="form-control" style="width: 7.5em" maxlength="4" size="4" type="number" name="'+full.id+'" id="precio_costo" value="'+ data+'" />';
+                                return '<div class="input-group"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input class="form-control" style="width: 7.5em" maxlength="4" size="4" type="number" name="'+full.id+'" id="precio_costo" value="'+data+'" />';
                             }
                 },
                 {
@@ -107,65 +106,65 @@
             ]
         });
     });
+    
+    $(document).on('focusin', ':input[type="number"]', function() {
+        window.currentValue = $(this).val();
+    });
 
-        $(document).on('focusin', ':input[type="number"]', function() {
-            window.currentValue = $(this).val();
-        });
-
-        $(document).on('focusout', ':input[type="number"]', function() {
-            var value = $(this).val();
-            var type = $(this).attr('id');
-            if(value == window.currentValue){
-                return false;
-            }
-            var idProducto = $(this).attr('name');
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                type : 'POST',
-                url  : '/productos/update',
-                data : {
-                    'value' : value,
-                    'idProducto' : idProducto,
-                    'type' : type
-                },
-                success: function( data, textStatus, jQxhr ){
-                    if(data === "ok"){
-                        swal({
-                            title:"Producto Actualizado!",
-                            text: "Los cambios se han guardado",
-                            type: "success",
-                            timer: 500,
-                            showConfirmButton: false,
-                            });
-                    }
-                    else{
-                        alert(data);
-                        var errors = "<p>"+data+"</p>";
-                        swal({
-                            type: 'error',
-                            title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            text: errors,
-                            html: true
+    $(document).on('focusout', ':input[type="number"]', function() {
+        var value = $(this).val();
+        var type = $(this).attr('id');
+        if(value == window.currentValue){
+            return false;
+        }
+        var idProducto = $(this).attr('name');
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type : 'POST',
+            url  : '/productos/update',
+            data : {
+                'value' : value,
+                'idProducto' : idProducto,
+                'type' : type
+            },
+            success: function( data, textStatus, jQxhr ){
+                if(data === "ok"){
+                    swal({
+                        title:"Producto Actualizado!",
+                        text: "Los cambios se han guardado",
+                        type: "success",
+                        timer: 500,
+                        showConfirmButton: false,
                         });
-                    }
-                },
-                error: function( data ){
-                    // Error...
-                    console.log(errors);
-                    console.log(data);
-                    var errors = "<p>"+data.responseText+"</p>";
+                }
+                else{
+                    alert(data);
+                    var errors = "<p>"+data+"</p>";
                     swal({
                         type: 'error',
                         title: "Hubo un error, contacte al ADMIN con el siguiente error:",
                         text: errors,
-                        customClass: 'sweet-alert-lg',
                         html: true
                     });
                 }
-            });
+            },
+            error: function( data ){
+                // Error...
+                console.log(errors);
+                console.log(data);
+                var errors = "<p>"+data.responseText+"</p>";
+                swal({
+                    type: 'error',
+                    title: "Hubo un error, contacte al ADMIN con el siguiente error:",
+                    text: errors,
+                    customClass: 'sweet-alert-lg',
+                    html: true
+                });
+            }
         });
+    });
 </script>
 
 @endsection

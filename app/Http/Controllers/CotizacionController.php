@@ -197,9 +197,9 @@ class CotizacionController extends Controller
         // Fpdf::SetAutoPageBreak(false);
         Fpdf::AddPage();
         //BANNER
-        Fpdf::Image("images/cintillo_control_old.jpg",0,-4,216,45);
+        Fpdf::Image("images/cintillo_control_old.jpg",0,0,215,45);
         // $nueva_y = Fpdf::GetY();
-        Fpdf::SetY(40);
+        Fpdf::SetY(45);
         Fpdf::SetX(160);
 
         //formatear el nombre del cliente, direccion en caracteres de castellano

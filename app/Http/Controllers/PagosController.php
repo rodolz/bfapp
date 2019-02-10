@@ -204,7 +204,7 @@ class PagosController extends Controller
         // Se buscan las facturas por cobrar
         $facturas = Factura::where('idCliente', '=', $cliente->id)
                             ->whereIn('idFacturaEstado', [1,3])
-                            ->pluck('num_factura','id');
+                            ->pluck('num_fiscal','id');
 
         return view('pagos.nuevo_pago_facturas', compact('cliente','facturas'));
     }

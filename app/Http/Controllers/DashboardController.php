@@ -87,14 +87,11 @@ class DashboardController extends Controller
         $clientes_top = $clientes_top->sortByDesc('deuda');
         //Calculo de la deuda - Fin
 
-        $facturas = Factura::where('idFacturaEstado','2')
-                    ->whereYear('created_at', 2018)
-                    ->whereMonth('created_at', 10)
+        $ordenes = Orden::whereYear('created_at', Carbon::now()->year)
+                    ->whereMonth('created_at', Carbon::now()->month)
+                    ->orderBy('created_at', 'DESC')
                     ->get();
-                    
-        $sum_subtotal = $facturas->sum('subtotal');
-        $sum_itbms = $sum_subtotal * 0.07;
-        $sum_total = $facturas->sum('monto_factura');
+        $sum_total = $ordenes->sum('monto_orden');
 
         // Top 5 productos, Relacion Producto - cantidad vendida en ordenes
         $productos_top = DB::table('ordenes_productos')->selectRaw('codigo, descripcion, sum(cantidad_producto) as sp')
@@ -104,7 +101,7 @@ class DashboardController extends Controller
                                                     ->orderBy('sp', 'desc')
                                                     ->get();
 
-        return view('index', compact('monto_por_cobrar','ordenes_totales','cliente_top1','repartidor_top1','clientes_top','productos_top','facturas','sum_subtotal','sum_itbms','sum_total'));
+        return view('index', compact('monto_por_cobrar','ordenes_totales','cliente_top1','repartidor_top1','clientes_top','productos_top','ordenes','sum_total'));
     }
 
 }

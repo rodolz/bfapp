@@ -138,7 +138,7 @@
             if(item.html() !== undefined){
                     item.remove();
             }
-            var li = "<li codigo="+codigo+" descripcion="+descripcion+" precio="+precio+" producto_relacionado="+producto_relacionado_id+" class='list-group-item active'>";
+            var li = "<li codigo="+codigo+" descripcion=\""+descripcion+"\"precio="+precio+" producto_relacionado="+producto_relacionado_id+" class='list-group-item active'>";
             li += "<span class='badge'><a codigo="+codigo+"><i class='fa fa-times'></i></a></span>";
             li += "<span class='badge'><i class='fa fa-usd'></i>"+precio+"</span>";
             li += codigo+" - "+descripcion+" - "+producto_relacionado+"</li>";

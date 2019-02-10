@@ -53,9 +53,9 @@ class FacturasController extends Controller
         Fpdf::SetTopMargin(1);
         Fpdf::AddPage();
         Fpdf::SetFont('Arial','B', 11);
-        Fpdf::Image("images/cintillo_control_old.jpg",0,-4,216,45);
+        Fpdf::Image("images/cintillo_control_old.jpg",0,0,215,45);
         // $nueva_y = Fpdf::GetY();
-        Fpdf::SetY(40);
+        Fpdf::SetY(42);
         Fpdf::SetX(160);
         $string = utf8_decode('Control N° ');
         Fpdf::SetFont('Arial','B', 13);
@@ -154,6 +154,7 @@ class FacturasController extends Controller
             $factura->idCliente = $cliente->id;
             $factura->condicion = $condicion;
             $factura->itbms = $itbms;
+            $factura->subtotal = $orden->monto_orden;
             $factura->monto_factura = $orden->monto_orden + ($orden->monto_orden * $itbms/100);
             $factura->idFacturaEstado = 1;
             $factura->save();

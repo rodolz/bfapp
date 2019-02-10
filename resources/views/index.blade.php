@@ -52,9 +52,9 @@
     </section>
     <div class="row">
         <div class="col-lg-12">
-            <section class="box ">
+            <section class="box">
                 <header class="panel_header">
-                    <h2 class="title pull-left">Ventas - Octobre 2018</h2>
+                    <h2 class="title pull-left">Ventas | {{ date('M Y') }}</h2>
                     <div class="actions panel_actions pull-right">
                         <i class="box_toggle fa fa-chevron-down"></i>
                     </div>
@@ -64,37 +64,33 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Control #</th>
-                                    <th>Fiscal #</th>
+                                    <th>Nota de Entrega #</th>
                                     <th>Fecha</th>
-                                    <th>SubTotal</th>
-                                    <th>ITBMS</th>
+                                    <th>Cliente</th>
+                                    <th>Creada por</th>
                                     <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if(count($facturas) > 0)
-                                    @foreach($facturas as $factura)
+                                @if(count($ordenes) > 0)
+                                    @foreach($ordenes as $orden)
                                         <tr>
-                                            <td>{{ $factura->num_factura }}</td>
-                                            <td>{{ $factura->num_fiscal }}</td>
-                                            <td>{{ $factura->created_at->format('d-m-Y') }}
-                                            <td>${{ number_format($factura->subtotal, 2, '.', ',') }}</td>
-                                            <td>${{ number_format(($factura->monto_factura*$factura->itbms)/100, 2, '.', ',') }}</td>
-                                            <td>${{ $factura->monto_factura }}</td>
+                                            <td>{{ $orden->num_orden }}</td>
+                                            <td>{{ $orden->created_at->format('d-m-Y') }}</td>
+                                            <td>{{ $orden->cliente->empresa }}</td>
+                                            <td>{{ $orden->vendedor->nombre }}</td>
+                                            <td>${{ number_format($orden->monto_orden,2,'.',',') }}</td>
                                         </tr>
                                     @endforeach
                                     <tr>
-                                    
-                                        <th class="thick-line" scope="row">Totales</th>
+                                        <th class="thick-line" scope="row">Totales: {{count($ordenes)}}</th>
                                         <td class="thick-line"></td>
                                         <td class="thick-line"></td>
-                                        <td>${{ number_format($sum_subtotal, 2, '.', ',') }}</td>
-                                        <td>${{ number_format($sum_itbms, 2, '.', ',') }}</td>
-                                        <td>${{ number_format($sum_total, 2, '.', ',') }}</td>
+                                        <td class="thick-line"></td>
+                                        <th scope="row">${{ number_format($sum_total, 2, '.', ',') }}</th>
                                     </tr>
                                 @else
-                                    <tr><th colspan="7" scope="row" class="text-center">No se encontraron registros para este periodo</th></tr>
+                                    <tr><th colspan="5" scope="row" class="text-center">No se encontraron registros para este periodo</th></tr>
                                 @endif
                             </tbody>
                         </table>

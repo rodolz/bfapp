@@ -36,8 +36,8 @@
                 <div class="well transparent">
                     <div class="row">
                         <div class="col-md-12  col-sm-12 col-xs-12">
-                            <h2 class="bold">Controles</h2>
-                            <p><label>Seleccione los controles</label></p>
+                            <h2 class="bold">Facturas</h2>
+                            <p><label>Seleccione las facturas para este pago</label></p>
                                 <div class="pull-left">
                                     {!! Form::select('facturas[]', $facturas, null, ['multiple' => true, 'id' => 'facturas', 'class' => 'form-control col-md-6']) !!}
                                 </div>
@@ -80,10 +80,10 @@
             selectAllValue: 'select-all-value',
             buttonText: function(options, select) {
                 if (options.length === 0) {
-                    return 'Ningun control seleccionado...';
+                    return 'Ninguna factura seleccionada...';
                 }
                 else if (options.length > 4) {
-                    return 'Mas de 4 controles seleccionados';
+                    return 'Mas de 4 facturas seleccionadas';
                 }
                  else {
                      var labels = [];

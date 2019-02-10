@@ -118,10 +118,9 @@
                                                 </div>
                                                 <div class="form-group has-warning">
                                                     <label class="form-label" for="monto_pago_cheque">Monto Pago:</label>
-                                                        <input type="number" step="0.01" min="0" class="form-control" id="monto_pago_cheque">
+                                                        <!-- <input type="number" step="any" min="0" class="form-control" id="monto_pago_cheque"> -->
+                                                        <input type="text" class="autoNumeric form-control" id="monto_pago_cheque" data-a-sign="$" placeholder="$0.00">
                                                 </div>
-                                                <div class="controls"> 
-                                                <input type="text" class="autoNumeric form-control" id="field-13" data-a-sign="$ "></div>
                                             </div>
                                         </div>
                                     </div>
@@ -134,7 +133,8 @@
                                                 <h3>Pago en Efectivo</h3>
                                                 <div class="form-group has-warning">
                                                     <label class="form-label" for="monto_pago_cash">Monto Pago:</label>
-                                                        <input type="number" step="0.01" min="1" class="form-control" id="monto_pago_cash">
+                                                        <!-- <input type="number" step="0.01" min="1" class="form-control" id="monto_pago_cash"> -->
+                                                        <input type="text" class="autoNumeric form-control" id="monto_pago_cash" data-a-sign="$" placeholder="$0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -156,7 +156,7 @@
                                                 </div>
                                                 <div class="form-group has-warning">
                                                     <label class="form-label" for="monto_pago_ach">Monto Pago:</label>
-                                                        <input type="number" step="0.01" min="1" class="form-control" id="monto_pago_ach">
+                                                    <input type="text" class="autoNumeric form-control" id="monto_pago_ach" data-a-sign="$" placeholder="$0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -174,7 +174,8 @@
                                                 </div>
                                                  <div class="form-group has-warning">
                                                     <label class="form-label" for="monto_pago_otro">Monto Pago:</label>
-                                                        <input type="number" step="0.01" min="1" class="form-control" id="monto_pago_otro">
+                                                        <!-- <input type="number" step="0.01" min="1" class="form-control" id="monto_pago_otro"> -->
+                                                        <input type="text" class="autoNumeric form-control" id="monto_pago_otro" data-a-sign="$" placeholder="$0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -219,10 +220,14 @@ $(document).ready(function() {
         $("div.asd").hide();
         $("#Tipo" + test).show();
     });
+
 });
 
     $('#pago_form').submit(function(e){
+
         e.preventDefault();
+        //disable the submit button
+        $("#submit").prop("disabled",true);
 
         var idCliente = $(this).attr('idcliente');
         var created_at = $('#created_at').val();
@@ -260,6 +265,8 @@ $(document).ready(function() {
             var banco = $('#banco_cheque').val();
             var numero_referencia = $('#numero_referencia_cheque').val();
             var monto_pago = $('#monto_pago_cheque').val()
+            //Limpiar el $ y las commas
+            monto_pago = monto_pago.replace(/[$,]/g, "");
             if( banco.length <= 0 || numero_referencia.length <= 0 || monto_pago.length <= 0){
                 swal({
                     title:"ERROR",
@@ -267,7 +274,9 @@ $(document).ready(function() {
                     type: "error",
                     confirmButtonText: "Cerrar",
                     });
+                $("#submit").prop("disabled",false);
                 return false;
+                
             }
             if( monto_pago > monto_total){
                 swal({
@@ -276,6 +285,7 @@ $(document).ready(function() {
                     type: "error",
                     confirmButtonText: "Cerrar",
                     });
+                $("#submit").prop("disabled",false);
                 return false;
             }
             $.ajax({
@@ -307,6 +317,7 @@ $(document).ready(function() {
                             text: errors,
                             html: true
                         });
+                        $("#submit").prop("disabled",false);
                     }
                 },
                 error: function( data ){
@@ -321,11 +332,14 @@ $(document).ready(function() {
                         customClass: 'sweet-alert-lg',
                         html: true
                     });
+                    $("#submit").prop("disabled",false);
                 }
             });
         }
         else if(tipo_pago === '2'){
             var monto_pago = $('#monto_pago_cash').val()
+            //Limpiar el $ y las commas
+            monto_pago = monto_pago.replace(/[$,]/g, "");
             if( monto_pago.length <= 0){
                 swal({
                     title:"ERROR",
@@ -333,6 +347,7 @@ $(document).ready(function() {
                     type: "error",
                     confirmButtonText: "Cerrar",
                     });
+                $("#submit").prop("disabled",false);
                 return false;
             }
             if( monto_pago > monto_total){
@@ -342,6 +357,7 @@ $(document).ready(function() {
                     type: "error",
                     confirmButtonText: "Cerrar",
                     });
+                $("#submit").prop("disabled",false);
                 return false;
             }
             $.ajax({
@@ -373,6 +389,7 @@ $(document).ready(function() {
                             text: errors,
                             html: true
                         });
+                        $("#submit").prop("disabled",false);
                     }
                 },
                 error: function( data ){
@@ -387,13 +404,16 @@ $(document).ready(function() {
                         // customClass: 'sweet-alert-lg',
                         html: true
                     });
+                    $("#submit").prop("disabled",false);
                 }
             });
         }
         else if(tipo_pago === '3'){
             var banco = $('#banco_ach').val();
             var numero_referencia = $('#numero_referencia_ach').val();
-            var monto_pago = $('#monto_pago_ach').val()
+            var monto_pago = $('#monto_pago_ach').val();
+            //Limpiar el $ y las commas
+            monto_pago = monto_pago.replace(/[$,]/g, "");
             if( banco.length <= 0 || numero_referencia.length <= 0 || monto_pago.length <= 0){
                 swal({
                     title:"ERROR",
@@ -401,6 +421,7 @@ $(document).ready(function() {
                     type: "error",
                     confirmButtonText: "Cerrar",
                     });
+                    $("#submit").prop("disabled",false);
                 return false;
             }
             if( monto_pago > monto_total){
@@ -410,6 +431,7 @@ $(document).ready(function() {
                     type: "error",
                     confirmButtonText: "Cerrar",
                     });
+                    $("#submit").prop("disabled",false);
                 return false;
             }
             $.ajax({
@@ -441,6 +463,7 @@ $(document).ready(function() {
                             text: errors,
                             html: true
                         });
+                        $("#submit").prop("disabled",false);
                     }
                 },
                 error: function( data ){
@@ -455,12 +478,15 @@ $(document).ready(function() {
                         customClass: 'sweet-alert-lg',
                         html: true
                     });
+                    $("#submit").prop("disabled",false);
                 }
             });
         }
         else{
             var descripcion = $('#descripcion').val();
-            var monto_pago = $('#monto_pago_otro').val()
+            var monto_pago = $('#monto_pago_otro').val();
+            //Limpiar el $ y las commas
+            monto_pago = monto_pago.replace(/[$,]/g, "");
             if( descripcion.length <= 0 || monto_pago.length <= 0){
                 swal({
                     title:"ERROR",
@@ -468,6 +494,7 @@ $(document).ready(function() {
                     type: "error",
                     confirmButtonText: "Cerrar",
                     });
+                    $("#submit").prop("disabled",false);
                 return false;
             }
             if( monto_pago > monto_total){
@@ -477,6 +504,7 @@ $(document).ready(function() {
                     type: "error",
                     confirmButtonText: "Cerrar",
                     });
+                    $("#submit").prop("disabled",false);
                 return false;
             }
             $.ajax({
@@ -508,6 +536,7 @@ $(document).ready(function() {
                             text: errors,
                             html: true
                         });
+                        $("#submit").prop("disabled",false);
                     }
                 },
                 error: function( data ){
@@ -522,6 +551,7 @@ $(document).ready(function() {
                         customClass: 'sweet-alert-lg',
                         html: true
                     });
+                    $("#submit").prop("disabled",false);
                 }
             });
         }    

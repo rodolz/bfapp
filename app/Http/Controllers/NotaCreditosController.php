@@ -50,9 +50,9 @@ class NotaCreditosController extends Controller
         Fpdf::SetTopMargin(1);
         Fpdf::AddPage();
         Fpdf::SetFont('Arial','B', 11);
-        Fpdf::Image("images/cintillo_control_old.jpg",0,-4,216,45);
+        Fpdf::Image("images/cintillo_control_old.jpg",0,0,215,45);
         // $nueva_y = Fpdf::GetY();
-        Fpdf::SetY(40);
+        Fpdf::SetY(42);
         Fpdf::SetX(140);
         $string = utf8_decode('Control de Crédito N° ');
         Fpdf::SetFont('Arial','B', 13);

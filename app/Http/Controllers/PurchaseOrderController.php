@@ -206,8 +206,9 @@ class PurchaseOrderController extends Controller
         // Se buscan las direccione Shipto
         $shipto = Shipto::pluck('nombre_shipto','id');
         // Se buscan los productos del proveedor seleccionado
-        $productos = ProductoProveedor::where('idProveedor', '=', $proveedor->id)
-                            ->pluck('codigo','id');
+        $productos = ProductoProveedor::select(DB::raw("CONCAT(codigo,' | ',descripcion) as codigo_descripcion"),'id')
+                            ->where('idProveedor', '=', $proveedor->id)
+                            ->pluck('codigo_descripcion','id');
         return view('purchase_orders.create', compact('proveedor','productos','shipto'));
     }
 
@@ -222,8 +223,9 @@ class PurchaseOrderController extends Controller
 
         Fpdf::AddPage();
         Fpdf::SetAutoPageBreak(0);
-        Fpdf::Image("images/cintillo_control_old.jpg",0,-4,216,45);
-        Fpdf::SetY(40);
+        Fpdf::Image("images/cintillo_control_old.jpg",0,0,215,45);
+        // $nueva_y = Fpdf::GetY();
+        Fpdf::SetY(42);
         Fpdf::SetX(160);
         Fpdf::Ln(2);
         Fpdf::SetFont('Arial', 'B', 15);

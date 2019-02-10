@@ -17,17 +17,16 @@ class Orden extends Model
 
 
 	public function cliente(){
-
     	return $this->belongsTo('App\Cliente', 'idCliente');
   	}
 
+	public function vendedor(){
+    	return $this->belongsTo('App\User', 'idUsuario');
+    }
+      
     public function repartidores(){
         return $this->hasMany('App\Repartidor', 'idOrden');
     }
-
-    // public function ordenes_repartidores(){
-    //     return $this->belongsToMany('App\Repartidor','ordenes_repartidores','idOrden','idRepartidor');
-    // }
 
     public function ordenes_repartidores(){
         return $this->belongsToMany('App\User','ordenes_repartidores','idOrden','idRepartidor');
