@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Producto;
 use App\User;
 use Codedge\Fpdf\Facades\Fpdf;
+use PDF;
 
 class CotizacionController extends Controller
 {
@@ -147,6 +148,7 @@ class CotizacionController extends Controller
             }
             
             //Aplicar el ITBMS al precio total
+            $subtotal = $precio_total;
             $precio_total = $precio_total + $precio_total * ($request->itbms / 100);
             //Modificar la cotizacion
             $cotizacion->idCliente = $cliente->id;
@@ -155,6 +157,7 @@ class CotizacionController extends Controller
             $cotizacion->t_entrega = $request->t_entrega;
             $cotizacion->d_oferta = $request->d_oferta;
             $cotizacion->garantia = $request->garantia;
+            $cotizacion->subtotal = $subtotal;
             $cotizacion->monto_cotizacion = $precio_total;
             $cotizacion->notas = $request->notas;
             $cotizacion->itbms = $request->itbms;
@@ -186,6 +189,15 @@ class CotizacionController extends Controller
         // return redirect()->route('ordenes.index')
         //                 ->with('success','Orden Modificada!');
     }
+
+    public function cotizacion_pdf($id){
+
+        $cotizacion = Cotizacion::find($id);
+        $vendedor = User::find($cotizacion->idUsuario);  
+        $pdf = PDF::loadView('ventas.cotizaciones.pdf_cotizacion', compact('cotizacion','vendedor'));
+        return $pdf->stream();
+    }
+
     //MOSTRAR EL PDF DE LA COTIZACION
     public function nueva_cotizacion_pdf($idCotizacion){
 

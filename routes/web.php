@@ -88,7 +88,7 @@
 
 			// RUTAS DE ORDENES
 			Route::get('ordenes','OrdenesController@index')->name('ordenes.index');
-			Route::get('orden-pdf/{idOrden}', 'OrdenesController@pdf');
+			Route::get('ordenes/orden_pdf/{id}', 'OrdenesController@orden_pdf');
 			Route::resource('ordenes','OrdenesController', ['except' => [
 				'index',
 			]]);
@@ -110,34 +110,29 @@
 			Route::post('comisiones_repartidor', 'ComisionesController@comisiones_repartidor');
 
 			// RUTAS DE NOTA DE CREDITOS
+			Route::get('nota_creditos/nota_credito_pdf/{id}', 'NotaCreditosController@nota_credito_pdf');
 			Route::get('nota_creditos','NotaCreditosController@index')->name('nota_creditos.index');
 			Route::resource('nota_creditos','NotaCreditosController', ['except' => [
 					'index',
 			]]);
 			Route::post('nota_creditos/update/num_fiscal','NotaCreditosController@actualizar_num_fiscal');
-			Route::get('nota_creditos-pdf/{idNotaCredito}', 'NotaCreditosController@pdf');
 
 			// RUTAS DE FACTURAS
+			Route::get('facturas/factura_pdf/{id}', 'FacturasController@factura_pdf');
 			Route::get('facturas','FacturasController@index')->name('facturas.index');
 			Route::resource('facturas','FacturasController', ['except' => [
 					'index',
 			]]);
 
 			Route::post('nueva_factura', 'FacturasController@nueva_factura');
-			Route::get('factura-pdf/{idFactura}/{idOrden}', 'FacturasController@pdf');
-			Route::get('factura-pdf/{idFactura}', 'FacturasController@pdf');
 			Route::get('facturas/create-by-id/{idFactura}', 'FacturasController@create_by_id');
 			Route::post('facturas/update/num_fiscal','FacturasController@actualizar_num_fiscal');
 
 
 			// RUTAS DE VENTAS
-			Route::get('cotizacion-pdf/{idCotizacion}', 'CotizacionController@nueva_cotizacion_pdf');
-			Route::post('ventas/lista_precios_pdf', [
-				'as' => 'ventas.lista_precios_pdf',
-				'uses' => 'VentasController@lista_precios_pdf'
-			]);
-			Route::get('ventas/lista_precios_dompdf', 'VentasController@lista_precios_dompdf');
+			Route::get('cotizaciones/cotizacion_pdf/{id}', 'CotizacionController@cotizacion_pdf');
 			Route::get('ventas/lista_precios','VentasController@lista_precios')->name('ventas.index');
+			Route::post('ventas/lista_precios_pdf', 'VentasController@lista_precios_pdf')->name('ventas.lista_precios_pdf');
 			Route::get('ventas/cotizaciones','CotizacionController@index')->name('ventas.cotizaciones.index');
 			// Route::get('ventas/cotizaciones/{id}','CotizacionController@edit')->name('ventas.cotizaciones.edit');
 			Route::post('ventas/cotizaciones/update', 'CotizacionController@update_cotizacion');
@@ -145,9 +140,6 @@
 					'index'
 			]]);
 			Route::post('ventas/nueva_cotizacion', 'CotizacionController@nueva_cotizacion');
-			Route::resource('ventas/lista_precios', 'VentasController@lista_precios', ['except' => [
-					'index',
-			]]);
 
 
 			//RUTAS DE pagos

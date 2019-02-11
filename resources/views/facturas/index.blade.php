@@ -68,9 +68,7 @@
                                     @endif
                                     <td>
                                         <div class="acciones-btn">
-                                            <!-- <a class="btn btn-info" href="{{ route('facturas.show',$factura->id) }}">Show</a> -->
-                                            <!-- <a class="btn btn-primary" href="{{ route('facturas.edit',$factura->id) }}">Modificar</a> -->
-                                            <a class="btn btn-info" href="{{ URL::to('factura-pdf/'.$factura->id) }}"><i class="fa fa-file-pdf-o"></i></a>
+                                            <a class="btn btn-info" href="{{ URL::to('facturas/factura_pdf/'.$factura->id) }}"><i class="fa fa-file-pdf-o"></i></a>
                                             {!! Form::open(['method' => 'DELETE','route' => ['facturas.destroy', $factura->id],'style'=>'display:inline']) !!}
                                             <button type="submit" class="btn btn-danger">
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>

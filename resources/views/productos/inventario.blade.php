@@ -77,7 +77,6 @@
                 </div>
             </div>
             <div class="row text-center">
-                {{-- <a class="btn btn-info {{ count($productos_disponibles) > 0 ? '': 'disabled'}} top15" href="{{ URL::to('lista_precios_csv') }}"> Exportar en Excel</a> --}}
                 <a class="btn btn-purple {{ count($productos_disponibles) > 0 ? '': 'disabled'}} top15" href="{{ URL::to('productos/inventario_pdf') }}"> Exportar en PDF</a>
             </div>
             <!-- PAGINACION -->

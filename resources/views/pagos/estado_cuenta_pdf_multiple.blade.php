@@ -147,14 +147,11 @@
                                     </tr>
                             @endforeach
                             <tr>
-                                <td class="thick-line">Totales</td>
-                                <td class="thick-line"></td>
-                                <td class="thick-line"></td>
-                                <td class="thick-line"></td>
-                                <td class="thick-line"></td>
-                                <td class="thick-line text-center"><h4 style='margin:0px;' class="text-info">${{number_format($total_30dias,2,'.',',')}}</h4></td>
-                                <td class="thick-line text-center"><h4 style='margin:0px;' class="text-warning">${{number_format($total_60dias,2,'.',',') }}</h4></td>
-                                <td class="thick-line text-right"><h4 style='margin:0px;' class="text-danger">${{number_format($total_90dias,2,'.',',') }}</h4></td>
+                                <td class="bold">Totales</td>
+                                <td colspan="4"></td>
+                                <td><h4 class="bold" style='margin:0px;'>${{number_format($total_30dias,2,'.',',')}}</h4></td>
+                                <td><h4 class="bold" style='margin:0px;'>${{number_format($total_60dias,2,'.',',') }}</h4></td>
+                                <td><h4 class="bold" style='margin:0px;'>${{number_format($total_90dias,2,'.',',') }}</h4></td>
                             </tr>
                             @else
                                 <tr>

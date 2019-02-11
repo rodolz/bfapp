@@ -28,11 +28,9 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="row text-center">
                     {!! Form::open(array('id' => 'pago_form', 'method'=>'POST','class' => 'form-inline', 'route' => 'ventas.lista_precios_pdf')) !!}
-                        {{-- <a class="btn btn-info {{ count($productos) > 0 ? '': 'disabled'}} top15" href="{{ URL::to('lista_precios_csv') }}"> Exportar en Excel</a> --}}
-                        {{-- <a class="btn btn-purple {{ count($productos) > 0 ? '': 'disabled'}}" href="{{ URL::to('ventas/lista_precios_pdf') }}"> Exportar en PDF</a> --}}
                         {!! Form::select('categorias[]', $categorias, null, ['multiple' => true, 'id' => 'categorias', 'class' => 'form-control col-md-6']) !!}
-                        <button type="submit" class="btn btn-purple right15">Exportar</button>
-                        {!! Form::close() !!}
+                        <button type="submit" class="btn btn-purple right15">Exportar en PDF</button>
+                    {!! Form::close() !!}
                     </div>
                 </div>
             </div>

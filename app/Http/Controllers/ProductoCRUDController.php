@@ -9,6 +9,7 @@ use App\Orden;
 use App\Factura;
 use App\Categoria;
 use Codedge\Fpdf\Facades\Fpdf;
+use PDF;
 use Yajra\Datatables\Datatables;
 
 class ProductoCRUDController extends Controller
@@ -209,13 +210,13 @@ class ProductoCRUDController extends Controller
     }
 
     public function inventario_pdf(){
-        $monto_total = 0;
-        $monto_total_costo = 0;
-        $cantidad_total = 0;
-
         $productos_disponibles = Producto::where('cantidad','>','0')
                                 ->orderBy('idCategoria','desc')
                                 ->get();
+        $monto_total = 0;
+        $monto_total_costo = 0;
+        $cantidad_total = 0;
+                        
         // filtrar los servicios de los productos
         $productos_disponibles = $productos_disponibles->filter(function($producto){
             if($producto->idCategoria !== 8 ){
@@ -226,89 +227,9 @@ class ProductoCRUDController extends Controller
             $monto_total = $monto_total + $producto->precio * $producto->cantidad;
             $monto_total_costo = $monto_total_costo + $producto->precio_costo * $producto->cantidad;
             $cantidad_total = $cantidad_total + $producto->cantidad;
-        }
-        $categoria = '';
-        Fpdf::SetTopMargin(10);
-        Fpdf::SetAutoPageBreak(false);
-        Fpdf::AddPage();
-
-        Fpdf::SetFont('Times', 'B', 15);
-
-        Fpdf::Cell(35, 15, 'Inventario', 0,0,'L',false);
-        Fpdf::Ln(18);
-        Fpdf::SetFont('Times', 'B', 12);
-        Fpdf::Cell(30, 10, 'Codigo', 'T L',0,'L',false);
-        Fpdf::Cell(85, 10, 'Descripcion', 'T',0,'L',false);
-        Fpdf::Cell(25, 10, 'Medidas', 'T',0,'L',false);
-        Fpdf::Cell(14, 10, 'Ctd', 'T',0,'L',false);
-        Fpdf::Cell(23, 10, 'P.Venta', 'T',0,'L',false);
-        Fpdf::Cell(23, 10, 'P.Costo', 'T R',0,'L',false);
-        Fpdf::Ln(10);
-        // Fpdf::SetFillColor(255,255,255);
-        // Fpdf::SetTextColor(0,0,0);
-        Fpdf::SetFont('Times', '', 12);
-        $cont = 0;
-        foreach ($productos_disponibles as $producto) {
-            if($cont == 15){
-                Fpdf::Cell(195, 10, 'Continuar en la siguiente Pagina' ,'T',0,'L',false);
-                Fpdf::AddPage();
-                Fpdf::SetFont('Times', 'B', 15);
-                Fpdf::Cell(35, 15, 'Inventario (Continuacion)', 0,0,'L',false);
-                Fpdf::Ln(18);
-                Fpdf::SetFont('Times', 'B', 12);
-                Fpdf::Cell(30, 12, 'Codigo', 'T L',0,'L',false);
-                Fpdf::Cell(85, 12, 'Descripcion', 'T',0,'L',false);
-                Fpdf::Cell(25, 12, 'Medidas', 'T',0,'L',false);
-                Fpdf::Cell(14, 12, 'Ctd', 'T',0,'L',false);
-                Fpdf::Cell(23, 12, 'P.Venta', 'T',0,'L',false);
-                Fpdf::Cell(23, 12, 'P.Costo', 'T R',0,'L',false);
-                Fpdf::SetFont('Times', '', 11);
-                Fpdf::Ln(10);
-                $cont = 0;
-            }
-            if($producto->categoria->nombre_categoria != $categoria){
-                Fpdf::SetFont('Times', 'B', 11);
-                Fpdf::SetFillColor(154,204,119);
-                Fpdf::SetTextColor(255,255,255);
-                Fpdf::Cell(200, 12, $producto->categoria->nombre_categoria, 'L R',1,'L',true);
-                Fpdf::SetFont('Times', '', 11);
-                Fpdf::SetTextColor(0,0,0);
-                $categoria = $producto->categoria->nombre_categoria;
-                $cont++;
-            }
-            Fpdf::SetFillColor(255,255,255);
-            $h = 11;
-            if(strlen($producto->descripcion)>47){
-                $h = 22;
-            }
-            Fpdf::Cell(30, $h, $producto->codigo, 1,0,'L',false);
-            $x = Fpdf::GetX();
-            $y = Fpdf::GetY();
-            Fpdf::MultiCell(85, 11,$producto->descripcion, 1);
-            $H = Fpdf::GetY();
-            $diff_h= $H-$y;
-            $nuevo_h = $y + $diff_h;
-            Fpdf::SetXY($x + 85, $y);
-            // Fpdf::Cell(35, 11, $producto->codigo, 'L',0,'L',false);
-            // Fpdf::Cell(80, 11,$producto->descripcion, 0,0,'L',false);
-            Fpdf::Cell(25, $h,$producto->medidas, 1,0,'L',false);
-            Fpdf::Cell(14, $h, $producto->cantidad, 1,0,'L',false);   
-            Fpdf::Cell(23, $h, '$'.number_format($producto->precio,2), 1,0,'L',false);
-            Fpdf::Cell(23, $h, '$'.number_format($producto->precio_costo,2), 1,0,'L',false);
-            Fpdf::Ln(11);
-            Fpdf::SetY($nuevo_h);
-            $cont++;
-        }
-        Fpdf::SetFont('Times', 'B', 12);
-        Fpdf::SetFillColor(162, 166, 169);
-        Fpdf::Cell(30, 12, 'Totales', 'T L',0,'L',true);
-        Fpdf::Cell(110, 12, '', 'T R',0,'L',true);
-        Fpdf::Cell(14, 12, $cantidad_total, 'T R',0,'L',true);
-        Fpdf::Cell(23, 12, '$'.number_format($monto_total,2,'.',','), 'T R',0,'L',true);
-        Fpdf::Cell(23, 12, '$'.number_format($monto_total_costo,2,'.',','), 'T R ',0,'L',true);
-        Fpdf::SetFont('Times', '', 10);
-        Fpdf::Ln(12);
-        Fpdf::Cell(200, 10, 'Para la siguiente fecha: '.date('d/m/Y'), 'T',0,'L',false);
-        Fpdf::Output('D',date('d/m/Y').' Inventario.pdf');
+        } 
+        $pdf = PDF::loadView('productos.pdf_inventario', compact('productos_disponibles','monto_total_costo','monto_total','cantidad_total'));
+        return $pdf->stream();
     }
+
 }

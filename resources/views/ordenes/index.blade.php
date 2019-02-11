@@ -63,7 +63,7 @@
                                     @if($orden->idOrdenEstado == 1)
                                         <td><label class="bg-warning"><a style="text-decoration: none; color: white;" href="/facturas/create-by-id/{{ $orden->id }}" >{{ $orden->estado->ordenes_estado }} </a></label></td>
                                     @else
-                                         <td><label class="bg-info"><a style="text-decoration: none; color: white;" href="/factura-pdf/0/{{ $orden->id }}" >{{ $orden->estado->ordenes_estado }}</label></td>
+                                         <td><label class="bg-info"><a style="text-decoration: none; color: white;" href="/facturas/factura_pdf/{{ $orden->factura->id }}" >{{ $orden->estado->ordenes_estado }}</label></td>
                                     @endif
                                     <td>
                                         <div class="acciones-btn">
@@ -73,7 +73,7 @@
                                                 <button class="btn btn-primary" href="{{ route('ordenes.edit',$orden->id) }}" disabled><i class="fa fa-pencil"></i></button>
                                             @endif
 
-                                            <a class="btn btn-info" href="{{ URL::to('orden-pdf/'.$orden->id) }}"><i class="fa fa-file-pdf-o"></i></a>
+                                            <a class="btn btn-info" href="{{ URL::to('ordenes/orden_pdf/'.$orden->id) }}"><i class="fa fa-file-pdf-o"></i></a>
                                             {!! Form::open(['method' => 'DELETE','route' => ['ordenes.destroy', $orden->id],'style'=>'display:inline']) !!}
                                         <button type="submit" class="btn btn-danger">
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>

@@ -14,6 +14,7 @@ class Cotizacion extends Model
     't_entrega',
     'd_oferta',
     'garantia',
+    'subtotal',
     'monto_cotizacion',
     'notas',
     'itbms'

@@ -11,10 +11,17 @@ use App\Orden;
 use App\User;
 use App\Cliente;
 use App\Producto;
-use Codedge\Fpdf\Facades\Fpdf;
+use PDF;
 
 class FacturasController extends Controller
 {
+    public function factura_pdf($id){
+
+        $factura = Factura::find($id);
+        $cliente = Cliente::find($factura->idCliente);   
+        $pdf = PDF::loadView('facturas.pdf_factura', compact('cliente','factura'));
+        return $pdf->stream();
+    }
 
     public function actualizar_num_fiscal(Request $request){
         // Inicio de la transaccion
