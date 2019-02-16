@@ -5,7 +5,6 @@
         <link href="{{ public_path() }}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="{{ public_path() }}/plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <style>
-        
             @media all {
                 .page-break	{ display: none; }
             }
@@ -25,7 +24,6 @@
                 bottom: 0;
                 width: 100%;
             }
-
             /* borderless table */
             .table-borderless td, .table-borderless th {
                 border: 0 !important;
@@ -34,7 +32,7 @@
     </header>
     <body>
         <div class="row">
-            <img src="{{ public_path() }}/images/cintillo_control_old.jpg" alt="bf_cintillo" width="750px"/> 
+            <img src="{{ public_path() }}/images/cintillo_control_old.jpg" alt="bf_cintillo" width="100%"/> 
         </div>
         <div class="row">
             <div class="pull-left">

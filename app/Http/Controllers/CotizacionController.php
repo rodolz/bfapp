@@ -74,6 +74,8 @@ class CotizacionController extends Controller
                 array_push($productos,$producto_db);
             }
             //Aplicar el ITBMS al precio total
+            $subtotal = $precio_total;
+
             $precio_total = $precio_total + $precio_total * ($request->itbms / 100);
 
             $num_cotizacion = Cotizacion::all()->max('num_cotizacion');
@@ -90,12 +92,14 @@ class CotizacionController extends Controller
             //Crear nueva cotizacion
             $nueva_cotizacion = Cotizacion::create([
                 'idCliente' => $cliente->id,
+                'idCotizacionEstado' => 1,
                 'num_cotizacion' => $num_cotizacion,
                 'idUsuario' => Auth::user()->id,
                 'condicion' => $request->condicion,
                 't_entrega' => $request->t_entrega,
                 'd_oferta' => $request->d_oferta,
                 'garantia' => $request->garantia,
+                'subtotal' => $subtotal,
                 'monto_cotizacion' => $precio_total,
                 'notas' => $request->notas,
                 'itbms' => $request->itbms

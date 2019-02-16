@@ -2,7 +2,16 @@
 <html>
     <header>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link href="{{ public_path() }}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="{{ public_path() }}/plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <style>
+            @media all {
+                .page-break	{ display: none; }
+            }
+
+            @media print {
+                .page-break	{ display: block; page-break-before: always; }
+            }
             @page { margin-top: 5px; }
             .page-break {
                 page-break-after: always;
@@ -15,9 +24,11 @@
                 bottom: 0;
                 width: 100%;
             }
+            /* borderless table */
+            .table-borderless td, .table-borderless th {
+                border: 0 !important;
+            }
         </style>
-        <link href="{{ public_path() }}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="{{ public_path() }}/plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
     </header>
     <body>
         <div class="row">
@@ -25,7 +36,7 @@
                 <h3><strong>Inventario</strong></h3>
             </div>
         </div>
-        <div class="row top-buffer">
+        <div class="row">
             <table class="table table-bordered table-condensed text-center">
                 <caption>Para la siguiente fecha: {{ date('d/m/Y') }}</caption>
                 <thead>
@@ -33,7 +44,7 @@
                         <th class="text-center">Código</th>
                         <th class="text-center">Descripción</th>
                         <th class="text-center">Medidas</th>
-                        <th class="text-center">Cantidad Disp.</th>
+                        <th class="text-center">Cantidad</th>
                         <th class="text-center">Precio Venta</th>
                         <th class="text-center">Precio Costo</th>
                     </tr>
@@ -76,7 +87,6 @@
                 </tbody>
             </table>
         </div>
-
         <script src="{{ public_path() }}/js/jquery-1.11.2.min.js" type="text/javascript"></script> 
         <script src="{{ public_path() }}/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script> 
     </body>

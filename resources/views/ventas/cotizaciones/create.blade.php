@@ -312,6 +312,7 @@
                                 })
                         }
                         else{
+                            console.log(data);
                             swal({
                                 type: 'error',
                                 title: "Hubo un error, contacte al ADMIN con el siguiente error:",
@@ -322,6 +323,7 @@
                     },
                     error: function( data ){
                         // Error...
+                        console.log(data);
                         swal({
                             type: 'error',
                             title: "Hubo un error, contacte al ADMIN con el siguiente error:",

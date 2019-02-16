@@ -2,43 +2,63 @@
 <html>
 <header>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    
     <style>
-        @import "https://fonts.googleapis.com/css?family=Montserrat:300,400,700";
+        @media all {
+            .page-break	{ display: none; }
+        }
+
+        @media print {
+            .page-break	{ display: block; page-break-before: always; }
+        }
+        @page { margin-top: 5px; }
         .page-break {
             page-break-after: always;
         }
-        body {
-          /* padding: 0 2em; */
-          font-family: Montserrat, sans-serif;
-          -webkit-font-smoothing: antialiased;
-          text-rendering: optimizeLegibility;
-          color: #505458;
-          background: #fffff;
+
+        .top-buffer { margin-top:20px; }
+        .footer {
+            position: fixed;
+            height: 10px;
+            bottom: 0;
+            width: 100%;
+        }
+        /* borderless table */
+        .table-borderless td, .table-borderless th {
+            border: 0 !important;
         }
 
+        body {
+            /* padding: 0 2em; */
+            font-family: Montserrat, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            color: #505458;
+            background: #fffff;
+        }
         h1 {
-          font-weight: normal;
-          letter-spacing: -1px;
-          color: #34495E;
+            font-weight: normal;
+            letter-spacing: -1px;
+            color: #34495E;
         }
         h4 {
-          font-weight: small;
-          letter-spacing: -1px;
-          color: #fffff;
+            font-weight: small;
+            letter-spacing: -1px;
+            color: #fffff;
         }
         .bold{
             font-weight: bold;
         }
         .rwd-table {
-          background: #eaeaea;
-          color: rgba(70, 70, 70, 1.0);
-          overflow: hidden;
-          border-collapse: collapse;
-          width: 100%;
+            background: #eaeaea;
+            color: rgba(70, 70, 70, 1.0);
+            overflow: hidden;
+            border-collapse: collapse;
+            width: 100%;
         }
         .rwd-table th{
             background: #1fb5ac;
-            height: 25px;
+            height: 10px;
         }
         .rwd-table th, .rwd-table td {
             padding: 0.5em !important;
@@ -53,13 +73,13 @@
         .red{
             background: #f05050 !important;
         }
-
     </style>
 </header>
     <body>
         <div class="row">
             <img src="{{ public_path() }}/images/cintillo_control_old.jpg" alt="bf_cintillo" width="725px" />
-            <div class="col-md-12 col-sm-12 col-xs-12">
+        </div>
+        <div class="row">
                 <center>
                     <h1>Estado de Cuenta</h1><br>
                 </center>

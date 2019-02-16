@@ -65,7 +65,7 @@
                                                     <button class="btn btn-orange" href="{{ route('ordenes.create_from_cotizacion',$cotizacion->id) }}" disabled><i class="fa fa-file-text"></i></button>
                                                     <button class="btn btn-primary" href="{{ route('cotizaciones.edit',$cotizacion->id) }}" disabled><i class="fa fa-pencil"></i></button>
                                             @endif
-                                            <a class="btn btn-info" href="{{ URL::to('cotizacion-pdf/'.$cotizacion->id) }}"><i class="fa fa-file-pdf-o"></i></a>
+                                            <a class="btn btn-info" href="{{ URL::to('cotizaciones/cotizacion_pdf/'.$cotizacion->id) }}"><i class="fa fa-file-pdf-o"></i></a>
                                             {!! Form::open(['method' => 'DELETE','route' => ['cotizaciones.destroy', $cotizacion->id],'style'=>'display:inline']) !!}
                                             <button type="submit" class="btn btn-danger">
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>

@@ -9,6 +9,7 @@ class Cotizacion extends Model
     public $fillable = [
     'num_cotizacion',
     'idCliente',
+    'idCotizacionEstado',
     'idUsuario',
     'condicion',
     't_entrega',
