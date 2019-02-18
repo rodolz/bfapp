@@ -12,6 +12,7 @@ use Alert;
 use App\ProductoProveedor;
 use App\Producto;
 use App\Shipto;
+use PDF;
 use Codedge\Fpdf\Facades\Fpdf;
 
 class PurchaseOrderController extends Controller
@@ -212,8 +213,15 @@ class PurchaseOrderController extends Controller
         return view('purchase_orders.create', compact('proveedor','productos','shipto'));
     }
 
+    public function po_pdf($id){
+        $po = PurchaseOrder::find($id);
+        $proveedor = Proveedor::find($po->idProveedor);
+        $pdf = PDF::loadView('purchase_orders.pdf_po', compact('po','proveedor'));
+        return $pdf->stream();
+    }
+
     //MOSTRAR EL PDF
-    public function po_pdf($idPO){
+    public function po_pdf2($idPO){
         $po = PurchaseOrder::find($idPO);
         $proveedor = Proveedor::find($po->idProveedor);
         //formatear el nombre del cliente, direccion en caracteres de castellano

@@ -123,6 +123,7 @@
         $('#add_producto').click(function(){
             var attr = 'codigo';
             var codigo = $('#codigo').val();
+            console.log(codigo);
             var descripcion = $('#descripcion').val();
             var producto_relacionado = $('#idProducto_empresa option:selected').text();
             var producto_relacionado_id = $('#idProducto_empresa option:selected').val();
@@ -134,11 +135,11 @@
             }
             $("#add_producto").prop('disabled', false);
             $('#lista_productos').show();
-            var item = $('#lista_productos').find('li[codigo='+codigo+']');
+            var item = $('#lista_productos').find("li[codigo=\""+codigo+"\"]");
             if(item.html() !== undefined){
                     item.remove();
             }
-            var li = "<li codigo="+codigo+" descripcion=\""+descripcion+"\"precio="+precio+" producto_relacionado="+producto_relacionado_id+" class='list-group-item active'>";
+            var li = "<li codigo=\""+codigo+"\" descripcion=\""+descripcion+"\"precio="+precio+" producto_relacionado="+producto_relacionado_id+" class='list-group-item active'>";
             li += "<span class='badge'><a codigo="+codigo+"><i class='fa fa-times'></i></a></span>";
             li += "<span class='badge'><i class='fa fa-usd'></i>"+precio+"</span>";
             li += codigo+" - "+descripcion+" - "+producto_relacionado+"</li>";
@@ -154,7 +155,7 @@
                 $(this).parent().parent().parent().hide();
             }
             var id = $(this).attr('codigo');
-            $('li[codigo='+id+']').remove();
+            $("li[codigo=\""+id+"\"]").remove();
         });
         // FIN BORRAR PRODUCTOS DE LA LISTA
 

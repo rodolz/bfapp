@@ -2,22 +2,29 @@
 <html>
     <header>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link href="{{ public_path() }}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <style>
-            @page { margin-top: 5px; }
-            .page-break {
-                page-break-after: always;
+            @media all {
+                .page-break	{ display: none; }
             }
 
+            @media print {
+                .page-break	{ display: block; page-break-before: always; }
+            }
+            @page { margin-top: 5px; }
             .top-buffer { margin-top:20px; }
-            footer {
+            .footer {
                 position: fixed;
                 height: 10px;
                 bottom: 0;
                 width: 100%;
+                page-break-after:auto;
+            }
+            /* borderless table */
+            .table-borderless td, .table-borderless th {
+                border: 0 !important;
             }
         </style>
-        <link href="{{ public_path() }}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="{{ public_path() }}/plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
     </header>
     <body>
         <div class="row">
@@ -28,7 +35,7 @@
                 <h3><strong>Lista de Precios</strong></h3>
             </div>
         </div>
-        <div class="row top-buffer">
+        <div class="row">
             <table class="table table-bordered table-condensed text-center">
                 <caption>Para la siguiente fecha: {{ date('d/m/Y') }}</caption>
                 <thead>
@@ -67,8 +74,5 @@
                 </tbody>
             </table>
         </div>
-
-        <script src="{{ public_path() }}/js/jquery-1.11.2.min.js" type="text/javascript"></script> 
-        <script src="{{ public_path() }}/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script> 
     </body>
 </html>

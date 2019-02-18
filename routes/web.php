@@ -65,7 +65,7 @@
 			// RUTAS DE PURCHASE ORDERS
 			Route::get('purchase_orders/load_into_stock/{id}','PurchaseOrderController@load')->name('purchase_orders.load');
 			Route::get('purchase_orders','PurchaseOrderController@index')->name('purchase_orders.index');
-			Route::get('po_pdf/{idPO}', 'PurchaseOrderController@po_pdf');
+			Route::get('purchase_orders/po_pdf/{id}', 'PurchaseOrderController@po_pdf');
 			Route::get('purchase_orders/select_proveedor','PurchaseOrderController@select_proveedor')->name('purchase_orders.select_proveedor');
 			Route::post('purchase_orders/proveedor_productos','PurchaseOrderController@proveedor_productos')->name('purchase_orders.proveedor_productos');
 			Route::resource('purchase_orders', 'PurchaseOrderController', ['except' => [
@@ -140,7 +140,6 @@
 					'index'
 			]]);
 			Route::post('ventas/nueva_cotizacion', 'CotizacionController@nueva_cotizacion');
-
 
 			//RUTAS DE pagos
 			// INDEX DE PAGOS

@@ -16,7 +16,6 @@
             .page-break {
                 page-break-after: always;
             }
-
             .top-buffer { margin-top:20px; }
             .footer {
                 position: fixed;
