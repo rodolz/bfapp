@@ -63,22 +63,22 @@
                             <td> {{ $producto->codigo }} </td>
                             <td> {{ $producto->descripcion }} </td>
                             <td> {{ $producto->pivot->cantidad_producto }} </td>
-                            <td> ${{ number_format($producto->pivot->precio_final,2) }} </td>
-                            <td> ${{ number_format(($producto->pivot->precio_final*$producto->pivot->cantidad_producto),2) }} </td>
+                            <td> B/.{{ number_format($producto->pivot->precio_final,2) }} </td>
+                            <td> B/.{{ number_format(($producto->pivot->precio_final*$producto->pivot->cantidad_producto),2) }} </td>
                         </tr>
                     @endforeach
                 </tbody>
                     <tr class="table-borderless">
                         <td colspan="4" class='text-right'><strong>Sub Total :</strong></td>
-                        <td>${{number_format($factura->subtotal,2) }}</td>
+                        <td>B/.{{number_format($factura->subtotal,2) }}</td>
                     </tr>
                     <tr class="table-borderless">
                         <td colspan="4" class='text-right'><strong>ITBMS ({{$factura->itbms}}%) :</strong></td>
-                        <td>${{number_format($factura->subtotal*$factura->itbms/100,2) }}</td>
+                        <td>B/.{{number_format($factura->subtotal*$factura->itbms/100,2) }}</td>
                     </tr>
                     <tr class="table-borderless">
                         <td colspan="4" class='text-right'><strong>Total :</strong></td>
-                        <td>${{number_format($factura->monto_factura,2) }}</td>
+                        <td>B/.{{number_format($factura->monto_factura,2) }}</td>
                     </tr>
             </table>
         </div>

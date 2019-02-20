@@ -61,8 +61,8 @@
                                     <td> {{ $producto->descripcion }} </td>
                                     <td> {{ $producto->medidas }} </td>
                                     <td> {{ $producto->cantidad }} </td>
-                                    <td> ${{ number_format($producto->precio,2) }} </td>
-                                    <td> ${{ number_format($producto->precio_costo,2) }} </td>
+                                    <td> B/.{{ number_format($producto->precio,2) }} </td>
+                                    <td> B/.{{ number_format($producto->precio_costo,2) }} </td>
                                 </tr>
                             @php
                             $categoria = $producto->categoria->nombre_categoria;
@@ -73,16 +73,16 @@
                                     <td> {{ $producto->descripcion }} </td>
                                     <td> {{ $producto->medidas }} </td>
                                     <td> {{ $producto->cantidad }} </td>
-                                    <td> ${{ number_format($producto->precio,2) }} </td>
-                                    <td> ${{ number_format($producto->precio_costo,2) }} </td>
+                                    <td> B/.{{ number_format($producto->precio,2) }} </td>
+                                    <td> B/.{{ number_format($producto->precio_costo,2) }} </td>
                                 </tr>
                         @endif
                     @endforeach
                     <tr>
                         <td colspan="3" class="text-left"><strong>Totales</strong></td>
                         <td><strong>{{ $cantidad_total }}</strong></td>
-                        <td><strong>${{ number_format($monto_total,2) }}</strong></td>
-                        <td><strong>${{ number_format($monto_total_costo,2) }}</strong></td>
+                        <td><strong>B/.{{ number_format($monto_total,2) }}</strong></td>
+                        <td><strong>B/.{{ number_format($monto_total_costo,2) }}</strong></td>
                     </tr>
                 </tbody>
             </table>

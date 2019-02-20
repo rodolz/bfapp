@@ -18,7 +18,7 @@
             }
 
             .top-buffer { margin-top:20px; }
-            footer {
+            .footer {
                 position: fixed;
                 height: 10px;
                 bottom: 0;
@@ -64,35 +64,33 @@
                             <td> {{ $producto->codigo }} </td>
                             <td> {{ $producto->descripcion }} </td>
                             <td> {{ $producto->pivot->cantidad_producto }} </td>
-                            <td> ${{ number_format($producto->pivot->precio_final,2) }} </td>
-                            <td> ${{ number_format(($producto->pivot->precio_final*$producto->pivot->cantidad_producto),2) }} </td>
+                            <td> B/.{{ number_format($producto->pivot->precio_final,2) }} </td>
+                            <td> B/.{{ number_format(($producto->pivot->precio_final*$producto->pivot->cantidad_producto),2) }} </td>
                         </tr>
                     @endforeach
                     <tr>
                         <td colspan="4" class='text-right'><strong>Sub Total :</strong></td>
-                        <td>${{number_format($factura->subtotal,2) }}</td>
+                        <td>B/.{{number_format($factura->subtotal,2) }}</td>
                     </tr>
                     <tr class="table-borderless">
                         <td colspan="4" class='text-right'><strong>ITBMS ({{$factura->itbms}}%) :</strong></td>
-                        <td>${{number_format($factura->subtotal*$factura->itbms/100,2) }}</td>
+                        <td>B/.{{number_format($factura->subtotal*$factura->itbms/100,2) }}</td>
                     </tr>
                     <tr class="table-borderless">
                         <td colspan="4" class='text-right'><strong>Total :</strong></td>
-                        <td>${{number_format($factura->monto_factura,2) }}</td>
+                        <td>B/.{{number_format($factura->monto_factura,2) }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <!-- Footer -->
-        <div class="row"
-            <footer>
+        <div class="row footer">
                 <div class="pull-left">
                     <p>Favor emitir cheques a nombre de: <strong>BF Services, s.a</strong></p>
                 </div>
                 <div class="pull-right">
                     <p>Copia-Documento no fiscal</p>
                 </div>
-            </footer>
         </div>
         <!-- Footer -->
 

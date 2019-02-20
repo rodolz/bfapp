@@ -57,7 +57,7 @@
                                     <td> {{ $producto->codigo }} </td>
                                     <td> {{ $producto->descripcion }} </td>
                                     <td> {{ $producto->medidas }} </td>
-                                    <td> ${{ number_format($producto->precio,2) }} </td>
+                                    <td> B/.{{ number_format($producto->precio,2) }} </td>
                                 </tr>
                             @php
                             $categoria = $producto->categoria->nombre_categoria;
@@ -67,7 +67,7 @@
                                     <td> {{ $producto->codigo }} </td>
                                     <td> {{ $producto->descripcion }} </td>
                                     <td> {{ $producto->medidas }} </td>
-                                    <td> ${{ number_format($producto->precio,2) }} </td>
+                                    <td> B/.{{ number_format($producto->precio,2) }} </td>
                                 </tr>
                         @endif
                     @endforeach

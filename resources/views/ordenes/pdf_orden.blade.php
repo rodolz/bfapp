@@ -86,13 +86,13 @@
                                 <td> {{ $producto->descripcion }} </td>
                                 <td> {{ $producto->medidas }} </td>
                                 <td> {{ $producto->pivot->cantidad_producto }} </td>
-                                <td> ${{ number_format($producto->pivot->precio_final,2) }} </td>
-                                <td> ${{ number_format(($producto->pivot->precio_final*$producto->pivot->cantidad_producto),2) }} </td>
+                                <td> B/.{{ number_format($producto->pivot->precio_final,2) }} </td>
+                                <td> B/.{{ number_format(($producto->pivot->precio_final*$producto->pivot->cantidad_producto),2) }} </td>
                             </tr>
                         @endforeach
                         <tr>
                             <td colspan="5"></td>
-                            <td class="bg-primary"><strong>${{number_format($orden->monto_orden,2) }}</strong></td>
+                            <td class="bg-primary"><strong>B/.{{number_format($orden->monto_orden,2) }}</strong></td>
                         </tr>
                     </tbody>
                 </table>
