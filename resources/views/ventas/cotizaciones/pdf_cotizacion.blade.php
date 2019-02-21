@@ -39,7 +39,8 @@
                 <p><strong>Email:</strong> {{ $cotizacion->cliente->email }}</p>
             </div>
             <div class="pull-right">
-                <p><strong>Fecha: {{ $cotizacion->created_at->format('d-m-Y') }}</strong></p>               
+                <p><strong>Fecha: {{ $cotizacion->created_at->format('d-m-Y') }}</strong></p>   
+                <p><strong>Cotizacion #{{ $cotizacion->num_cotizacion }}</strong></p>              
             </div>
         </div>
         <div class="row text-center">
@@ -65,21 +66,21 @@
                             <td> {{ $producto->descripcion }} </td>
                             <td> {{ $producto->medidas }} </td>
                             <td> {{ $producto->pivot->cantidad_producto }} </td>
-                            <td> ${{ number_format($producto->pivot->precio_final,2) }} </td>
-                            <td> ${{ number_format(($producto->pivot->precio_final*$producto->pivot->cantidad_producto),2) }} </td>
+                            <td> B/.{{ number_format($producto->pivot->precio_final,2) }} </td>
+                            <td> B/.{{ number_format(($producto->pivot->precio_final*$producto->pivot->cantidad_producto),2) }} </td>
                         </tr>
                     @endforeach
                     <tr class="table-borderless">
                         <td colspan="5" class='text-right'><strong>Sub Total:</strong></td>
-                        <td>${{number_format($cotizacion->subtotal,2) }}</td>
+                        <td>B/.{{number_format($cotizacion->subtotal,2) }}</td>
                     </tr>
                     <tr class="table-borderless">
                         <td colspan="5" class='text-right'><strong>ITBMS ({{$cotizacion->itbms}}%):</strong></td>
-                        <td>${{number_format($cotizacion->subtotal*$cotizacion->itbms/100,2) }}</td>
+                        <td>B/.{{number_format($cotizacion->subtotal*$cotizacion->itbms/100,2) }}</td>
                     </tr>
                     <tr class="table-borderless">
                         <td colspan="5" class='text-right'><strong>Total:</strong></td>
-                        <td>${{number_format($cotizacion->monto_cotizacion,2) }}</td>
+                        <td>B/.{{number_format($cotizacion->monto_cotizacion,2) }}</td>
                     </tr>
                 </tbody>
             </table>
