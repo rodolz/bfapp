@@ -76,7 +76,7 @@
                                             @if($orden->id == 0)
                                                 <th scope="row"><a href="#">{{ $orden->num_orden }}</a></th>
                                             @else
-                                                <th scope="row"><a href="{{ URL::to('factura-pdf/'.$orden->id) }}"># {{ $orden->num_orden }}</a></th>
+                                                <th scope="row"><a href="{{ URL::to('ordenes/orden_pdf/'.$orden->id) }}"># {{ $orden->num_orden }}</a></th>
                                             @endif
                                             <td>{{ $orden->cliente->empresa }}</td>
                                             <td>${{ number_format($orden->pivot->cantidad_producto*$orden->pivot->precio_final, 2, '.', ',') }}</td>
