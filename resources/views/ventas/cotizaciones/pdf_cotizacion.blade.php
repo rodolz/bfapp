@@ -48,15 +48,15 @@
             <p>Por medio de la presente tenemos el agrado de cotizarle el siguiente material:</p>
         </div>
         <div class="row top-buffer">
-            <table class="table table-bordered table-condensed text-center">
+            <table class="table table-condensed">
                 <thead>
                     <tr>
-                        <th class="text-center">Código</th>
-                        <th class="text-center">Descripción</th>
-                        <th class="text-center">Medidas</th>
-                        <th class="text-center">Cantidad</th>
-                        <th class="text-center">Precio</th>
-                        <th class="text-center">Totales</th>
+                        <th>Código</th>
+                        <th>Descripción</th>
+                        <th>Medidas</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Totales</th>
                     </tr>
                 </thead>
                 <tbody>

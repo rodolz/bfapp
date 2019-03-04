@@ -68,7 +68,7 @@
                                                 <button class="btn btn-primary" href="{{ route('purchase_orders.edit',$purchase_order->id) }}" disabled><i class="fa fa-pencil"></i></button>
                                             @endif
 
-                                            <a class="btn btn-info" href="{{ URL::to('po_pdf/'.$purchase_order->id) }}"><i class="fa fa-file-pdf-o"></i></a>
+                                            <a class="btn btn-info" href="{{ URL::to('purchase_orders/po_pdf/'.$purchase_order->id) }}"><i class="fa fa-file-pdf-o"></i></a>
                                             {!! Form::open(['method' => 'DELETE','route' => ['purchase_orders.destroy', $purchase_order->id],'style'=>'display:inline']) !!}
                                         <button type="submit" class="btn btn-danger">
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>

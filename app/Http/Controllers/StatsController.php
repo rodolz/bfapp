@@ -6,11 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Cliente;
-use App\Orden;
-use App\Factura;
-use App\Pago;
-use App\Producto;
-use App\User;
 use App\Charts\SampleChart;
 
 class StatsController extends Controller

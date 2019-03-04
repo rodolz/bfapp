@@ -3,7 +3,6 @@
     <header>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <link href="{{ public_path() }}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="{{ public_path() }}/plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <style>
             @media all {
                 .page-break	{ display: none; }
@@ -46,15 +45,15 @@
             </div>
         </div>
         <div class="row top-buffer">
-            <table class="table table-bordered table-condensed text-center">
+            <table class="table table-condensed">
                 <caption>Condición de pago: {{ $factura->condicion }}</caption>
                 <thead>
                     <tr>
-                        <th class="text-center">Código</th>
-                        <th class="text-center">Descripción</th>
-                        <th class="text-center">Cantidad</th>
-                        <th class="text-center">Precio</th>
-                        <th class="text-center">Importe</th>
+                        <th>Código</th>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Importe</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -92,8 +91,5 @@
             </div>
         </div>
         <!-- Footer -->
-
-        <script src="{{ public_path() }}/js/jquery-1.11.2.min.js" type="text/javascript"></script> 
-        <script src="{{ public_path() }}/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script> 
     </body>
 </html>

@@ -17,7 +17,7 @@ class ConvertMessagesIntoSweetAlert
     public function handle($request, Closure $next)
     {
         if ($request->session()->has('success')) {
-            alert()->success($request->session()->get('success'))->autoclose(1000);
+            alert()->success($request->session()->get('success'))->persistent();
         }
 
         if ($request->session()->has('warning')) {
@@ -29,11 +29,7 @@ class ConvertMessagesIntoSweetAlert
         }
 
         if ($request->session()->has('message')) {
-            alert()->message($request->session()->get('message'))->autoclose(3000);
-        }
-
-        if ($request->session()->has('basic')) {
-            alert()->basic($request->session()->get('basic'));
+            alert()->message($request->session()->get('message'))->persistent();
         }
 
         if ($request->session()->has('errors')) {

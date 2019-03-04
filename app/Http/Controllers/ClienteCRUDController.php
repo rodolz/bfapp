@@ -8,7 +8,6 @@ use App\Cliente;
 class ClienteCRUDController extends Controller
 {
 
-
     /**
      * Instantiate a new PostController instance.
      *
@@ -58,7 +57,7 @@ class ClienteCRUDController extends Controller
             'tel_local' => 'required',
             'tel_celular' => 'required',
             'direccion' => 'required',
-            'email' => 'required|email',
+            'email' => 'required',
             'www' => 'required',
             'ruc' => 'required',
         ]);
@@ -123,7 +122,7 @@ class ClienteCRUDController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         Cliente::find($id)->delete();
         return redirect()->to($request->url)->with('success','Cliente Borrado!');

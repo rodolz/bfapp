@@ -3,7 +3,6 @@
     <header>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <link href="{{ public_path() }}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="{{ public_path() }}/plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
         <style>
             @media all {
                 .page-break	{ display: none; }
@@ -85,16 +84,13 @@
         </div>
         <!-- Footer -->
         <div class="row footer">
-                <div class="pull-left">
-                    <p>Favor emitir cheques a nombre de: <strong>BF Services, s.a</strong></p>
-                </div>
-                <div class="pull-right">
-                    <p>Copia-Documento no fiscal</p>
-                </div>
+            <div class="pull-left">
+                <p>Favor emitir cheques a nombre de: <strong>BF Services, s.a</strong></p>
+            </div>
+            <div class="pull-right">
+                <p>Copia-Documento no fiscal</p>
+            </div>
         </div>
         <!-- Footer -->
-
-        <script src="{{ public_path() }}/js/jquery-1.11.2.min.js" type="text/javascript"></script> 
-        <script src="{{ public_path() }}/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script> 
     </body>
 </html>

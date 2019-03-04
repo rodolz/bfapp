@@ -125,7 +125,7 @@
                        <li class="{{ Request::is('facturas','facturas/create') ? 'open' : '' }}">
                             <a href="{{ URL::to('facturas') }}">
                                 <i class="fa fa-clipboard fa-lg"></i>
-                                <span class="title">Control</span>
+                                <span class="title">Controles</span>
                             </a>
                         </li>
                         <li class="{{ Request::is('nota_creditos','nota_creditos/create') ? 'open' : '' }}">

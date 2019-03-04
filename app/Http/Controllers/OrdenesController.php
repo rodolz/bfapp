@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Orden;
 use App\User;
-use App\Role;
 use App\Cliente;
 use App\Producto;
 use App\Cotizacion;

@@ -3,14 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Pago;
 use App\Factura;
-use App\Orden;
-use App\User;
-use App\Cliente;
-use App\Producto;
 use App\NotaCredito;
 use PDF;
 

@@ -1,14 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\User;
-use App\Cliente;
 use App\Producto;
-use App\Categoria;
 use PDF;
 
 class VentasController extends Controller
