@@ -101,10 +101,8 @@ class ProductoCRUDController extends Controller
             'precio_costo' => 'required',
             'cantidad' => 'required',
         ]);
-
         Producto::create($request->all());
-        return redirect()->route('productos.index')
-                        ->with('success','Producto Agregado!');
+        return redirect()->back()->with('success','Producto Agregado!');
     }
 
     /**

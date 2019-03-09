@@ -64,7 +64,7 @@
                                         <div class="acciones-btn">
                                             <!-- <a class="btn btn-info" href="{{ route('clientes.show',$value->id) }}">Show</a> -->
                                             <a class="btn btn-info" href="{{ route('clientes.edit',$value->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                            {!! Form::open(['method' => 'DELETE','route' => ['clientes.destroy', $value->id],'style'=>'display:inline']) !!}
+                                            {!! Form::open(['method' => 'DELETE', 'name' => 'deleteForm', 'onclick' => 'deletePrompt()', 'route' => ['clientes.destroy', $value->id],'style'=>'display:inline']) !!}
                                             <button type="submit" class="btn btn-danger">
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                                             </button>
@@ -91,18 +91,24 @@
 @endsection
 
 @section('add-plugins')
-<!--         <script>
-            swal({
-              title: "Are you sure?",
-              text: "You will not be able to recover this imaginary file!",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#DD6B55",
-              confirmButtonText: "Yes, delete it!",
-              closeOnConfirm: false
-            },
-            function(){
-              swal("Deleted!", "Your imaginary file has been deleted.", "success");
+<script>
+    function deletePrompt() {
+        event.preventDefault(); // prevent form submit
+        var form = document.forms["deleteForm"]; // storing the form
+        Swal.fire({
+                title: "Esta seguro/a de eliminar?",
+                text: "Si procede no se podrá recuperar esta información",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si'
+            })
+            .then((result) => {
+                if (result.value) {
+                    form.submit();
+                }
             });
-        </script> -->
+    }
+</script>
 @endsection

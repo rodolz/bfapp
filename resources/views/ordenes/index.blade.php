@@ -74,8 +74,9 @@
                                             @endif
 
                                             <a class="btn btn-info" href="{{ URL::to('ordenes/orden_pdf/'.$orden->id) }}"><i class="fa fa-file-pdf-o"></i></a>
-                                            {!! Form::open(['method' => 'DELETE','route' => ['ordenes.destroy', $orden->id],'style'=>'display:inline']) !!}
-                                        <button type="submit" class="btn btn-danger">
+                                            {!! Form::open(['method' => 'DELETE', 'name' => 'deleteForm', 'onclick' => 'deletePrompt()','route' => ['ordenes.destroy', $orden->id],'style'=>'display:inline']) !!}
+                                            {!! Form::hidden('redirects_to', URL::previous()) !!}
+                                            <button type="submit" class="btn btn-danger">
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                                             </button>
                                             {!! Form::close() !!}
@@ -101,4 +102,25 @@
         </div>
     </section>
 
+@endsection
+
+@section('add-plugins')
+<script>
+    function deletePrompt() {
+        event.preventDefault(); // prevent form submit
+        var form = document.forms["deleteForm"]; // storing the form
+        swal({
+                title: "Esta seguro/a de eliminar?",
+                text: "Si procede no se podrá recuperar esta información",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                        form.submit();
+                }
+            });
+    }
+</script>
 @endsection

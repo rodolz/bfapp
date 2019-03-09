@@ -23,16 +23,6 @@
             <div class="row">
        		 {!! Form::open(array('route' => 'productos.store','method'=>'POST')) !!}
                 <div class="col-lg-8 col-md-8 col-sm-9 col-xs-12 col-lg-offset-2">
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Hubo errores en los datos introducidos.</strong><br><br>
-                        <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                        </ul>
-                    </div>
-                @endif
                     <div class="form-group">
                         <label class="form-label" for="field-1">Código</label>
                         <span class="desc"></span>

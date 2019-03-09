@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Cliente;
+use Validator;
 
 class ClienteCRUDController extends Controller
 {
@@ -63,8 +64,8 @@ class ClienteCRUDController extends Controller
         ]);
 
         Cliente::create($request->all());
-        return redirect()->route('clientes.index')
-                        ->with('success','Cliente Agregado!');
+
+        return redirect()->route('clientes.index')->with('success','Cliente Creado!');
     }
 
     /**
@@ -112,8 +113,7 @@ class ClienteCRUDController extends Controller
         ]);
 
         Cliente::find($id)->update($request->all());
-
-        return redirect()->to($request->url)->with('success','Cliente Modificado!');
+        return redirect()->route('clientes.index')->with('success','Cliente Modificado!');
     }
 
     /**
@@ -122,9 +122,10 @@ class ClienteCRUDController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
         Cliente::find($id)->delete();
-        return redirect()->to($request->url)->with('success','Cliente Borrado!');
+
+        return redirect()->back();
     }
 }

@@ -9,10 +9,22 @@ use App\User;
 use App\Cliente;
 use App\Producto;
 use App\Cotizacion;
+use Alert;
 use PDF;
 
 class OrdenesController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $ordenes = Orden::orderBy('num_orden','DESC')->paginate(10);
+        return view('ordenes.index',compact('ordenes','repartidores'))
+            ->with('i', ($request->input('page', 1) - 1) * 10);
+
+        // $ordenes = Orden::all();
+        // return view('ordenes.index')->with('ordenes', $ordenes);
+    }
+
     public function orden_pdf($id){
         $orden = Orden::find($id);
         $cliente = Cliente::find($orden->idCliente);
@@ -36,30 +48,15 @@ class OrdenesController extends Controller
         $productos = Producto::select(DB::raw("CONCAT(codigo,' | ',descripcion) as codigo_descripcion"),'id')
                                 ->where('cantidad','>','0')
                                 ->pluck('codigo_descripcion','id');
+
         return view('ordenes.create', compact('clientes','productos','repartidores'));//
     }
 
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'codigo' => 'required',
-            'idCategoria' => 'required',
-            'descripcion' => 'required',
-            'medidas' => 'required',
-            'precio' => 'required',
-            'cantidad' => 'required',
-        ]);
-
-        Orden::create($request->all());
-        return redirect()->route('ordenes.index')
-                        ->with('success','Orden Agregada!');
-    }
-
-    public function show($id)
-    {
-        $orden = Orden::find($id);
-        return view('ordenes.show',compact('orden'));
-    }
+    // public function show($id)
+    // {
+    //     $orden = Orden::find($id);
+    //     return view('ordenes.show',compact('orden'));
+    // }
 
     public function edit(Request $request, $id)
     {
@@ -223,10 +220,13 @@ class OrdenesController extends Controller
             $producto_inventario->save();
         }
         $orden = Orden::findorFail($id)->delete();
-        return redirect()->route('ordenes.index')
-                        ->with('success', 'Orden Borrada!');
+
+        Alert::success("Nota de Entrega Eliminada!")->autoclose(1500);
+        
+        return redirect()->back();
     }
 
+    // Crear order
     public function nueva_orden(Request $request){
         $precio_total = 0;
         $repartidores = User::whereIn('id',$request->repartidores)->get();
@@ -319,6 +319,7 @@ class OrdenesController extends Controller
         return "ok";
     }
 
+    // Crear order desde cotizacion
     public function nueva_ordenC(Request $request){
         $precio_total = 0;
         $repartidores = User::whereIn('id',$request->repartidores)->get();
@@ -413,16 +414,6 @@ class OrdenesController extends Controller
         // SE hace el commit
         DB::commit();
         return "ok";
-    }
-
-    public function index(Request $request)
-    {
-        $ordenes = Orden::orderBy('num_orden','DESC')->paginate(10);
-        return view('ordenes.index',compact('ordenes','repartidores'))
-            ->with('i', ($request->input('page', 1) - 1) * 10);
-
-        // $ordenes = Orden::all();
-        // return view('ordenes.index')->with('ordenes', $ordenes);
     }
 
 }

@@ -21,8 +21,6 @@
         <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ asset('images/apple-touch-icon-144-precomposed.png') }}">    <!-- For iPad Retina display -->
 
 
-
-
         <!-- CORE CSS FRAMEWORK - START -->
         <link href="{{ asset('plugins/pace/pace-theme-flash.css') }}" rel="stylesheet" type="text/css" media="screen"/>
         <link href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
@@ -38,8 +36,6 @@
         <link href="{{ asset('plugins/datatables/extensions/TableTools/css/dataTables.tableTools.min.css') }}" rel="stylesheet" type="text/css" media="screen"/>
         <link href="{{ asset('plugins/datatables/extensions/Responsive/css/dataTables.responsive.css') }}" rel="stylesheet" type="text/css" media="screen"/>
         <link href="{{ asset('plugins/datatables/extensions/Responsive/bootstrap/3/dataTables.bootstrap.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-        <!-- <link href="{{ asset('plugins/sweetalert/dist/sweetalert.css') }}" rel="stylesheet" type="text/css" media="screen"/>          -->
-        <!-- <link href="https://unpkg.com/sweetalert@1.1.3/dist/sweetalert.css" rel="stylesheet" type="text/css" media="screen"/>          -->
         <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
 
 

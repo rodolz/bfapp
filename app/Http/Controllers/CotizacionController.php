@@ -36,8 +36,8 @@ class CotizacionController extends Controller
     {
         $clientes = Cliente::pluck('empresa','id');
         $productos = Producto::select(DB::raw("CONCAT(codigo,' | ',descripcion) as codigo_descripcion"),'id')
-                                ->where('cantidad','>','0')
                                 ->pluck('codigo_descripcion','id');
+                                
         $cotizacion = Cotizacion::find($id);
 
         $productos_seleccionados = $cotizacion->cotizacion_producto;

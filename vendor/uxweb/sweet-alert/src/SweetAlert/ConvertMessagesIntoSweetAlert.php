@@ -32,6 +32,10 @@ class ConvertMessagesIntoSweetAlert
             alert()->message($request->session()->get('message'))->persistent();
         }
 
+        if ($request->session()->has('basic')) {
+            alert()->basic($request->session()->get('basic'));
+        }
+
         if ($request->session()->has('errors')) {
             $message = $request->session()->get('errors');
 

@@ -284,9 +284,9 @@
             }
             var jsondata = JSON.stringify(productos);
                 $.ajax({
-                      headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },  
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },  
                     type : 'POST',
                     url  : '/nueva_orden',
                     data : {data: jsondata, idCliente: idCliente, repartidores: repartidores},
@@ -294,42 +294,34 @@
                       // $("#product_id").html('<option> Loading ...</option>');
                       $("#submit").prop('disabled', true);
                     },
-                    success: function( data, textStatus, jQxhr ){
+                    success: function( data ){
                         if(data === "ok"){
                             swal({
                                 title:"Nota de entrega creada!",
                                 text: "Al cerrar será redireccionado a las notas de entrega",
-                                type: "success",
-                                confirmButtonText: "Cerrar",
-                                },
-                                function(){
+                                icon: "success",
+                                buttons: false,
+                                timer: 1000
+                                }).then(() => {
                                   setTimeout(function(){
                                     window.location.href = "{{URL::to('ordenes')}}";
-                                  }, 3000);
+                                  }, 1000);
                                 });
                         }
                         else{
-                            var errors = "<p>"+data+"</p>";
                             swal({
-                                type: 'error',
                                 title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                                text: errors,
-                                html: true
+                                text: data,
+                                icon: 'error'
                             });
                             $("#submit").prop('disabled', false);
                         }
                     },
-                    error: function( data ){
-                        // Error...
-                        console.log(errors);
-                        console.log(data);
-                        var errors = "<p>"+data.responseText+"</p>";
+                    error: function( jqXHR ){
                         swal({
-                            type: 'error',
                             title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            text: errors,
-                            // customClass: 'sweet-alert-lg',
-                            html: true
+                            text: jqXHR.status+" - "+jqXHR.statusText,
+                            icon: 'error'
                         });
                         $("#submit").prop('disabled', false);
                     }

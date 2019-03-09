@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Validator;
 use Illuminate\Http\Request;
 use App\Categoria;
+use Alert;
+use DOMDocument;
 
 class CategoriaController extends Controller
 {
@@ -24,20 +26,22 @@ class CategoriaController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nombre_categoria' => 'required',
+            'nombre_categoria' => 'required'
         ]);
 
         if($validator->fails()){
-            return redirect()
-                    ->back()
-                    ->withErrors($validator)
-                    ->withInput();
+
+            $errors = $validator->errors()->all();
+            $errors = implode("<br />",$errors);
+            SWAL::error("Hubo Errores",'',['html' => $errors]);
+            return redirect()->back()->withErrors();
         }
 
-
         Categoria::create($request->all());
-        return redirect()->route('categorias.index')
-                        ->with('success','Categoria '.$request->nombre_categoria.' Agregada!');
+
+        Alert::success("Categoría Creada!")->autoclose(1500);
+        
+        return redirect()->back();
     }
 
     public function destroy($id)
