@@ -60,7 +60,7 @@
                                             <div class="acciones-btn">
                                                 <!-- <a class="btn btn-info" href="{{ route('shipto.show',$shipto->id) }}">Show</a> -->
                                                 <a class="btn btn-info" href="{{ route('shipto.edit',$shipto->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                                {!! Form::open(['method' => 'DELETE','route' => ['shipto.destroy', $shipto->id],'style'=>'display:inline']) !!}
+                                                {!! Form::open(['method' => 'DELETE','onclick' => 'deletePrompt()','name' => 'deleteForm','route' => ['shipto.destroy', $shipto->id],'style'=>'display:inline']) !!}
                                                 <button type="submit" class="btn btn-danger">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </button>
@@ -84,4 +84,25 @@
         <center>{!! $shiptos->render() !!}</center>
         </div>
     </section>
+@endsection
+
+@section('add-plugins')
+<script>
+    function deletePrompt() {
+        event.preventDefault(); // prevent form submit
+        var form = document.forms["deleteForm"]; // storing the form
+        swal({
+            title: "Esta seguro/a de eliminar?",
+            text: "Si procede no se podrá recuperar esta información",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((result) => {
+            if (result) {
+                form.submit();
+            }
+        });
+    }
+</script>
 @endsection

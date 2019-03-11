@@ -8,30 +8,15 @@
        <h2 class="title pull-left">Nuevo Control</h2>
     @endsection
 
-@section('add-styles')
-    <link href="{{ asset('assets/plugins/messenger/css/messenger.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('assets/plugins/messenger/css/messenger-theme-future.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('assets/plugins/messenger/css/messenger-theme-flat.css') }}" rel="stylesheet" type="text/css" media="screen"/>        
-    <link href="{{ asset('assets/plugins/messenger/css/messenger-theme-block.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-@endsection
 <!-- SI HAY ORDENES POR FACTURAR -->
 @if(!empty($ordenes_fmt))
     @section('content')
-        <section class="box primary">
-            <!--  PANEL HEADER    -->      
+        <section class="box primary">    
             <header class="panel_header">
                 @yield('panel-title')
-                <!--<div class="actions panel_actions pull-right">
-                    <i class="box_toggle fa fa-chevron-down"></i>
-                    <i class="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></i>
-                    <i class="box_close fa fa-times"></i>
-                </div> -->
             </header>
             <div class="content-body">    
                 <div class="row">
-                    <div id="feedback">
-                        
-                    </div>
                    {!! Form::model($orden, ['id' => 'factura_form','name' => $orden->id,'class' => 'form-inline']) !!}
                    
                     <div class="well transparent">
@@ -65,13 +50,12 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="clearfix top15"></div>
                     <!-- BOTONES -->
                     <div class="row top15">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
                             <button type="submit" class="btn btn-primary right15">Procesar</button>
-                             <a type="button" class="btn" href="{{ URL::previous() }}">Cancelar</a>
+                             <a type="button" class="btn" href="{{ URL::to('ordenes') }}">Cancelar</a>
                         </div>
                     </div>
                 </div>
@@ -83,15 +67,9 @@
 <!-- SI NO HAY ORDENES POR FACTURAR -->
 @else
     @section('content')
-        <section class="box warning">
-            <!--  PANEL HEADER    -->      
+        <section class="box warning">    
             <header class="panel_header">
                 <h2 class="title">Advertencia</h2>
-                <!--<div class="actions panel_actions pull-right">
-                    <i class="box_toggle fa fa-chevron-down"></i>
-                    <i class="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></i>
-                    <i class="box_close fa fa-times"></i>
-                </div> -->
             </header>
             <div class="content-body">
                 <div class="row text-center">
@@ -104,12 +82,6 @@
 @endif
 
 @section('add-plugins')
-
-        <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
-    <script src="{{ asset('assets/plugins/messenger/js/messenger.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/plugins/messenger/js/messenger-theme-future.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/plugins/messenger/js/messenger-theme-flat.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/js/messenger.js') }}" type="text/javascript"></script><!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
     <!-- JS NECESARIO PARA ORDENES - START --> 
     <script type="text/javascript">
 
@@ -120,17 +92,26 @@
         var idOrden = $('select[id=orden]').val();
 
         if(idOrden === ''){
-            showErrorMessage('Seleccione una Nota de entrega!');
+            swal({
+                title: "Seleccione una Nota de Entrega",
+                icon: 'error'
+            });
             return false;
         }
         var itbms = $('#itbms').val();
         if (itbms === '') {
-            showErrorMessage('Indique un porcentaje valido!');
+            swal({
+                title: "Indique un ITBMS(%) válido",
+                icon: 'error'
+            });
             return false;
         }
         var condicion = $('#condicion').val();
         if (condicion === '') {
-            showErrorMessage('Debe escribir una condicion de pago!');
+            swal({
+                title: "Indique una Condición",
+                icon: 'error'
+            });
             return false;
         }
             $.ajax({
@@ -143,40 +124,46 @@
                 success: function( data, textStatus, jQxhr ){
                     if(data === "ok"){
                         swal({
-                            title:"Factura creada!",
-                            text: "Al cerrar será redireccionado a las facturas",
-                            type: "success",
-                            confirmButtonText: "Cerrar",
-                            },
-                            function(){
-                              setTimeout(function(){
-                                window.location.href = "{{URL::to('facturas')}}";
-                              }, 3000);
+                            text: "Control creado correctamente",
+                            icon: "success",
+                            buttons: false,
+                            timer: 1500
+                            }).then(() => {
+                                    swal({
+                                        title:"Crear nuevo control?",
+                                        text: "Si cancela se redireccionará a 'Controles'",
+                                        icon: "info",
+                                        buttons: true,
+                                    }).then((value) => {
+                                        if(value){
+                                            setTimeout(function(){
+                                                window.location.href = "{{Request::url()}}";
+                                            });
+                                        } else{
+                                            setTimeout(function(){
+                                                window.location.href = "{{ URL::to('facturas') }}";
+                                            }); 
+                                        }
+                                    })
+                                })
+                        }
+                        else{
+                            swal({
+                                title: "Hubo un error, contacte al ADMIN con el siguiente error:",
+                                text: data,
+                                icon: 'error'
                             });
-                    }
-                    else{
-                        var errors = "<p>"+data+"</p>";
+                            $("#submit").prop('disabled', false);
+                        }
+                    },
+                    error: function( jqXHR ){
                         swal({
-                            type: 'error',
                             title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            text: errors,
-                            html: true
+                            text: jqXHR.status+" - "+jqXHR.statusText,
+                            icon: 'error'
                         });
+                        $("#submit").prop('disabled', false);
                     }
-                },
-                error: function( data ){
-                    // Error...
-                    console.log(errors);
-                    console.log(data);
-                    var errors = "<p>"+data.responseText+"</p>";
-                    swal({
-                        type: 'error',
-                        title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                        text: errors,
-                        // customClass: 'sweet-alert-lg',
-                        html: true
-                    });
-                }
             });     
         });
 

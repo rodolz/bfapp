@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Validator;
 use Illuminate\Http\Request;
 use App\Shipto;
+use Alert;
 
 class ShiptoController extends Controller
 {
@@ -13,7 +13,6 @@ class ShiptoController extends Controller
 
         return view('shipto.index',compact('shiptos'))
             ->with('i', ($request->input('page', 1) - 1) * 10);
-        return view('shipto.index',compact('shiptos'));
     }
 
     public function create()
@@ -23,7 +22,7 @@ class ShiptoController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $this->validate($request, [
             'nombre_shipto' => 'required',
             'name' => 'required',
             'address_line1'=> 'required',
@@ -33,17 +32,9 @@ class ShiptoController extends Controller
             'phone' => 'required'
         ]);
 
-        if($validator->fails()){
-            return redirect()
-                    ->back()
-                    ->withErrors($validator)
-                    ->withInput();
-        }
-
-
         Shipto::create($request->all());
-        return redirect()->route('shipto.index')
-                        ->with('success','Direccion Shipto "'.$request->nombre_shipto.'" Agregada!');
+        Alert::success('Direccion Shipto "'.$request->nombre_shipto.'" Agregada!')->autoclose(1000);
+        return redirect()->route('shipto.index');
     }
 
     public function destroy($id)
@@ -66,9 +57,8 @@ class ShiptoController extends Controller
         ]);
 
         Shipto::find($id)->update($request->all());
-
-        return redirect()->route('shipto.index')
-                        ->with('success','Direccion Shipto Modificada!');
+        Alert::success('Direccion Shipto modificada')->autoclose(1000);
+        return redirect()->route('shipto.index');
     }
 
     public function edit(Request $request, $id)

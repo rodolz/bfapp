@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Producto;
 use App\User;
 use PDF;
+use Alert;
 
 class CotizacionController extends Controller
 {
@@ -18,10 +19,8 @@ class CotizacionController extends Controller
         $cotizaciones = Cotizacion::orderBy('id','DESC')->paginate(10);
         return view('ventas.cotizaciones.index',compact('cotizaciones'))
             ->with('i', ($request->input('page', 1) - 1) * 10);
-
-        // $ordenes = Orden::all();
-        // return view('ordenes.index')->with('ordenes', $ordenes);
     }
+
     public function create(){
 
         // con pluck() se crea un array asociativo con los datos de la db
@@ -51,9 +50,9 @@ class CotizacionController extends Controller
 
     public function destroy($id){
 
-        $cotizacion = Cotizacion::findorFail($id)->delete();
-        return redirect()->route('ventas.cotizaciones.index')
-                        ->with('success', 'Cotizacion Borrada!');
+        Cotizacion::findorFail($id)->delete();
+        Alert::success('Cotización Borrada')->autoclose(1000);
+        return redirect()->back();
     }
     public function nueva_cotizacion(Request $request){
 

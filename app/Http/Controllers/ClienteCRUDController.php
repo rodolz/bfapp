@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Cliente;
-use Validator;
+use Alert;
 
 class ClienteCRUDController extends Controller
 {
@@ -113,6 +113,7 @@ class ClienteCRUDController extends Controller
         ]);
 
         Cliente::find($id)->update($request->all());
+
         return redirect()->route('clientes.index')->with('success','Cliente Modificado!');
     }
 
@@ -125,6 +126,8 @@ class ClienteCRUDController extends Controller
     public function destroy($id)
     {
         Cliente::find($id)->delete();
+
+        Alert::success('Cliente Elminado!')->autoclose(1000);
 
         return redirect()->back();
     }

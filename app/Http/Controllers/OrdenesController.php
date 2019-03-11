@@ -93,7 +93,7 @@ class OrdenesController extends Controller
         return view('ordenes.create_from_cotizacion',compact('cotizacion','productos_seleccionados','repartidores','cliente_seleccionado'));
     }
 
-    public function update_orden(Request $request)
+    public function update(Request $request)
     {
         $orden = Orden::findorFail($request->idOrden);
 
@@ -188,22 +188,6 @@ class OrdenesController extends Controller
         // Orden::find($id)->update($request->all());
         // return redirect()->route('ordenes.index')
         //                 ->with('success','Orden Modificada!');
-    }
-
-    public function update(Request $request, $id)
-    {
-        $this->validate($request, [
-            'codigo' => 'required',
-            'nombre_producto' => 'required',
-            'descripcion' => 'required',
-            'medidas' => 'required',
-            'precio' => 'required',
-            'cantidad' => 'required',
-        ]);
-
-        Orden::find($id)->update($request->all());
-        return redirect()->route('ordenes.index')
-                        ->with('success','Orden Modificada!');
     }
 
     public function destroy($id)

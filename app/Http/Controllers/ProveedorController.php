@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Proveedor;
 use App\ProductoProveedor;
+use Alert;
 
 class ProveedorController extends Controller
 {
@@ -41,7 +42,7 @@ class ProveedorController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'email',
             'website' => 'required',
             'address' => 'required',
             'country' => 'required',
@@ -50,8 +51,8 @@ class ProveedorController extends Controller
         ]);
 
         Proveedor::create($request->all());
-        return redirect()->route('proveedores.index')
-                        ->with('success','Proveedor Agregado!');
+        Alert::success("Proveedor Creado")->autoclose(1000);
+        return redirect()->route('proveedores.index');
     }
 
     /**
@@ -100,7 +101,11 @@ class ProveedorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Proveedor::find($id)->delete();
+
+        Alert::success("Proveedor Borrado")->autoclose(1000);
+        
+        return redirect()->back();
     }
 
 }

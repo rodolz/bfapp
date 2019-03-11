@@ -1,18 +1,11 @@
 @extends('layout.master')
 
-    @section('page-title')
-        <h2 class="title bold">Notas de Entrega</h2>
-    @endsection
+@section('page-title')
+    <h2 class="title bold">Notas de Entrega</h2>
+@endsection
 
-    @section('panel-title')
-       <h2 class="title pull-left">Nueva Nota de Entrega</h2>
-    @endsection
-
-@section('add-styles')
-    <link href="{{ asset('plugins/messenger/css/messenger.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-future.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-flat.css') }}" rel="stylesheet" type="text/css" media="screen"/>        
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-block.css') }}" rel="stylesheet" type="text/css" media="screen"/>
+@section('panel-title')
+    <h2 class="title pull-left">Nueva Nota de Entrega</h2>
 @endsection
 
 @section('content')
@@ -126,10 +119,6 @@
 @section('add-plugins')
 
         <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
-    <script src="{{ asset('plugins/messenger/js/messenger.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-future.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-flat.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/messenger.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/autonumeric/autoNumeric-min.js') }}" type="text/javascript"></script>
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
@@ -151,6 +140,9 @@
                     $('#precio').val(data);
                     $("#add_producto").prop("disabled",false);
                 }
+                // error: function(data){
+                //     console.log(data);
+                // }
             });
         });
         // INICIO DE LA ACCION DE AGREGAR PRODUCTOS A LA LISTA
@@ -159,7 +151,10 @@
             var idProducto = $('#producto').val();
             //Validacion del producto seleccionado
             if (idProducto === '') {
-                showErrorMessage('Seleccione un Producto!');
+                swal({
+                    title: "Seleccione un producto",
+                    icon: 'error'
+                });
                 return false;
             }
             var codigo = $('select[id=producto] option:selected').html();
@@ -195,7 +190,18 @@
                         $('#lista_productos').append(li);
                    } 
                    else {
-                        showErrorMessage('Inventario no suficiente para este producto ('+codigo+')');
+                        swal({
+                            title: "Cantidad no disponible",
+                            text: "Inventario insuficiente para:",
+                            content: {
+                                element: "p",
+                                attributes: {
+                                    innerText: codigo,
+                                    className: 'bg-muted',
+                                },
+                            },
+                            icon: 'error'
+                        });
                    }
                 } 
             });
@@ -207,7 +213,10 @@
             var nombre_repartidor = $('select[id=repartidor] option:selected').html();
             //Validacion del producto seleccionado
             if (idRepartidor === '') {
-                showErrorMessage('Seleccione un Repartidor!');
+                swal({
+                    title: "Seleccione a un repartidor",
+                    icon: 'error'
+                });
                 return false;
             }
             else{
@@ -249,9 +258,11 @@
         $('#orden_form').submit(function(e){
             e.preventDefault();
             var idCliente = $('select[id=cliente]').val();
-
             if(idCliente === ''){
-                showErrorMessage('Seleccione a un Cliente!');
+                swal({
+                    title: "Seleccione a un cliente",
+                    icon: 'error'
+                });
                 return false;
             }
             var productos = [];
@@ -269,7 +280,10 @@
                 productos.push(obj);
             });
             if(productos.length === 0){
-                showErrorMessage('Escoja Al Menos Un Producto!');
+                swal({
+                    title: "Debe seleccionar al menos un producto",
+                    icon: 'error'
+                });
                 return false;
             }
             var repartidores = [];
@@ -279,7 +293,10 @@
                 repartidores.push(id);
             });
             if(repartidores.length === 0){
-                showErrorMessage('Escoja Al Menos A Un Repartidor!');
+                swal({
+                    title: "Debe seleccionar al menos a un repartidor",
+                    icon: 'error'
+                });
                 return false;
             }
             var jsondata = JSON.stringify(productos);
@@ -329,6 +346,6 @@
         });
 
         // FIN - PROCESAR EL FORMULARIO
-    </script> 
-    <!-- JS NECESARIO PARA ORDENES - END --> 
+</script>
 @endsection
+

@@ -130,16 +130,11 @@
 @section('add-plugins')
 
         <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
-    <script src="{{ asset('plugins/messenger/js/messenger.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-future.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-flat.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/messenger.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/autonumeric/autoNumeric-min.js') }}" type="text/javascript"></script>
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
     <!-- JS NECESARIO PARA ORDENES - START --> 
     <script type="text/javascript">
-
         $('#producto').change(function(){
             var prod_id = $(this).val();
              $.ajax({
@@ -164,8 +159,10 @@
             var idProducto = $('#producto').val();
             //Validacion del producto seleccionado
             if (idProducto === '') {
-                showErrorMessage('Seleccione un Producto!');
-                return false;
+                swal({
+                    title: "Debe Seleccionar un producto",
+                    icon: 'error'
+                });
             }
             var codigo = $('select[id=producto] option:selected').html();
             var cantidad = $('#cantidad').val();
@@ -193,7 +190,18 @@
                         $('#lista_productos').append(li);
                    } 
                    else {
-                        showErrorMessage('Inventario no suficiente para este producto ('+codigo+')');
+                    swal({
+                        title: "Cantidad no disponible",
+                        text: "Inventario insuficiente para:",
+                        content: {
+                            element: "p",
+                            attributes: {
+                                innerText: codigo,
+                                className: 'bg-muted',
+                            },
+                        },
+                        icon: 'error'
+                    });
                    }
                 } 
             });
@@ -203,9 +211,12 @@
         $('#add_repartidor').click(function(){
             var idRepartidor = $('select[id=repartidor]').val();
             var nombre_repartidor = $('select[id=repartidor] option:selected').html();
-            //Validacion del producto seleccionado
+            //Validacion del repartidor
             if (idRepartidor === '') {
-                showErrorMessage('Seleccione un Repartidor!');
+                swal({
+                    title: "Debe seleccionar a un repartidor",
+                    icon: 'error'
+                });
                 return false;
             }
             else{
@@ -250,7 +261,10 @@
             var idOrden = $('#orden_form').attr('name');
 
             if(idCliente === ''){
-                showErrorMessage('Seleccione a un Cliente!');
+                swal({
+                    title: "Debe seleccionar a un cliente",
+                    icon: 'error'
+                });
                 return false;
             }
             var productos = [];
@@ -268,7 +282,10 @@
                 productos.push(obj);
             });
             if(productos.length === 0){
-                showErrorMessage('Escoja Al Menos Un Producto!');
+                swal({
+                    title: "Debe seleccionar al menos un producto",
+                    icon: 'error'
+                });
                 return false;
             }
             var repartidores = [];
@@ -278,7 +295,10 @@
                 repartidores.push(id);
             });
             if(repartidores.length === 0){
-                showErrorMessage('Escoja Al Menos A Un Repartidor!');
+                swal({
+                    title: "Debe seleccionar al menos a un repartidor",
+                    icon: 'error'
+                });
                 return false;
             }
             var jsondata = JSON.stringify(productos);
@@ -287,44 +307,38 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },  
                     type : 'POST',
-                    url  : '/update_orden',
+                    url  : '/ordenes/update_orden',
                     data : {data: jsondata, idCliente: idCliente, repartidores: repartidores, idOrden: idOrden},
                     success: function( data, textStatus, jQxhr ){
                         if(data === "ok"){
                             swal({
                                 title:"Nota de entrega modificada!",
                                 text: "Al cerrar será redireccionado a las notas de entrega",
-                                type: "success",
-                                confirmButtonText: "Cerrar",
-                                },
-                                function(){
+                                icon: "success",
+                                buttons: false,
+                                timer: 1000
+                                }).then(() => {
                                   setTimeout(function(){
                                     window.location.href = "{{URL::to('ordenes')}}";
-                                  }, 3000);
+                                  }, 1000);
                                 });
                         }
                         else{
-                            var errors = "<p>"+data+"</p>";
                             swal({
-                                type: 'error',
                                 title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                                text: errors,
-                                html: true
+                                text: data,
+                                icon: 'error'
                             });
+                            $("#submit").prop('disabled', false);
                         }
                     },
-                    error: function( data ){
-                        // Error...
-                        console.log(errors);
-                        console.log(data);
-                        var errors = "<p>"+data.responseText+"</p>";
+                    error: function( jqXHR ){
                         swal({
-                            type: 'error',
                             title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            text: errors,
-                            // customClass: 'sweet-alert-lg',
-                            html: true
+                            text: jqXHR.status+" - "+jqXHR.statusText,
+                            icon: 'error'
                         });
+                        $("#submit").prop('disabled', false);
                     }
                 });     
         });

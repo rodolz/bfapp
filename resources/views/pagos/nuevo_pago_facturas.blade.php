@@ -9,11 +9,6 @@
     @endsection
 
 @section('add-styles')
-    <link href="{{ asset('plugins/messenger/css/messenger.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-future.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-flat.css') }}" rel="stylesheet" type="text/css" media="screen"/>        
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-block.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-
     <link rel="stylesheet" href="{{ asset('css/bootstrap-multiselect.css') }}" type="text/css"/>
 @endsection
 
@@ -65,9 +60,6 @@
 
         <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
     <script type="text/javascript" src="{{ asset('js/bootstrap-multiselect.js') }}"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-future.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-flat.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/messenger.js') }}" type="text/javascript"></script><!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
     <!-- JS NECESARIO PARA ORDENES - START --> 
     <script type="text/javascript">

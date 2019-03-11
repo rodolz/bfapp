@@ -14,11 +14,6 @@
         <!--  PANEL HEADER    -->      
         <header class="panel_header">
             @yield('panel-title')
-            <!--<div class="actions panel_actions pull-right">
-                <i class="box_toggle fa fa-chevron-down"></i>
-                <i class="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></i>
-                <i class="box_close fa fa-times"></i>
-            </div> -->
         </header>
         <div class="content-body">    
             <div class="row">
@@ -63,10 +58,10 @@
                                     <td>
                                         <div class="acciones-btn">
                                             <!-- <a class="btn btn-info" href="{{ route('clientes.show',$value->id) }}">Show</a> -->
-                                            <a class="btn btn-info" href="{{ route('clientes.edit',$value->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                            <a class="btn btn-info" href="{{ route('clientes.edit',$value->id) }}"><i class="fas fa-edit"></i></a>
                                             {!! Form::open(['method' => 'DELETE', 'name' => 'deleteForm', 'onclick' => 'deletePrompt()', 'route' => ['clientes.destroy', $value->id],'style'=>'display:inline']) !!}
                                             <button type="submit" class="btn btn-danger">
-                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                <i class="fas fa-trash-alt"></i>
                                             </button>
                                             {!! Form::close() !!}
                                         </div>
@@ -95,20 +90,18 @@
     function deletePrompt() {
         event.preventDefault(); // prevent form submit
         var form = document.forms["deleteForm"]; // storing the form
-        Swal.fire({
-                title: "Esta seguro/a de eliminar?",
-                text: "Si procede no se podrá recuperar esta información",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si'
-            })
-            .then((result) => {
-                if (result.value) {
-                    form.submit();
-                }
-            });
+        swal({
+            title: "Esta seguro/a de eliminar?",
+            text: "Si procede no se podrá recuperar esta información",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((result) => {
+            if (result) {
+                form.submit();
+            }
+        });
     }
 </script>
 @endsection

@@ -1,6 +1,7 @@
 
         <!-- CORE JS FRAMEWORK - START --> 
-        <script src="{{ asset('js/jquery-1.11.2.min.js') }}" type="text/javascript"></script> 
+        <script src="{{ asset('js/jquery-1.11.2.min.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('plugins/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
         <script src="{{ asset('plugins/pace/pace.min.js') }}" type="text/javascript"></script>  
         <script src="{{ asset('plugins/perfect-scrollbar/perfect-scrollbar.min.js') }}" type="text/javascript"></script> 
         <script src="{{ asset('plugins/viewport/viewportchecker.js') }}" type="text/javascript"></script>  
@@ -13,7 +14,6 @@
         <script src="{{ asset('plugins/datatables/extensions/Responsive/bootstrap/3/dataTables.bootstrap.js') }}" type="text/javascript"></script>
         <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
         <script src="{{ asset('plugins\sweetalert-2.1.2\docs\assets\sweetalert\sweetalert.min.js') }}" type="text/javascript"></script>
-        <!-- Include this after the sweet alert js file -->
         <!-- Include this after the sweet alert js file -->
         @include('sweet::alert')
         <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 

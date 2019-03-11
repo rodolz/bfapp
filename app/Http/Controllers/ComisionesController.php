@@ -9,6 +9,7 @@ use App\Orden;
 use App\User;
 use App\Cliente;
 use Codedge\Fpdf\Facades\Fpdf;
+use Alert;
 
 class ComisionesController extends Controller
 {
@@ -217,19 +218,7 @@ class ComisionesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'codigo' => 'required',
-            'idCategoria' => 'required',
-            'nombre_producto' => 'required',
-            'descripcion' => 'required',
-            'medidas' => 'required',
-            'precio' => 'required',
-            'cantidad' => 'required',
-        ]);
 
-        Comision::create($request->all());
-        return redirect()->route('comisiones.index')
-                        ->with('success','comision Agregada!');
     }
 
     /**
@@ -240,8 +229,6 @@ class ComisionesController extends Controller
      */
     public function show($id)
     {
-        $comision = Comision::find($id);
-        return view('comisiones.show',compact('comision'));
     }
 
     /**
@@ -252,8 +239,7 @@ class ComisionesController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $comision = Comision::find($id);
-        return view('comisiones.edit',compact('comision'));
+
     }
 
     /**
@@ -265,17 +251,6 @@ class ComisionesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'codigo' => 'required',
-            'nombre_producto' => 'required',
-            'descripcion' => 'required',
-            'medidas' => 'required',
-            'precio' => 'required',
-            'cantidad' => 'required',
-        ]);
-
-        Comision::find($id)->update($request->all());
-        return redirect()->back()->with('success','comision Modificada!');
     }
 
     /**
@@ -287,6 +262,7 @@ class ComisionesController extends Controller
     public function destroy($id)
     {
         Comision::find($id)->delete();
-        return redirect()->back()->with('success','comision Borrada!');
+        Alert::success('Comisión Borrada')->autoclose(1000);
+        return redirect()->back();
     }
 }

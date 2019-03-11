@@ -8,17 +8,9 @@
        <h2 class="title pull-left">Nueva Orden de Compra para {{ $proveedor->name }}</h2>
     @endsection
 
-@section('add-styles')
-    <link href="{{ asset('plugins/messenger/css/messenger.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-future.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-flat.css') }}" rel="stylesheet" type="text/css" media="screen"/>        
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-block.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-@endsection
-
 @section('content')
 
-    <section class="box primary">
-        <!--  PANEL HEADER    -->      
+    <section class="box primary">     
         <header class="panel_header">
             @yield('panel-title')
         </header>
@@ -117,7 +109,7 @@
                     <div class="row top15">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
                                 <button type="submit" id="submit" class="btn btn-primary right15">Procesar</button>
-                                 <a type="button" class="btn" href="{{ URL::previous() }}">Cancelar</a>
+                                 <a type="button" class="btn" href="{{ URL::to('purchase_orders') }}">Cancelar</a>
                         </div>
                     </div>
                 </div>
@@ -132,11 +124,7 @@
 
 @section('add-plugins')
 
-        <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
-    <script src="{{ asset('plugins/messenger/js/messenger.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-future.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-flat.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/messenger.js') }}" type="text/javascript"></script>
+    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
     <script src="{{ asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/autonumeric/autoNumeric-min.js') }}" type="text/javascript"></script>
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
@@ -175,7 +163,10 @@
             var idProducto = $('#producto').val();
             //Validacion del producto seleccionado
             if (idProducto === '') {
-                showErrorMessage('Seleccione un Producto!');
+                swal({
+                    title: "Seleccione un producto",
+                    icon: 'error'
+                });
                 return false;
             }
             var codigo = $('select[id=producto] option:selected').html();
@@ -219,7 +210,10 @@
             var comments = $('#comments').val();
 
             if(idProveedor === '' || tax === '' || shipto === ''){
-                showErrorMessage('Llene los campos vacios');
+                swal({
+                    title: "Debe llenar todos los campos",
+                    icon: 'error'
+                });
                 return false;
             }
             var productos = [];
@@ -237,7 +231,10 @@
                 productos.push(obj);
             });
             if(productos.length === 0){
-                showErrorMessage('Escoja Al Menos Un Producto!');
+                swal({
+                    title: "Seleccione al menos un producto",
+                    icon: 'error'
+                });
                 return false;
             }
             var jsondata = JSON.stringify(productos);
@@ -256,37 +253,30 @@
                         if(data === "ok"){
                             swal({
                                 title:"Orden de Compra creada!",
-                                text: "Al cerrar será redireccionado a las Ordenes de Compra",
-                                type: "success",
-                                confirmButtonText: "Cerrar",
-                                },
-                                function(){
+                                text: "Al cerrar será redireccionado a las ordes de compra",
+                                icon: "success",
+                                buttons: false,
+                                timer: 1000
+                                }).then(() => {
                                   setTimeout(function(){
                                     window.location.href = "{{URL::to('purchase_orders')}}";
-                                  }, 3000);
+                                  }, 1000);
                                 });
                         }
                         else{
-                            console.log(data);
-                            var errors = "<p>"+data+"</p>";
                             swal({
-                                type: 'error',
                                 title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                                text: errors,
-                                html: true
+                                text: data,
+                                icon: 'error'
                             });
                             $("#submit").prop('disabled', false);
                         }
                     },
-                    error: function( data ){
-                        console.log(data);
-                        var errors = "<p>"+data.responseText+"</p>";
+                    error: function( jqXHR ){
                         swal({
-                            type: 'error',
                             title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            text: errors,
-                            // customClass: 'sweet-alert-lg',
-                            html: true
+                            text: jqXHR.status+" - "+jqXHR.statusText,
+                            icon: 'error'
                         });
                         $("#submit").prop('disabled', false);
                     }

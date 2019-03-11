@@ -8,7 +8,7 @@
                     <div class="profile-info row">
 
                         <div class="profile-image col-md-4 col-sm-4 col-xs-4">
-                            <a href="/perfil">
+                            <a href="{{ route('users.show', Auth::user()->id) }}">
                                 <img src="/uploads/avatars/{{ Auth::user()->avatar }}" class="img-responsive img-circle">
                             </a>
                         </div>
@@ -16,24 +16,23 @@
                         <div class="profile-details col-md-8 col-sm-8 col-xs-8">
 
                             <h3>
-                                <a href="/perfil">{{ Auth::user()->nombre }}</a>
-
+                                <a href="{{ route('users.show', Auth::user()->id) }}">{{ Auth::user()->nombre }}</a>
                                 <!-- Available statuses: online, idle, busy, away and offline -->
                                 <span class="profile-status online"></span>
                             </h3>
                             <p class="profile-title">
+                                @foreach(Auth::user()->roles as $role)
+                                    {{ $role->name }} <br/>
+                                @endforeach
                             </p>
                         </div>
 
                     </div>
                     <!-- USER INFO - END -->
-
-
-
                     <ul class='wraplist'>
                         <li class="{{ Request::is('/') ? 'open' : '' }}">
                             <a href="{{ URL::to('/') }}">
-                                <i class="fa fa-tachometer"></i>
+                                <i class="fas fa-tachometer-alt"></i>
                                 <span class="title">Resumen</span>
                             </a>
                         </li>
@@ -63,7 +62,7 @@
                         </li>
                         <li class="{{ Request::is('clientes') ? 'open' : '' }}">
                             <a href="{{ URL::to('/clientes') }}">
-                                <i class="fa fa-users"></i>
+                                <i class="fas fa-user-tie"></i>
                                 <span class="title">Clientes</span>
                             </a>
                         </li>
@@ -88,13 +87,13 @@
                         </li>
                         <li class="{{ Request::is('purchase_orders','purchase_orders/*') ? 'open' : '' }}">
                             <a href="{{ URL::to('purchase_orders') }}">
-                                <i class="fa fa-file-text-o fa-lg"></i>
+                                <i class="fas fa-file-alt"></i>
                                 <span class="title">Ordenes de Compra</span>
                             </a>
                         </li> 
                         <li class="{{ Request::is('ordenes','ordenes/create','ordenes/*') ? 'open' : '' }}">
                             <a href="javascript:;">
-                                <i class="fa fa-file-pdf-o"></i>
+                                <i class="fas fa-file"></i>
                                 <span class="title">Notas de Entrega</span>
                                 <span class="{{ Request::is('ordenes','ordenes/create','ordenes/*') ? 'arrow open' : 'arrow' }}"></span>
                             </a>
@@ -109,7 +108,7 @@
                         </li>
                         <li class="{{ Request::is('comisiones','comisiones/create') ? 'open' : '' }}">
                             <a href="javascript:;">
-                                <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                                <i class="fas fa-handshake"></i>
                                 <span class="title">Comisiones</span>
                                 <span class="{{ Request::is('comisiones','comisiones/create') ? 'arrow open' : 'arrow' }}"></span>
                             </a>
@@ -136,7 +135,7 @@
                         </li> 
                          <li class="{{ Request::is('pagos','pagos/*') ? 'open' : '' }}">
                             <a href="javascript:;">
-                                <i class="fa fa-money"></i>
+                                <i class="fas fa-money-bill-alt"></i>
                                 <span class="title">Pagos</span>
                                 <span class="{{ Request::is('pagos','pagos/*') ? 'arrow open' : 'arrow' }}"></span>
                             </a>
@@ -156,7 +155,7 @@
                         </li>
                         <li class="{{ Request::is('ventas','ventas/*') ? 'open' : '' }}">
                             <a href="javascript:;">
-                                <i class="fa fa-dollar" aria-hidden="true"></i>
+                                <i class="fas fa-dollar-sign"></i>
                                 <span class="title">Ventas</span>
                                 <span class="{{ Request::is('ventas','ventas/*') ? 'arrow open' : 'arrow' }}"></span>
                             </a>
@@ -190,10 +189,10 @@
                                 <span class="title">Métricas</span>
                             </a>
                         </li> -->
-                        <li class="{{ Request::is('register') ? 'open' : '' }}">
-                            <a href="{{ URL::to('/register') }}">
-                                <i class="fa fa-check-square-o"></i>
-                                <span class="title">Registrar Usuario</span>
+                        <li class="{{ Request::is('users','users/*') ? 'open' : '' }}">
+                            <a href="{{ URL::to('/users') }}">
+                                <i class="fa fa-users"></i>
+                                <span class="title">Usuarios</span>
                             </a>
                         </li>
                     </ul>

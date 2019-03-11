@@ -9,11 +9,6 @@
     @endsection
 
 @section('add-styles')
-    <link href="{{ asset('plugins/messenger/css/messenger.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-future.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-flat.css') }}" rel="stylesheet" type="text/css" media="screen"/>        
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-block.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-
     <link href="{{ asset('plugins/icheck/skins/all.css') }}" rel="stylesheet" type="text/css" media="screen"/>
 @endsection
 
@@ -202,15 +197,12 @@
 
 @section('add-plugins')
 
-        <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
-    <script src="{{ asset('plugins/icheck/icheck.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/autosize/autosize.min.js') }}" type="text/javascript"></script>
-
-        <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
-
-        <script src="{{ asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('plugins/autonumeric/autoNumeric-min.js') }}" type="text/javascript"></script>
-        <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
+<!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
+<script src="{{ asset('plugins/icheck/icheck.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('plugins/autosize/autosize.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('plugins/autonumeric/autoNumeric-min.js') }}" type="text/javascript"></script>
+<!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -223,339 +215,296 @@ $(document).ready(function() {
 
 });
 
-    $('#pago_form').submit(function(e){
+$('#pago_form').submit(function(e){
 
-        e.preventDefault();
-        //disable the submit button
-        $("#submit").prop("disabled",true);
+    e.preventDefault();
+    //disable the submit button
+    $("#submit").prop("disabled",true);
 
-        var idCliente = $(this).attr('idcliente');
-        var created_at = $('#created_at').val();
+    var idCliente = $(this).attr('idcliente');
+    var created_at = $('#created_at').val();
 
-        var facturas = [];
-        var monto_total = 0;
-        $( "#div_facturas" ).find('label').each(function( index ) {
-            if($(this).attr('id') == 'facturas'){
-                facturas.push($(this).attr('idfactura'));
-            }
-            else{
-                monto_total = $("label").attr('monto_total');
-            }
-        });
-        
-        monto_total = parseFloat(monto_total);
-
-        var input;
-        var tipo_pago;
-        var monto_pago;
-
-        $( "#myRadioGroup" ).find('div').each(function( index ) {
-            var asd = $(this).attr('class');
-            var ret = asd.split(" ");
-            if(ret[1] === 'checked'){
-                input = $(this).children();
-
-                tipo_pago = input.val();
-            }
-
-        });
-        
-
-        if(tipo_pago === '1'){
-            var banco = $('#banco_cheque').val();
-            var numero_referencia = $('#numero_referencia_cheque').val();
-            var monto_pago = $('#monto_pago_cheque').val()
-            //Limpiar el $ y las commas
-            monto_pago = monto_pago.replace(/[$,]/g, "");
-            if( banco.length <= 0 || numero_referencia.length <= 0 || monto_pago.length <= 0){
-                swal({
-                    title:"ERROR",
-                    text: "Debe llenar los campos",
-                    type: "error",
-                    confirmButtonText: "Cerrar",
-                    });
-                $("#submit").prop("disabled",false);
-                return false;
-                
-            }
-            if( monto_pago > monto_total){
-                swal({
-                    title:"ERROR",
-                    text: "El pago no puede ser mayor al monto total",
-                    type: "error",
-                    confirmButtonText: "Cerrar",
-                    });
-                $("#submit").prop("disabled",false);
-                return false;
-            }
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },  
-                type : 'POST',
-                url  : '/pagos/guardar_pago',
-                data : { idCliente: idCliente, banco: banco, numero_referencia: numero_referencia, facturas: facturas, monto_pago: monto_pago, tipo_pago: tipo_pago, created_at: created_at},
-                success: function( data, textStatus, jQxhr ){
-                    if(data === "ok"){
-                        swal({
-                            title:"Pago creado!",
-                            text: "Al cerrar será redireccionado a los pagos",
-                            type: "success",
-                            confirmButtonText: "Cerrar",
-                            },
-                            function(){
-                              setTimeout(function(){
-                                window.location.href = "{{URL::to('pagos')}}";
-                              }, 3000);
-                            });
-                    }
-                    else{
-                        var errors = "<p>"+data+"</p>";
-                        swal({
-                            type: 'error',
-                            title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            text: errors,
-                            html: true
-                        });
-                        $("#submit").prop("disabled",false);
-                    }
-                },
-                error: function( data ){
-                    // Error...
-                    console.log(errors);
-                    console.log(data);
-                    var errors = "<p>"+data.responseText+"</p>";
-                    swal({
-                        type: 'error',
-                        title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                        text: errors,
-                        customClass: 'sweet-alert-lg',
-                        html: true
-                    });
-                    $("#submit").prop("disabled",false);
-                }
-            });
+    var facturas = [];
+    var monto_total = 0;
+    $( "#div_facturas" ).find('label').each(function( index ) {
+        if($(this).attr('id') == 'facturas'){
+            facturas.push($(this).attr('idfactura'));
         }
-        else if(tipo_pago === '2'){
-            var monto_pago = $('#monto_pago_cash').val()
-            //Limpiar el $ y las commas
-            monto_pago = monto_pago.replace(/[$,]/g, "");
-            if( monto_pago.length <= 0){
-                swal({
-                    title:"ERROR",
-                    text: "Debe llenar los campos",
-                    type: "error",
-                    confirmButtonText: "Cerrar",
-                    });
-                $("#submit").prop("disabled",false);
-                return false;
-            }
-            if( monto_pago > monto_total){
-                swal({
-                    title:"ERROR",
-                    text: "El pago no puede ser mayor al monto total",
-                    type: "error",
-                    confirmButtonText: "Cerrar",
-                    });
-                $("#submit").prop("disabled",false);
-                return false;
-            }
-            $.ajax({
-                  headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },  
-                type : 'POST',
-                url  : '/pagos/guardar_pago',
-                data : { idCliente: idCliente, facturas: facturas, monto_pago: monto_pago, tipo_pago: tipo_pago, created_at: created_at},
-                success: function( data, textStatus, jQxhr ){
-                   if(data === "ok"){
-                        swal({
-                            title:"Pago creado!",
-                            text: "Al cerrar será redireccionado a los pagos",
-                            type: "success",
-                            confirmButtonText: "Cerrar",
-                            },
-                            function(){
-                              setTimeout(function(){
-                                window.location.href = "{{URL::to('pagos')}}";
-                              }, 3000);
-                            });
-                    }
-                    else{
-                        var errors = "<p>"+data+"</p>";
-                        swal({
-                            type: 'error',
-                            title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            text: errors,
-                            html: true
-                        });
-                        $("#submit").prop("disabled",false);
-                    }
-                },
-                error: function( data ){
-                    // Error...
-                    console.log(errors);
-                    console.log(data);
-                    var errors = "<p>"+data.responseText+"</p>";
-                    swal({
-                        type: 'error',
-                        title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                        text: errors,
-                        // customClass: 'sweet-alert-lg',
-                        html: true
-                    });
-                    $("#submit").prop("disabled",false);
-                }
-            });
+        else if($(this).attr('monto_total')){
+            monto_total = $(this).attr('monto_total');
         }
-        else if(tipo_pago === '3'){
-            var banco = $('#banco_ach').val();
-            var numero_referencia = $('#numero_referencia_ach').val();
-            var monto_pago = $('#monto_pago_ach').val();
-            //Limpiar el $ y las commas
-            monto_pago = monto_pago.replace(/[$,]/g, "");
-            if( banco.length <= 0 || numero_referencia.length <= 0 || monto_pago.length <= 0){
-                swal({
-                    title:"ERROR",
-                    text: "Debe llenar los campos",
-                    type: "error",
-                    confirmButtonText: "Cerrar",
-                    });
-                    $("#submit").prop("disabled",false);
-                return false;
-            }
-            if( monto_pago > monto_total){
-                swal({
-                    title:"ERROR",
-                    text: "El pago no puede ser mayor al monto total",
-                    type: "error",
-                    confirmButtonText: "Cerrar",
-                    });
-                    $("#submit").prop("disabled",false);
-                return false;
-            }
-            $.ajax({
-                  headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },  
-                type : 'POST',
-                url  : '/pagos/guardar_pago',
-                data : { idCliente: idCliente, banco: banco, numero_referencia: numero_referencia, facturas: facturas, monto_pago: monto_pago, tipo_pago: tipo_pago, created_at: created_at},
-                success: function( data, textStatus, jQxhr ){
-                    if(data === "ok"){
-                        swal({
-                            title:"Pago creado!",
-                            text: "Al cerrar será redireccionado a los pagos",
-                            type: "success",
-                            confirmButtonText: "Cerrar",
-                            },
-                            function(){
-                              setTimeout(function(){
-                                window.location.href = "{{URL::to('pagos')}}";
-                              }, 3000);
-                            });
-                    }
-                    else{
-                        var errors = "<p>"+data+"</p>";
-                        swal({
-                            type: 'error',
-                            title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            text: errors,
-                            html: true
-                        });
-                        $("#submit").prop("disabled",false);
-                    }
-                },
-                error: function( data ){
-                    // Error...
-                    console.log(errors);
-                    console.log(data);
-                    var errors = "<p>"+data.responseText+"</p>";
-                    swal({
-                        type: 'error',
-                        title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                        text: errors,
-                        customClass: 'sweet-alert-lg',
-                        html: true
-                    });
-                    $("#submit").prop("disabled",false);
-                }
-            });
-        }
-        else{
-            var descripcion = $('#descripcion').val();
-            var monto_pago = $('#monto_pago_otro').val();
-            //Limpiar el $ y las commas
-            monto_pago = monto_pago.replace(/[$,]/g, "");
-            if( descripcion.length <= 0 || monto_pago.length <= 0){
-                swal({
-                    title:"ERROR",
-                    text: "Debe llenar la descripcion",
-                    type: "error",
-                    confirmButtonText: "Cerrar",
-                    });
-                    $("#submit").prop("disabled",false);
-                return false;
-            }
-            if( monto_pago > monto_total){
-                swal({
-                    title:"ERROR",
-                    text: "El pago no puede ser mayor al monto total",
-                    type: "error",
-                    confirmButtonText: "Cerrar",
-                    });
-                    $("#submit").prop("disabled",false);
-                return false;
-            }
-            $.ajax({
-                  headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },  
-                type : 'POST',
-                url  : '/pagos/guardar_pago',
-                data : { idCliente: idCliente, facturas: facturas, monto_pago: monto_pago, tipo_pago: tipo_pago, descripcion: descripcion, created_at: created_at},
-                success: function( data, textStatus, jQxhr ){
-                    if(data === "ok"){
-                        swal({
-                            title:"Pago creado!",
-                            text: "Al cerrar será redireccionado a los pagos",
-                            type: "success",
-                            confirmButtonText: "Cerrar",
-                            },
-                            function(){
-                              setTimeout(function(){
-                                window.location.href = "{{URL::to('pagos')}}";
-                              }, 3000);
-                        });
-                    }
-                    else{
-                        var errors = "<p>"+data+"</p>";
-                        swal({
-                            type: 'error',
-                            title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            text: errors,
-                            html: true
-                        });
-                        $("#submit").prop("disabled",false);
-                    }
-                },
-                error: function( data ){
-                    // Error...
-                    console.log(errors);
-                    console.log(data);
-                    var errors = "<p>"+data.responseText+"</p>";
-                    swal({
-                        type: 'error',
-                        title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                        text: errors,
-                        customClass: 'sweet-alert-lg',
-                        html: true
-                    });
-                    $("#submit").prop("disabled",false);
-                }
-            });
-        }    
     });
+    
+    monto_total = parseFloat(monto_total);
+    var input;
+    var tipo_pago;
+    var monto_pago;
+
+    $( "#myRadioGroup" ).find('div').each(function( index ) {
+        var asd = $(this).attr('class');
+        var ret = asd.split(" ");
+        if(ret[1] === 'checked'){
+            input = $(this).children();
+            tipo_pago = input.val();
+        }
+
+    });
+    
+
+    if(tipo_pago === '1'){
+        var banco = $('#banco_cheque').val();
+        var numero_referencia = $('#numero_referencia_cheque').val();
+        var monto_pago = $('#monto_pago_cheque').val()
+        //Limpiar el $ y las commas
+        monto_pago = monto_pago.replace(/[$,]/g, "");
+        if( banco.length <= 0 || numero_referencia.length <= 0 || monto_pago.length <= 0){
+            swal({
+                title:"ERROR",
+                text: "Debe llenar los campos",
+                icon: "error",
+                });
+            $("#submit").prop("disabled",false);
+            return false;
+        }
+        if( monto_pago > monto_total){
+            swal({
+                title:"ERROR",
+                text: "El pago no puede ser mayor al monto total",
+                icon: "error",
+                });
+            $("#submit").prop("disabled",false);
+            return false;
+        }
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },  
+            type : 'POST',
+            url  : '/pagos/guardar_pago',
+            data : { idCliente: idCliente, banco: banco, numero_referencia: numero_referencia, facturas: facturas, monto_pago: monto_pago, tipo_pago: tipo_pago, created_at: created_at},
+            success: function( data, textStatus, jQxhr ){
+                if(data === "ok"){
+                    swal({
+                        title:"Pago Creado!",
+                        text: "Al cerrar será redireccionado a los pagos",
+                        icon: "success",
+                        buttons: false,
+                        timer: 1000
+                        }).then(() => {
+                            setTimeout(function(){
+                            window.location.href = "{{URL::to('pagos')}}";
+                            }, 1000);
+                        });
+                }
+                else{
+                    swal({
+                        title: "Hubo un error, contacte al ADMIN con el siguiente error:",
+                        text: data,
+                        icon: 'error'
+                    });
+                    $("#submit").prop('disabled', false);
+                }
+            },
+            error: function( jqXHR ){
+                swal({
+                    title: "Hubo un error, contacte al ADMIN con el siguiente error:",
+                    text: jqXHR.status+" - "+jqXHR.statusText,
+                    icon: 'error'
+                });
+                $("#submit").prop('disabled', false);
+            }
+        });
+    }
+    else if(tipo_pago === '2'){
+        var monto_pago = $('#monto_pago_cash').val()
+        //Limpiar el $ y las commas
+        monto_pago = monto_pago.replace(/[$,]/g, "");
+        if( monto_pago.length <= 0){
+            swal({
+                title:"ERROR",
+                text: "Debe llenar los campos",
+                icon: "error",
+                });
+            $("#submit").prop("disabled",false);
+            return false;
+        }
+        if( monto_pago > monto_total){
+            swal({
+                title:"ERROR",
+                text: "El pago no puede ser mayor al monto total",
+                icon: "error",
+                });
+            $("#submit").prop("disabled",false);
+            return false;
+        }
+        $.ajax({
+                headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },  
+            type : 'POST',
+            url  : '/pagos/guardar_pago',
+            data : { idCliente: idCliente, facturas: facturas, monto_pago: monto_pago, tipo_pago: tipo_pago, created_at: created_at},
+            success: function( data, textStatus, jQxhr ){
+                if(data === "ok"){
+                    swal({
+                        title:"Pago Creado!",
+                        text: "Al cerrar será redireccionado a los pagos",
+                        icon: "success",
+                        buttons: false,
+                        timer: 1000
+                        }).then(() => {
+                            setTimeout(function(){
+                            window.location.href = "{{URL::to('pagos')}}";
+                            }, 1000);
+                        });
+                }
+                else{
+                    swal({
+                        title: "Hubo un error, contacte al ADMIN con el siguiente error:",
+                        text: data,
+                        icon: 'error'
+                    });
+                    $("#submit").prop('disabled', false);
+                }
+            },
+            error: function( jqXHR ){
+                swal({
+                    title: "Hubo un error, contacte al ADMIN con el siguiente error:",
+                    text: jqXHR.status+" - "+jqXHR.statusText,
+                    icon: 'error'
+                });
+                $("#submit").prop('disabled', false);
+            }
+        });
+    }
+    else if(tipo_pago === '3'){
+        var banco = $('#banco_ach').val();
+        var numero_referencia = $('#numero_referencia_ach').val();
+        var monto_pago = $('#monto_pago_ach').val();
+        //Limpiar el $ y las commas
+        monto_pago = monto_pago.replace(/[$,]/g, "");
+        if( banco.length <= 0 || numero_referencia.length <= 0 || monto_pago.length <= 0){
+            swal({
+                title:"ERROR",
+                text: "Debe llenar los campos",
+                icon: "error",
+                });
+                $("#submit").prop("disabled",false);
+            return false;
+        }
+        if( monto_pago > monto_total){
+            swal({
+                title:"ERROR",
+                text: "El pago no puede ser mayor al monto total",
+                icon: "error",
+                });
+                $("#submit").prop("disabled",false);
+            return false;
+        }
+        $.ajax({
+                headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },  
+            type : 'POST',
+            url  : '/pagos/guardar_pago',
+            data : { idCliente: idCliente, banco: banco, numero_referencia: numero_referencia, facturas: facturas, monto_pago: monto_pago, tipo_pago: tipo_pago, created_at: created_at},
+            success: function( data, textStatus, jQxhr ){
+                if(data === "ok"){
+                    swal({
+                        title:"Pago Creado!",
+                        text: "Al cerrar será redireccionado a los pagos",
+                        icon: "success",
+                        buttons: false,
+                        timer: 1000
+                        }).then(() => {
+                            setTimeout(function(){
+                            window.location.href = "{{URL::to('pagos')}}";
+                            }, 1000);
+                        });
+                }
+                else{
+                    swal({
+                        title: "Hubo un error, contacte al ADMIN con el siguiente error:",
+                        text: data,
+                        icon: 'error'
+                    });
+                    $("#submit").prop('disabled', false);
+                }
+            },
+            error: function( jqXHR ){
+                swal({
+                    title: "Hubo un error, contacte al ADMIN con el siguiente error:",
+                    text: jqXHR.status+" - "+jqXHR.statusText,
+                    icon: 'error'
+                });
+                $("#submit").prop('disabled', false);
+            }
+        });
+    }
+    else{
+        var descripcion = $('#descripcion').val();
+        var monto_pago = $('#monto_pago_otro').val();
+        //Limpiar el $ y las commas
+        monto_pago = monto_pago.replace(/[$,]/g, "");
+        if( descripcion.length <= 0 || monto_pago.length <= 0){
+            swal({
+                title:"ERROR",
+                text: "Debe llenar la descripcion",
+                icon: "error",
+                });
+                $("#submit").prop("disabled",false);
+            return false;
+        }
+        if( monto_pago > monto_total){
+            swal({
+                title:"ERROR",
+                text: "El pago no puede ser mayor al monto total",
+                icon: "error",
+                });
+                $("#submit").prop("disabled",false);
+            return false;
+        }
+        $.ajax({
+                headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },  
+            type : 'POST',
+            url  : '/pagos/guardar_pago',
+            data : { idCliente: idCliente, facturas: facturas, monto_pago: monto_pago, tipo_pago: tipo_pago, descripcion: descripcion, created_at: created_at},
+            success: function( data, textStatus, jQxhr ){
+                if(data === "ok"){
+                    swal({
+                        title:"Pago Creado!",
+                        text: "Al cerrar será redireccionado a los pagos",
+                        icon: "success",
+                        buttons: false,
+                        timer: 1000
+                        }).then(() => {
+                            setTimeout(function(){
+                            window.location.href = "{{URL::to('pagos')}}";
+                            }, 1000);
+                        });
+                }
+                else{
+                    swal({
+                        title: "Hubo un error, contacte al ADMIN con el siguiente error:",
+                        text: data,
+                        icon: 'error'
+                    });
+                    $("#submit").prop('disabled', false);
+                }
+            },
+            error: function( jqXHR ){
+                swal({
+                    title: "Hubo un error, contacte al ADMIN con el siguiente error:",
+                    text: jqXHR.status+" - "+jqXHR.statusText,
+                    icon: 'error'
+                });
+                $("#submit").prop('disabled', false);
+            }
+        });
+    }    
+});
 </script> 
 <!-- JS NECESARIO PARA ORDENES - END --> 
 @endsection

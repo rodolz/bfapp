@@ -54,7 +54,7 @@
                                             <!-- <a class="btn btn-info" href="{{ route('comisiones.show',$comision->id) }}">Show</a> -->
                                             <!-- <a class="btn btn-primary" href="{{ route('comisiones.edit',$comision->id) }}">Modificar</a> -->
                                             <a class="btn btn-info" href="{{ URL::to('comision-pdf/'.$comision->id) }}"><i class="fa fa-file-pdf-o"></i></a>
-                                            {!! Form::open(['method' => 'DELETE','route' => ['comisiones.destroy', $comision->id],'style'=>'display:inline']) !!}
+                                            {!! Form::open(['method' => 'DELETE','onclick' => 'deletePrompt()','name' => 'deleteForm','route' => ['comisiones.destroy', $comision->id],'style'=>'display:inline']) !!}
                                             <button type="submit" class="btn btn-danger">
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                                             </button>
@@ -78,4 +78,25 @@
             <center> {!! $comisiones->render() !!} </center>
         </div>
     </section>
+@endsection
+
+@section('add-plugins')
+<script>
+    function deletePrompt() {
+        event.preventDefault(); // prevent form submit
+        var form = document.forms["deleteForm"]; // storing the form
+        swal({
+            title: "Esta seguro/a de eliminar?",
+            text: "Si procede no se podrá recuperar esta información",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((result) => {
+            if (result) {
+                form.submit();
+            }
+        });
+    }
+</script>
 @endsection

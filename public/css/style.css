@@ -801,16 +801,16 @@ a:hover, a:focus {
     margin-top: 1px;
     margin-right: 20px;
     display: inline;
-    font-size: 16px;
-    font-family: FontAwesome;
+    font-size: 12px;
+    font-family: 'Font Awesome 5 Free';
     height: auto;
-    content: "\f104";
-    font-weight: 300;
+    content: "\f060";
+    font-weight: 600;
     text-shadow: none;
     color: rgba(194, 198, 203, 0.65);
 }
 #main-menu-wrapper li.open a .arrow.open:before {
-    content: "\f107";
+    content: "\f063";
 }
 #main-menu-wrapper li a .arrow {
     float: right;
@@ -1782,7 +1782,7 @@ ul.states li {
 }
 .icon-chevron-up, .icon-chevron-down {
     display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome;
+    font: normal normal normal 14px/1;
     font-size: inherit;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
@@ -3408,7 +3408,7 @@ blockquote.orange{ border-color: rgba(250,133,100,1.0); }
 
 .faq-panels .panel-heading [data-toggle="collapse"]:after {
     font-family: 'fontAwesome';
-    content: "\f107";
+    content: "\f063";
     /* "play" icon */
     
     float: right;
@@ -6245,7 +6245,7 @@ border-left: 3px solid transparent;
 
 .form-wizard li.complete a{
     background-color: #1fb5ac;
-    font-family: FontAwesome;
+    font-family: 'Font Awesome 5 Free';
     color: #ffffff;
     line-height: 27px;
     text-align: center;

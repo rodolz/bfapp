@@ -168,6 +168,8 @@ return [
         Codedge\Fpdf\FpdfServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         UxWeb\SweetAlert\SweetAlertServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -231,6 +233,7 @@ return [
         'Fpdf' => Codedge\Fpdf\Facades\Fpdf::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Alert' => UxWeb\SweetAlert\SweetAlert::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

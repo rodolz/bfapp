@@ -10,22 +10,13 @@
     @endsection
 
 @section('content')
-    <section class="box primary">
-        <!--  PANEL HEADER    -->      
+    <section class="box primary">    
         <header class="panel_header">
             @yield('panel-title')
-        <!--<div class="actions panel_actions pull-right">
-        <i class="box_toggle fa fa-chevron-down"></i>
-        <i class="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></i>
-        <i class="box_close fa fa-times"></i>
-        </div> -->
         </header>
         <div class="content-body">    
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                   {{--  <div class="pull-left">
-                        <h2 class="bold">Notas de Credito</h2>
-                    </div> --}}
                     <div class="pull-right">
                         <a class="btn btn-info" href="{{ route('nota_creditos.create') }}"> Nueva Nota de Credito</a>
                     </div>
@@ -60,7 +51,7 @@
                                     <td>
                                         <div class="acciones-btn">
                                             <a class="btn btn-info" href="{{ URL::to('nota_creditos/nota_credito_pdf/'.$nota_credito->id) }}"><i class="fa fa-file-pdf-o"></i></a>
-                                            {!! Form::open(['method' => 'DELETE','route' => ['nota_creditos.destroy', $nota_credito->id],'style'=>'display:inline']) !!}
+                                            {!! Form::open(['method' => 'DELETE','onclick' => 'deletePrompt()','name' => 'deleteForm','route' => ['nota_creditos.destroy', $nota_credito->id],'style'=>'display:inline']) !!}
                                             <button type="submit" class="btn btn-danger">
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                                             </button>
@@ -113,36 +104,45 @@
             success: function( data, textStatus, jQxhr ){
                 if(data === "ok"){
                     swal({
-                        title:"Numero Fiscal Actualizado!",
-                        text: "El numero fiscal se actualizo correctamente!",
-                        type: "success",
-                        confirmButtonText: "Cerrar",
+                        title:"Número Fiscal Actualizado",
+                        text: "El número fiscal se actualizo correctamente!",
+                        icon: "success",
+                        timer: 1000,
+                        buttons: false,
                         });
                 }
                 else{
-                    var errors = "<p>"+data+"</p>";
                     swal({
-                        type: 'error',
                         title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                        text: errors,
-                        html: true
+                        text: data,
+                        icon: 'error'
                     });
                 }
             },
-            error: function( data ){
-                // Error...
-                console.log(errors);
-                console.log(data);
-                var errors = "<p>"+data.responseText+"</p>";
+            error: function( jqXHR ){
                 swal({
-                    type: 'error',
                     title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                    text: errors,
-                    customClass: 'sweet-alert-lg',
-                    html: true
+                    text: jqXHR.status+" - "+jqXHR.statusText,
+                    icon: 'error'
                 });
             }
         });
     });
+    function deletePrompt() {
+        event.preventDefault(); // prevent form submit
+        var form = document.forms["deleteForm"]; // storing the form
+        swal({
+            title: "Esta seguro/a de eliminar?",
+            text: "Si procede no se podrá recuperar esta información",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((result) => {
+            if (result) {
+                form.submit();
+            }
+        });
+    }
     </script>
 @endsection

@@ -9,6 +9,7 @@ use App\Factura;
 use App\Categoria;
 use PDF;
 use Yajra\Datatables\Datatables;
+use Alert;
 
 class ProductoCRUDController extends Controller
 {
@@ -53,7 +54,7 @@ class ProductoCRUDController extends Controller
                             return "<div class='acciones-btn'>
                             <a class='btn btn-orange' href='productos/{$producto->id}'><i class='fa fa-eye' aria-hidden='true'></i></a>
                             <a class='btn btn-info' href='productos/{$producto->id}/edit'><i class='fa fa-pencil' aria-hidden='true'></i></a>
-                            <form method='POST' action='productos/{$producto->id}' accept-charset='UTF-8' style='display:inline'>
+                            <form method='POST' name='deleteForm' onclick='deletePrompt()' action='productos/{$producto->id}' accept-charset='UTF-8' style='display:inline'>
                                 <input name='_method' type='hidden' value='DELETE'>
                                 <input type='hidden' name='_token' value='{$token}'>
                                 <button type='submit' class='btn btn-danger'>
@@ -74,8 +75,11 @@ class ProductoCRUDController extends Controller
         }
     }
     public function check_precio(Request $request){
-        $producto = Producto::where('id', $request->idProducto)->first();
-        return number_format($producto->precio,2,'.',',');
+        if(!is_null($request->idProducto)){
+            $producto = Producto::where('id', $request->idProducto)->first();
+            return number_format($producto->precio,2,'.',',');
+        }
+        return 0;
     }
     public function create()
     {
@@ -167,6 +171,7 @@ class ProductoCRUDController extends Controller
         ]);
 
         Producto::find($id)->update($request->all());
+        
         return redirect()->route('productos.index')
                         ->with('success','Producto Modificado!');
     }
@@ -179,9 +184,10 @@ class ProductoCRUDController extends Controller
      */
     public function destroy($id)
     {
-        Producto::find($id)->delete();
-        return redirect()->route('productos.index')
-                        ->with('success','Producto Borrado!');
+        $producto = Producto::find($id);
+        Alert::success("Producto: ".$producto->codigo." eliminado")->autoclose(1500);
+        $producto->delete();
+        return redirect()->back();
     }
 
     public function inventario(){

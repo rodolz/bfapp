@@ -7,11 +7,10 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\PurchaseOrder;
 use App\Proveedor;
-use Validator;
-use Alert;
 use App\ProductoProveedor;
 use App\Shipto;
 use PDF;
+use Alert;
 
 class PurchaseOrderController extends Controller
 {
@@ -147,9 +146,9 @@ class PurchaseOrderController extends Controller
      */
     public function destroy($id)
     {
-        $po = PurchaseOrder::findorFail($id)->delete();
-        return redirect()->route('purchase_orders.index')
-                        ->with('success', 'PO Borrada!');
+        PurchaseOrder::findorFail($id)->delete();
+        Alert::success('Orden de Compra Borrada')->autoclose(1000);
+        return redirect()->route('purchase_orders.index');
     }
 
     public function select_proveedor(){
@@ -187,19 +186,13 @@ class PurchaseOrderController extends Controller
 
 
     public function proveedor_productos(Request $request){
-        $customMessages = [
-            'idProveedor.required' => 'Debe escojer a un Proveedor!',
-        ];
 
-        $validator = Validator::make($request->all(), [
+        $this->validate($request, [
             'idProveedor' => 'required',
-        ],$customMessages);
-
-        if ($validator->fails()) {
-            $errores = $validator->errors();
-            Alert::error($errores->first('idProveedor'));
-            return redirect()->back();
-        }  
+        ],
+        [
+            'idProveedor.required' => 'Debe escojer a un Proveedor',
+        ]);
         
         $proveedor = Proveedor::findOrfail($request->idProveedor);
         // Se buscan las direccione Shipto
@@ -208,6 +201,7 @@ class PurchaseOrderController extends Controller
         $productos = ProductoProveedor::select(DB::raw("CONCAT(codigo,' | ',descripcion) as codigo_descripcion"),'id')
                             ->where('idProveedor', '=', $proveedor->id)
                             ->pluck('codigo_descripcion','id');
+
         return view('purchase_orders.create', compact('proveedor','productos','shipto'));
     }
 

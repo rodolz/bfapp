@@ -4,41 +4,46 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Image;
 use Auth;
+use App\User;
+use Alert;
 
 
 class UserController extends Controller
 {
-    public function perfil(){
-    	return view('user.perfil');
+
+    public function index(Request $request)
+    {
+        $users = User::orderBy('id','DESC')->paginate(10);
+        return view('users.index',compact('users'))
+            ->with('i', ($request->input('page', 1) - 1) * 10);
+    }
+
+    public function show(){
+    	return view('users.show');
     }
 
     public function update_avatar(Request $request){
-		$customMessages = [
-                'avatar.required' => 'Debe seleccionar una foto',
-        ];	
 		$this->validate($request, [
             'avatar' => 'required',
-        ], $customMessages);
+        ],
+        [
+            'avatar.required' => 'Debe seleccionar una imagen',
+        ]);
 
     	if($request->hasFile('avatar')){
-    		$user = Auth::user();
-
+            $user = Auth::user();
+            //borrar el avatar actual en caso que no sea el default
+            if($user->avatar != 'default.jpg'){
+                unlink('uploads/avatars/'.$user->avatar);
+            }
     		$avatar = $request->file('avatar');
-            $filename  = time() . '.' . $avatar->getClientOriginalExtension();
+            $filename  = time().'.'.$avatar->getClientOriginalExtension();
             $path = 'uploads/avatars/' . $filename;
-            // if (!file_exists($path)) {
-            //     mkdir($path, 666, true);
-            // }
-            Image::make($avatar->getRealPath())->resize(300, 300)->save($path);
+            Image::make($avatar->getRealPath())->resize(300,300)->save($path);
             $user->avatar = $filename;
             $user->save();                  
-    		// $filename = $user->id . '.' . $avatar->getClientOriginalExtension();
-    		// Image::make($avatar)->resize(300, 300)->save(public_path('/uploads/avatars/'. $filename));
-
-    		// $user->avatar = $filename;
-    		// $user->save();
-    	}
-    	return redirect()->back()->with('success','Nuevo avatar cargado!');
+        }
+        Alert::success('Foto de Perfil actualizada')->autoclose(1000);
+    	return redirect()->back();
     }
-
 }

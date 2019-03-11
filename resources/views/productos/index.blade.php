@@ -165,6 +165,24 @@
             }
         });
     });
+
+function deletePrompt() {
+    event.preventDefault(); // prevent form submit
+    var form = document.forms["deleteForm"]; // storing the form
+    swal({
+        title: "Esta seguro/a de eliminar?",
+        text: "Si procede no se podrá recuperar esta información",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((result) => {
+        if (result) {
+            form.submit();
+        }
+    });
+}
 </script>
+
 
 @endsection

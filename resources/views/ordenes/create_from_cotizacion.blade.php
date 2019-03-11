@@ -7,25 +7,11 @@
        <h2 class="title pull-left">Creando Nota de entrega de la Cotizacion #{{ $cotizacion->num_cotizacion }}</h2>
     @endsection
 
-
-@section('add-styles')
-    <link href="{{ asset('plugins/messenger/css/messenger.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-future.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-flat.css') }}" rel="stylesheet" type="text/css" media="screen"/>        
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-block.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-@endsection
-
 @section('content')
 
-    <section class="box primary">
-        <!--  PANEL HEADER    -->      
+    <section class="box primary">    
         <header class="panel_header">
             @yield('panel-title')
-                <!--<div class="actions panel_actions pull-right">
-                <i class="box_toggle fa fa-chevron-down"></i>
-                <i class="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></i>
-                <i class="box_close fa fa-times"></i>
-                </div> -->
         </header>
         <div class="content-body">    
             <div class="row">
@@ -119,10 +105,6 @@
 @section('add-plugins')
 
         <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
-    <script src="{{ asset('plugins/messenger/js/messenger.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-future.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-flat.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/messenger.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/autonumeric/autoNumeric-min.js') }}" type="text/javascript"></script>
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
@@ -240,11 +222,17 @@
             var idOrden = $('#orden_form').attr('name');
 
             if(idCliente === ''){
-                showErrorMessage('Seleccione a un Cliente!');
+                swal({
+                    title: "Seleccione a un cliente",
+                    icon: 'error'
+                });
                 return false;
             }
             if(idCotizacion === ''){
-                showErrorMessage('ID de cotizacion invalido!');
+                swal({
+                    title: "ID de Cotizacion no valido",
+                    icon: 'error'
+                });
                 return false;
             }
             var productos = [];
@@ -262,7 +250,10 @@
                 productos.push(obj);
             });
             if(productos.length === 0){
-                showErrorMessage('Escoja Al Menos Un Producto!');
+                swal({
+                    title: "Debe seleccionar al menos un producto",
+                    icon: 'error'
+                });
                 return false;
             }
             var repartidores = [];
@@ -272,7 +263,10 @@
                 repartidores.push(id);
             });
             if(repartidores.length === 0){
-                showErrorMessage('Escoja Al Menos A Un Repartidor!');
+                swal({
+                    title: "Debe seleccionar al menos a un repartidor",
+                    icon: 'error'
+                });
                 return false;
             }
             var jsondata = JSON.stringify(productos);
@@ -287,38 +281,32 @@
                         if(data === "ok"){
                             swal({
                                 title:"Nota de entrega creada!",
-                                text: "Al cerrar será redireccionado a las notas de entrega",
-                                type: "success",
-                                confirmButtonText: "Cerrar",
-                                },
-                                function(){
+                                text: "Al cerrar será redireccionado a Cotizaciones",
+                                icon: "success",
+                                buttons: false,
+                                timer: 1000
+                                }).then(() => {
                                   setTimeout(function(){
-                                    window.location.href = "{{URL::to('ordenes')}}";
-                                  }, 3000);
+                                    window.location.href = "{{URL::to('ventas/cotizaciones')}}";
+                                  }, 1000);
                                 });
                         }
                         else{
-                            var errors = "<p>"+data+"</p>";
                             swal({
-                                type: 'error',
                                 title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                                text: errors,
-                                html: true
+                                text: data,
+                                icon: 'error'
                             });
+                            $("#submit").prop('disabled', false);
                         }
                     },
-                    error: function( data ){
-                        // Error...
-                        console.log(errors);
-                        console.log(data);
-                        var errors = "<p>"+data.responseText+"</p>";
+                    error: function( jqXHR ){
                         swal({
-                            type: 'error',
                             title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            text: errors,
-                            // customClass: 'sweet-alert-lg',
-                            html: true
+                            text: jqXHR.status+" - "+jqXHR.statusText,
+                            icon: 'error'
                         });
+                        $("#submit").prop('disabled', false);
                     }
                 });     
         });

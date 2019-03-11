@@ -7,14 +7,6 @@
        <h2 class="title pull-left">Modificando Nota de entrega #{{ $cotizacion->num_cotizacion }}</h2>
     @endsection
 
-
-@section('add-styles')
-    <link href="{{ asset('plugins/messenger/css/messenger.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-future.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-flat.css') }}" rel="stylesheet" type="text/css" media="screen"/>        
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-block.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-@endsection
-
 @section('content')
 
     <section class="box primary">
@@ -155,10 +147,6 @@
 @section('add-plugins')
 
         <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
-    <script src="{{ asset('plugins/messenger/js/messenger.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-future.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-flat.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/messenger.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('plugins/autonumeric/autoNumeric-min.js') }}" type="text/javascript"></script>
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
@@ -256,8 +244,11 @@
             e.preventDefault();
             var idCliente = $('select[id=cliente]').val();
             var idCotizacion = $('#cotizacion_form').attr('name');
-            if(idCliente === null){
-                showErrorMessage('Seleccione a un Cliente!');
+            if(idCliente === ''){
+                swal({
+                    title: "Seleccione a un cliente",
+                    icon: 'error'
+                });
                 return false;
             }
             var condicion = $('#condicion').val();
@@ -267,7 +258,10 @@
             var notas = $('#notas').val();
             var itbms = $('#itbms').val();
             if( condicion == '' || t_entrega == '' || d_oferta == '' || garantia == '' || itbms == ''){
-                showErrorMessage('Verifique los datos en el area de "Detalles", e intente de nuevo');
+                swal({
+                    title: "Verifique los datos en el area de 'Detalles', e intente de nuevo",
+                    icon: 'error'
+                });
                 return false;
             }
             var productos = [];
@@ -285,7 +279,10 @@
                 productos.push(obj);
             });
             if(productos.length === 0){
-                showErrorMessage('Escoja Al Menos Un Producto!');
+                swal({
+                    title: "Escoja al menos un producto",
+                    icon: 'error'
+                });
                 return false;
             }
             var jsondata = JSON.stringify(productos);
@@ -314,30 +311,31 @@
                     success: function( data, textStatus, jQxhr ){
                         if(data === "ok"){
                             swal({
-                                title:"Cotizacion modificada!",
+                                title:"Cotización modificada!",
                                 text: "Al cerrar será redireccionado a las cotizaciones",
-                                type: "success",
-                                onClose: () => {
+                                icon: "success",
+                                buttons: false,
+                                timer: 1000
+                                }).then(() => {
+                                  setTimeout(function(){
                                     window.location.href = "{{URL::to('ventas/cotizaciones')}}";
-                                }
-                            })
+                                  }, 1000);
+                                });
                         }
                         else{
-                            console.log(data);
                             swal({
-                                type: 'error',
                                 title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                                html: data,
+                                text: data,
+                                icon: 'error'
                             });
                             $("#submit").prop('disabled', false);
                         }
                     },
-                    error: function( data ){
-                        // Error...
+                    error: function( jqXHR ){
                         swal({
-                            type: 'error',
                             title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            html: data
+                            text: jqXHR.status+" - "+jqXHR.statusText,
+                            icon: 'error'
                         });
                         $("#submit").prop('disabled', false);
                     }

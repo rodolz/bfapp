@@ -78,9 +78,9 @@
                                                 <th>{{ $producto->descripcion }}</th>
                                                 <th>${{ number_format($producto->precio, 2, '.', ',') }}</th>
                                                 <th>{{ $producto->producto->codigo }} </th>
-                                                {!! Form::open(['method' => 'DELETE','route' => ['proveedores_producto.destroy', $producto->id],'style'=>'display:inline']) !!}
+                                                {!! Form::open(['method' => 'DELETE','onclick' => 'deletePrompt()','name' => 'deleteForm','route' => ['proveedores_producto.destroy', $producto->id],'style'=>'display:inline']) !!}
                                                 <th>
-                                                <button type="submit" class="btn btn-danger">
+                                                <button type="submit" class="btn btn-danger" onclick="deletePrompt()">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </button>
                                 	            {!! Form::close() !!}
@@ -100,10 +100,30 @@
                         </div>
                     </div>
                 </div>
-
             <div class="row text-center">
                  <a type="button" class="btn" href="{{ URL::route('productos.index') }}">Atras</a>
             </div>
         </div>
     </section>
+@endsection
+
+@section('add-plugins')
+<script>
+    function deletePrompt() {
+        event.preventDefault(); // prevent form submit
+        var form = document.forms["deleteForm"]; // storing the form
+        swal({
+            title: "Esta seguro/a de eliminar?",
+            text: "Si procede no se podrá recuperar esta información",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((result) => {
+            if (result) {
+                form.submit();
+            }
+        });
+    }
+</script>
 @endsection

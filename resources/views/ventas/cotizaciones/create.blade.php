@@ -8,24 +8,11 @@
         <h2 class="title bold">Cotizaciones</h2>
     @endsection
 
-    @section('add-styles')
-        <link href="{{ asset('plugins/messenger/css/messenger.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-        <link href="{{ asset('plugins/messenger/css/messenger-theme-future.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-        <link href="{{ asset('plugins/messenger/css/messenger-theme-flat.css') }}" rel="stylesheet" type="text/css" media="screen"/>        
-        <link href="{{ asset('plugins/messenger/css/messenger-theme-block.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    @endsection
-
 @section('content')
 
-    <section class="box primary">
-        <!--  PANEL HEADER    -->      
+    <section class="box primary">    
         <header class="panel_header">
             @yield('panel-title')
-            <!--<div class="actions panel_actions pull-right">
-                <i class="box_toggle fa fa-chevron-down"></i>
-                <i class="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></i>
-                <i class="box_close fa fa-times"></i>
-            </div> -->
         </header>
         <div class="content-body">    
             <div class="row">
@@ -134,7 +121,7 @@
                 <div class="row top15">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
                         <button type="submit" class="btn btn-primary right15">Procesar</button>
-                         <a type="button" class="btn" href="{{ URL::previous() }}">Cancelar</a>
+                         <a type="button" class="btn" href="{{ URL::to('ventas/cotizaciones') }}">Cancelar</a>
                     </div>
                 </div>
             </div>
@@ -145,12 +132,6 @@
 
 @section('add-plugins')
 
-        <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
-    <script src="{{ asset('plugins/messenger/js/messenger.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-future.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-flat.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/messenger.js') }}" type="text/javascript"></script><!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
-    <!-- JS NECESARIO PARA ORDENES - START --> 
     <script type="text/javascript">
         $('#producto').change(function(){
             var prod_id = $(this).val();
@@ -172,7 +153,10 @@
             var idProducto = $('#producto').val();
             //Validacion del producto seleccionado
             if (idProducto === '') {
-                showErrorMessage('Seleccione un Producto!');
+                swal({
+                    title: "Debe seleccionar al menos un producto",
+                    icon: 'error'
+                });
                 return false;
             }
             var codigo = $('select[id=producto] option:selected').html();
@@ -208,7 +192,20 @@
                         $('#lista_productos').append(li);
                    } 
                    else {
-                        showErrorMessage('Cantidad no disponible para este producto ('+codigo+')');
+                        swal({
+                            title: "Cantidad no disponible",
+                            text: "Inventario insuficiente para:",
+                            content: {
+                                element: "p",
+                                attributes: {
+                                    innerText: codigo,
+                                    className: 'bg-muted',
+                                },
+                            },
+                            icon: 'warning',
+                            timer: 1000,
+                            buttons: false
+                        });
                         $('#lista_productos').show();
                         var item = $('#lista_productos').find('li[idProducto='+idProducto+']');
                         if(item.html() !== undefined){
@@ -244,8 +241,11 @@
             e.preventDefault();
             var idCliente = $('select[id=cliente]').val();
 
-            if(idCliente === null){
-                showErrorMessage('Seleccione a un Cliente!');
+            if(idCliente === ''){
+                swal({
+                    title: "Debe seleccionar a un cliente",
+                    icon: 'error'
+                });
                 return false;
             }
             var condicion = $('#condicion').val();
@@ -256,7 +256,10 @@
             var itbms = $('#itbms').val();
 
             if( condicion == '' || t_entrega == '' || d_oferta == '' || garantia == '' || itbms == ''){
-                showErrorMessage('Verifique los datos en el area de "Detalles", e intente de nuevo');
+                swal({
+                    title: "Verifique los datos en 'Detalles', e intente de nuevo",
+                    icon: 'error'
+                });
                 return false;
             }
             var productos = [];
@@ -274,7 +277,10 @@
                 productos.push(obj);
             });
             if(productos.length === 0){
-                showErrorMessage('Escoja Al Menos Un Producto!');
+                swal({
+                    title: "Seleccione al menos un Producto",
+                    icon: 'error'
+                });
                 return false;
             }
             var jsondata = JSON.stringify(productos);
@@ -301,33 +307,44 @@
                     },
                     success: function( data, textStatus, jQxhr ){
                         if(data === "ok"){
-                            swal({
-                                title:"Cotizacion creada!",
-                                text: "Al cerrar será redireccionado a las cotizaciones",
-                                type: "success",
-                                confirmButtonText: "Cerrar",
-                                    onClose: () => {
-                                        window.location.href = "{{URL::to('ventas/cotizaciones')}}";
-                                    }
+                        swal({
+                            text: "Cotización creada correctamente",
+                            icon: "success",
+                            buttons: false,
+                            timer: 1500
+                            }).then(() => {
+                                    swal({
+                                        title:"Crear una nueva cotización?",
+                                        text: "Si cancela se redireccionará a 'Cotizaciones'",
+                                        icon: "info",
+                                        buttons: true,
+                                    }).then((value) => {
+                                        if(value){
+                                            setTimeout(function(){
+                                                window.location.href = "{{Request::url()}}";
+                                            });
+                                        } else{
+                                            setTimeout(function(){
+                                                window.location.href = "{{ URL::to('ventas/cotizaciones') }}";
+                                            }); 
+                                        }
+                                    })
                                 })
                         }
                         else{
-                            console.log(data);
                             swal({
-                                type: 'error',
                                 title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                                html: data
+                                text: data,
+                                icon: 'error'
                             });
                             $("#submit").prop('disabled', false);
                         }
                     },
-                    error: function( data ){
-                        // Error...
-                        console.log(data);
+                    error: function( jqXHR ){
                         swal({
-                            type: 'error',
                             title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            html: data
+                            text: jqXHR.status+" - "+jqXHR.statusText,
+                            icon: 'error'
                         });
                         $("#submit").prop('disabled', false);
                     }

@@ -66,7 +66,7 @@
                                                     <button class="btn btn-primary" href="{{ route('cotizaciones.edit',$cotizacion->id) }}" disabled><i class="fa fa-pencil"></i></button>
                                             @endif
                                             <a class="btn btn-info" href="{{ URL::to('cotizaciones/cotizacion_pdf/'.$cotizacion->id) }}"><i class="fa fa-file-pdf-o"></i></a>
-                                            {!! Form::open(['method' => 'DELETE','route' => ['cotizaciones.destroy', $cotizacion->id],'style'=>'display:inline']) !!}
+                                            {!! Form::open(['method' => 'DELETE', 'name' => 'deleteForm', 'onclick' => 'deletePrompt()','route' => ['cotizaciones.destroy', $cotizacion->id],'style'=>'display:inline']) !!}
                                             <button type="submit" class="btn btn-danger">
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                                             </button>
@@ -91,4 +91,25 @@
         </div>
     </section>
 
+@endsection
+
+@section('add-plugins')
+<script>
+    function deletePrompt() {
+        event.preventDefault(); // prevent form submit
+        var form = document.forms["deleteForm"]; // storing the form
+        swal({
+                title: "Esta seguro/a de eliminar?",
+                text: "Si procede no se podrá recuperar esta información",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                        form.submit();
+                }
+            });
+    }
+</script>
 @endsection

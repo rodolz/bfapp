@@ -8,13 +8,6 @@
        <h2 class="title pull-left">Nuevo Producto</h2>
     @endsection
 
-@section('add-styles')
-    <link href="{{ asset('plugins/messenger/css/messenger.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-future.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-flat.css') }}" rel="stylesheet" type="text/css" media="screen"/>        
-    <link href="{{ asset('plugins/messenger/css/messenger-theme-block.css') }}" rel="stylesheet" type="text/css" media="screen"/>
-@endsection
-
 @section('content')
 
     <section class="box primary">
@@ -107,144 +100,150 @@
 @endsection
 
 @section('add-plugins')
+<!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
+<script src="{{ asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('plugins/autonumeric/autoNumeric-min.js') }}" type="text/javascript"></script>
+<!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
+<!-- JS NECESARIO PARA ORDENES - START --> 
+<script type="text/javascript">
 
-        <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
-    <script src="{{ asset('plugins/messenger/js/messenger.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-future.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/messenger/js/messenger-theme-flat.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/messenger.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/inputmask/min/jquery.inputmask.bundle.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('plugins/autonumeric/autoNumeric-min.js') }}" type="text/javascript"></script>
-    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
-    <!-- JS NECESARIO PARA ORDENES - START --> 
-    <script type="text/javascript">
-
-        // INICIO DE LA ACCION DE AGREGAR PRODUCTOS A LA LISTA
-        $('#add_producto').click(function(){
-            var attr = 'codigo';
-            var codigo = $('#codigo').val();
-            console.log(codigo);
-            var descripcion = $('#descripcion').val();
-            var producto_relacionado = $('#idProducto_empresa option:selected').text();
-            var producto_relacionado_id = $('#idProducto_empresa option:selected').val();
-            var precio = $('#precio').val();
-            //Validacion del producto seleccionado
-            if (codigo === '' || descripcion === '' || precio === '' ||  producto_relacionado === '') {
-                showErrorMessage('Productos - Debe llenar todos los campos!');
-                return false;
-            }
-            $("#add_producto").prop('disabled', false);
-            $('#lista_productos').show();
-            var item = $('#lista_productos').find("li[codigo=\""+codigo+"\"]");
-            if(item.html() !== undefined){
-                    item.remove();
-            }
-            var li = "<li codigo=\""+codigo+"\" descripcion=\""+descripcion+"\"precio="+precio+" producto_relacionado="+producto_relacionado_id+" class='list-group-item active'>";
-            li += "<span class='badge'><a codigo="+codigo+"><i class='fa fa-times'></i></a></span>";
-            li += "<span class='badge'><i class='fa fa-usd'></i>"+precio+"</span>";
-            li += codigo+" - "+descripcion+" - "+producto_relacionado+"</li>";
-            $('#lista_productos').append(li);
-        });
-        // FIN DE LA ACCION DE AGREGAR PRODUCTOS A LA LISTA
-
-        // INICIO Borrar Productos de la lista
-        $("#lista_productos").on("click", "a", function(e) {
-            e.preventDefault();
-            var cantidad_hermanos = $(this).parent().parent().siblings().size();
-            if(cantidad_hermanos === 1){
-                $(this).parent().parent().parent().hide();
-            }
-            var id = $(this).attr('codigo');
-            $("li[codigo=\""+id+"\"]").remove();
-        });
-        // FIN BORRAR PRODUCTOS DE LA LISTA
-
-        // INICIO - PROCESAR EL FORMULARIO
-        $('#submit_form').submit(function(e){
-            e.preventDefault();
-            var idProveedor = $('select[id=proveedor]').val();
-
-            if(idProveedor === ''){
-                showErrorMessage('Seleccione a un Proveedor!');
-                return false;
-            }
-            var productos = [];
-            var obj = {};
-            var lista = $('#lista_productos');
-            $(lista).find('li').each(function(index, value){
-                codigo = $(this).attr('codigo');
-                descripcion = $(this).attr('descripcion');
-                precio = $(this).attr('precio');
-                producto_relacionado = $(this).attr('producto_relacionado');
-                obj = {
-                    codigo: codigo,
-                    descripcion: descripcion,
-                    precio: precio,
-                    producto_relacionado: producto_relacionado
-                };
-                productos.push(obj);
+    // INICIO DE LA ACCION DE AGREGAR PRODUCTOS A LA LISTA
+    $('#add_producto').click(function(){
+        var attr = 'codigo';
+        var codigo = $('#codigo').val();
+        var descripcion = $('#descripcion').val();
+        var producto_relacionado = $('#idProducto_empresa option:selected').text();
+        var producto_relacionado_id = $('#idProducto_empresa option:selected').val();
+        var precio = $('#precio').val();
+        //Validacion del producto seleccionado
+        if (codigo === '' || descripcion === '' || precio === '' ||  producto_relacionado === '') {
+            swal({
+                title: "Productos",
+                text: "Debe llenar todos los campos",
+                icon: 'error'
             });
-            if(productos.length === 0){
-                showErrorMessage('Debe agregar al menos un producto!');
-                return false;
-            }
-            var jsondata = JSON.stringify(productos);
-                $.ajax({
-                      headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },  
-                    type : 'POST',
-                    url  : '/productos_proveedores_store',
-                    data : {data: jsondata, idProveedor: idProveedor},
-                    beforeSend: function() { 
-                      // $("#product_id").html('<option> Loading ...</option>');
-                      $("#submit").prop('disabled', true);
-                    },
-                    success: function( data, textStatus, jQxhr ){
+            return false;
+        }
+        $("#add_producto").prop('disabled', false);
+        $('#lista_productos').show();
+        var item = $('#lista_productos').find("li[codigo=\""+codigo+"\"]");
+        if(item.html() !== undefined){
+                item.remove();
+        }
+        var li = "<li codigo=\""+codigo+"\" descripcion=\""+descripcion+"\"precio="+precio+" producto_relacionado="+producto_relacionado_id+" class='list-group-item active'>";
+        li += "<span class='badge'><a codigo="+codigo+"><i class='fa fa-times'></i></a></span>";
+        li += "<span class='badge'><i class='fa fa-usd'></i>"+precio+"</span>";
+        li += codigo+" - "+descripcion+" - "+producto_relacionado+"</li>";
+        $('#lista_productos').append(li);
+    });
+    // FIN DE LA ACCION DE AGREGAR PRODUCTOS A LA LISTA
+
+    // INICIO Borrar Productos de la lista
+    $("#lista_productos").on("click", "a", function(e) {
+        e.preventDefault();
+        var cantidad_hermanos = $(this).parent().parent().siblings().size();
+        if(cantidad_hermanos === 1){
+            $(this).parent().parent().parent().hide();
+        }
+        var id = $(this).attr('codigo');
+        $("li[codigo=\""+id+"\"]").remove();
+    });
+    // FIN BORRAR PRODUCTOS DE LA LISTA
+
+    // INICIO - PROCESAR EL FORMULARIO
+    $('#submit_form').submit(function(e){
+        e.preventDefault();
+        var idProveedor = $('select[id=proveedor]').val();
+
+        if(idProveedor === ''){
+            swal({
+                title: "Seleccione un Proveedor",
+                icon: 'error'
+            });
+            return false;
+        }
+        var productos = [];
+        var obj = {};
+        var lista = $('#lista_productos');
+        $(lista).find('li').each(function(index, value){
+            codigo = $(this).attr('codigo');
+            descripcion = $(this).attr('descripcion');
+            precio = $(this).attr('precio');
+            producto_relacionado = $(this).attr('producto_relacionado');
+            obj = {
+                codigo: codigo,
+                descripcion: descripcion,
+                precio: precio,
+                producto_relacionado: producto_relacionado
+            };
+            productos.push(obj);
+        });
+        if(productos.length === 0){
+            swal({
+                title: "Escoja al menos un producto",
+                icon: 'error'
+            });
+            return false;
+        }
+        var jsondata = JSON.stringify(productos);
+            $.ajax({
+                    headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },  
+                type : 'POST',
+                url  : '/productos_proveedores_store',
+                data : {data: jsondata, idProveedor: idProveedor},
+                beforeSend: function() { 
+                    // $("#product_id").html('<option> Loading ...</option>');
+                    $("#submit").prop('disabled', true);
+                },
+                success: function( data ){
                         if(data === "ok"){
                             swal({
-                                title:"Productos Agregados!",
-                                text: "Al cerrar será redireccionado a la pantalla anterior",
-                                type: "success",
-                                confirmButtonText: "Cerrar",
-                                },
-                                function(){
-                                  setTimeout(function(){
-                                    window.location.href = "{{URL::to('proveedores')}}";
-                                  }, 3000);
-                                });
+                                title:"Productos creados",
+                                text: "Los productos fueron creados y asociados correctamente",
+                                icon: "success",
+                                buttons: false,
+                                timer: 2000
+                                }).then(() => {
+                                    swal({
+                                        title:"Agregar productos para otro proveedor?",
+                                        icon: "info",
+                                        buttons: true,
+                                    }).then((value) => {
+                                        if(value){
+                                            setTimeout(function(){
+                                                window.location.href = "{{Request::url()}}";
+                                            });
+                                        } else{
+                                            setTimeout(function(){
+                                                window.location.href = "{{ URL::to('proveedores') }}";
+                                            }); 
+                                        }
+                                    })
+                                })
                         }
                         else{
-                            var errors = data;
-                            console.log(errors);
-                            console.log(data);
                             swal({
-                                type: 'error',
                                 title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                                text: errors,
-                                html: false
+                                text: data,
+                                icon: 'error'
                             });
                             $("#submit").prop('disabled', false);
                         }
                     },
-                    error: function( data ){
-                        // Error...
-                        console.log(errors);
-                        console.log(data);
-                        var errors = "<p>"+data.responseText+"</p>";
+                    error: function( jqXHR ){
                         swal({
-                            type: 'error',
                             title: "Hubo un error, contacte al ADMIN con el siguiente error:",
-                            text: errors,
-                            // customClass: 'sweet-alert-lg',
-                            html: false
+                            text: jqXHR.status+" - "+jqXHR.statusText,
+                            icon: 'error'
                         });
                         $("#submit").prop('disabled', false);
                     }
-                });     
-        });
+            });     
+    });
 
-        // FIN - PROCESAR EL FORMULARIO
-    </script> 
-    <!-- JS NECESARIO PARA ORDENES - END --> 
+    // FIN - PROCESAR EL FORMULARIO
+</script> 
+<!-- JS NECESARIO PARA ORDENES - END --> 
 @endsection

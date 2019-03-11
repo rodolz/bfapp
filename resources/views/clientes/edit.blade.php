@@ -14,27 +14,12 @@
         <!--  PANEL HEADER    -->      
         <header class="panel_header">
             <h2 class="title pull-left">@yield('panel-title')</h2>
-            <!--<div class="actions panel_actions pull-right">
-                <i class="box_toggle fa fa-chevron-down"></i>
-                <i class="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></i>
-                <i class="box_close fa fa-times"></i>
-            </div> -->
         </header>
         <div class="content-body">    
             <div class="row">
                {!! Form::model($cliente, ['method' => 'PATCH','route' => ['clientes.update', $cliente->id]]) !!}
                {{  Form::hidden('url',URL::previous())  }}
                 <div class="col-lg-8 col-md-8 col-sm-9 col-xs-12 col-lg-offset-2">
-                   <!--  @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Whoops!</strong> Hubo algunos errores.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                   @endif -->
                    <div class="form-group">
                         <label class="form-label" for="field-1">Empresa</label>
                         <span class="desc"></span>
@@ -42,7 +27,6 @@
                             {!! Form::text('empresa', null, array('placeholder' => 'Nombre de la Empresa','class' => 'form-control')) !!}
                         </div>
                     </div>
-
 
                     <div class="form-group">
                         <label class="form-label" for="field-1">Contacto</label>

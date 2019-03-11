@@ -15,8 +15,11 @@
 
 		Route::group(['middleware' => 'auth'], function(){
 			//Perfil de usuario
-			Route::get('/perfil','UserController@perfil');
-			Route::post('/perfil','UserController@update_avatar');
+			Route::get('users','UserController@index')->name('users.index');
+			Route::resource('users','UserController', ['except' => [
+				'index',
+			]]);
+			Route::post('users/perfil/update_avatar','UserController@update_avatar');
 
 			//Registro
 			Route::get('register','Auth\RegisterController@index');
@@ -90,10 +93,10 @@
 			Route::get('ordenes','OrdenesController@index')->name('ordenes.index');
 			Route::get('ordenes/orden_pdf/{id}', 'OrdenesController@orden_pdf');
 			Route::resource('ordenes','OrdenesController', ['except' => [
-				'index',
+				'index', 'update'
 			]]);
 			Route::post('nueva_orden', 'OrdenesController@nueva_orden');
-			Route::post('update_orden', 'OrdenesController@update_orden');
+			Route::post('ordenes/update_orden', 'OrdenesController@update');
 			Route::post('nueva_ordenC', 'OrdenesController@nueva_ordenC');
 			Route::get('/ordenes/edit_from_cotizacion/{idCotizacion}', [
 				'as' => 'ordenes.create_from_cotizacion',

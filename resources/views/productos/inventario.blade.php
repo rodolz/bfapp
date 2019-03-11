@@ -20,14 +20,10 @@
         </div> -->
         </header>
         <div class="content-body">    
-{{--             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="pull-left">
-                        <h2 class="bold">Productos Disponibles</h2>
-                    </div>
-                </div>
-            </div> --}}
-            <div class="row top15">
+            <div class="row text-center">
+                <a class="btn btn-purple {{ count($productos_disponibles) > 0 ? '': 'disabled'}} top15" href="{{ URL::to('productos/inventario_pdf') }}"> Exportar en PDF</a>
+            </div>
+            <div class="row">
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
@@ -76,10 +72,6 @@
                     </table>
                 </div>
             </div>
-            <div class="row text-center">
-                <a class="btn btn-purple {{ count($productos_disponibles) > 0 ? '': 'disabled'}} top15" href="{{ URL::to('productos/inventario_pdf') }}"> Exportar en PDF</a>
-            </div>
-            <!-- PAGINACION -->
         </div>
     </section>
 

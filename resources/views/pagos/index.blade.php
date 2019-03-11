@@ -11,14 +11,8 @@
 
 @section('content')
     <section class="box primary">
-        <!--  PANEL HEADER    -->
         <header class="panel_header">
             @yield('panel-title')
-            <!--<div class="actions panel_actions pull-right">
-                <i class="box_toggle fa fa-chevron-down"></i>
-                <i class="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></i>
-                <i class="box_close fa fa-times"></i>
-            </div> -->
         </header>
         <div class="content-body">
            <div class="row">
@@ -77,6 +71,22 @@
             ]
         });
     });
+    
+    function deletePrompt() {
+        event.preventDefault(); // prevent form submit
+        var form = document.forms["deleteForm"]; // storing the form
+        swal({
+            title: "Esta seguro/a de eliminar?",
+            text: "Si procede no se podrá recuperar esta información",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((result) => {
+            if (result) {
+                form.submit();
+            }
+        });
+    }
 </script>
-
 @endsection

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Proveedor;
 use App\Producto;
 use App\ProductoProveedor;
+use Alert;
 
 class ProductoProveedorController extends Controller
 {
@@ -115,12 +116,15 @@ class ProductoProveedorController extends Controller
         $proveedor = Proveedor::where('id',$producto->idProveedor)
                                 ->first();
         $producto->delete();
-        return redirect()->route('proveedores.show',['id' => $proveedor->id])
-                        ->with('success','Producto Borrado!');
+        Alert::success("Producto Borrado")->autoclose(1000);
+        return redirect()->route('proveedores.show',['id' => $proveedor->id]);
     }
     
     public function check_precio(Request $request){
-        $producto = ProductoProveedor::where('id', $request->idProducto)->first();
-        return number_format($producto->precio,2,'.',',');
+        if(!is_null($request->idProducto)){
+            $producto = ProductoProveedor::where('id', $request->idProducto)->first();
+            return number_format($producto->precio,2,'.',',');
+        }
+        return 0;
     }
 }

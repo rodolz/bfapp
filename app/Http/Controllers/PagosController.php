@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\User;
 use App\Cliente;
-use App\Orden;
 use App\Factura;
 use App\Pago;
 use Yajra\Datatables\Datatables;
@@ -38,7 +35,7 @@ class PagosController extends Controller
                             return "
                             <div class='acciones-btn'>
                             <a class='btn btn-info' href='pagos/{$pago->id}'><i class='fa fa-list-alt' aria-hidden='true'></i></a>
-                            <form id='delete_pago' method='POST' action='pagos/{$pago->id}' accept-charset='UTF-8' style='display:inline'>
+                            <form id='delete_pago' name='deleteForm' onclick='deletePrompt()' method='POST' action='pagos/{$pago->id}' accept-charset='UTF-8' style='display:inline'>
                                 <input name='_method' type='hidden' value='DELETE'>
                                 <input type='hidden' name='_token' value='{$token}'>
                                 <button id='delete' type='submit' class='btn btn-danger'>
@@ -53,7 +50,7 @@ class PagosController extends Controller
                             ->make(true);
     }
 
-    public function index(Request $request)
+    public function index()
     {
         return view('pagos.index');
     }
@@ -83,20 +80,13 @@ class PagosController extends Controller
 
     public function cuentas_por_cobrar(Request $request){
 
-        $customMessages = [
-            'clientes.required' => 'Debe escojer a un cliente',
-        ];
 
-        $validator = Validator::make($request->all(), [
+        $this->validate($request, [
             'clientes' => 'required',
-        ],$customMessages);
-
-        if ($validator->fails()) {
-            $errores = $validator->errors();
-            // dd($errores->get('idCliente'));
-            Alert::error($errores->first('clientes'));
-            return redirect()->back();
-        }     
+        ],
+        [
+            'clientes.required' => 'Debe seleccionar un cliente',
+        ]);  
 
         // Se buscan las facturas por cobrar
         $facturas = Factura::whereIn('idCliente', $request->clientes)
@@ -104,10 +94,7 @@ class PagosController extends Controller
                             ->orderBy('idCliente','ASC')
                             ->orderBy('created_at','ASC')
                             ->get();
-        // $monto_total =      Factura::where('idCliente', '=', $cliente->id)
-        //                     ->where('idFacturaEstado', '=', 1)
-        //                     ->orWhere('idFacturaEstado', '=', 3)
-        //                     ->sum('monto_factura');      
+
         $monto_total = 0;
         foreach ($facturas as $factura) {
             if($factura->idFacturaEstado == 3){
@@ -191,13 +178,12 @@ class PagosController extends Controller
 
     public function nuevo_pago(Request $request){
 
-        $customMessages = [
-            'idCliente.required' => 'Debe escojer a un cliente',
-        ];
-
         $this->validate($request, [
             'idCliente' => 'required',
-        ], $customMessages);
+        ],
+        [
+            'idCliente.required' => 'Debe seleccionar a un cliente',
+        ]);
         
         $cliente = Cliente::findOrfail($request->idCliente);
 
@@ -273,8 +259,8 @@ class PagosController extends Controller
 
         //Borrar el pago
         $pago->delete();
-        return redirect()->route('pagos.index')
-                        ->with('success','Pago Borrado!');
+        Alert::success('Pago Borrado')->autoclose(1000);
+        return redirect()->back();
     }
 
     public function guardar_pago(Request $request){

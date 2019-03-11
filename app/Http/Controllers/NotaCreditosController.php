@@ -8,6 +8,7 @@ use App\Pago;
 use App\Factura;
 use App\NotaCredito;
 use PDF;
+use Alert;
 
 class NotaCreditosController extends Controller
 {
@@ -60,6 +61,9 @@ class NotaCreditosController extends Controller
     {
         $this->validate($request, [
             'idFactura' => 'required'
+        ],
+        [
+            'idFactura.required' => 'Debe elegir un Control'
         ]);
 
         $factura = Factura::find($request->idFactura);
@@ -105,8 +109,8 @@ class NotaCreditosController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('nota_creditos.index')
-                        ->with('success','Nota de Credito Creada!');
+        Alert::success('Nota de Crédito creada')->autoclose(1000);
+        return redirect()->route('nota_creditos.index');
     }
 
     public function show($id)
@@ -139,7 +143,7 @@ class NotaCreditosController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('nota_creditos.index')
-                        ->with('success','Nota de Credito Borrada!');
+        Alert::success('Nota de Crédito borrada')->autoclose(1000);
+        return redirect()->back();
     }
 }
