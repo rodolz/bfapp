@@ -44,7 +44,7 @@
                         </div>
                         <!-- Lista de productos -->
                         <div class="row top15">
-                            <div class="form-group col-lg-4 col-md-4 col-sm-9 col-xs-12">
+                            <div class="form-group col-lg-6 col-md-4 col-sm-9 col-xs-12">
                                 <div class="list-group" id="lista_productos">
                                     <div class="list-group-item">
                                         <h4 class="list-group-item-heading bold text-center">Productos Cotizados</h4>
@@ -52,7 +52,7 @@
                                     @foreach($productos_seleccionados as $producto)
                                         <li idProducto="{{ $producto->id }}" cantidad="{{ $producto->pivot->cantidad_producto }}" precio="{{ $producto->pivot->precio_final }}" class='list-group-item active'>
                                         <span class='badge'><a idProducto="{{ $producto->id }}"><i class='fa fa-times'></i></a></span><span class='badge'>Qty: {{ $producto->pivot->cantidad_producto }}</span>
-                                        <span class='badge'><i class='fa fa-usd'></i>{{ number_format($producto->pivot->precio_final,2,'.',',') }}</span>
+                                        <span class='badge'><i class='fas fa-dollar-sign'></i>{{ number_format($producto->pivot->precio_final,2,'.',',') }}</span>
                                         {{ $producto->codigo }}
                                         </li>
                                     @endforeach
@@ -159,7 +159,7 @@
                         var li = "<li idProducto="+idProducto+" cantidad="+cantidad+" precio="+precio+" class='list-group-item active'>";
                         li += "<span class='badge'><a idProducto="+idProducto+"><i class='fa fa-times'></i></a></span>";
                         li += "<span class='badge'>Qty: "+cantidad+"</span>";
-                        li += "<span class='badge'><i class='fa fa-usd'></i>"+precio+"</span>";
+                        li += "<span class='badge'><i class='fas fa-dollar-sign'></i>"+precio+"</span>";
                         li += codigo+"</li>";
                         $('#lista_productos').append(li);
                    } 

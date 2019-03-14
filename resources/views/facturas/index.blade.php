@@ -68,10 +68,10 @@
                                     @endif
                                     <td>
                                         <div class="acciones-btn">
-                                            <a class="btn btn-info" href="{{ URL::to('facturas/factura_pdf/'.$factura->id) }}"><i class="fa fa-file-pdf-o"></i></a>
+                                            <a class="btn btn-info" href="{{ URL::to('facturas/factura_pdf/'.$factura->id) }}"><i class="fas fa-file-pdf"></i></a>
                                             {!! Form::open(['method' => 'DELETE','onclick' => 'deletePrompt()','name' => 'deleteForm','route' => ['facturas.destroy', $factura->id],'style'=>'display:inline']) !!}
                                             <button type="submit" class="btn btn-danger">
-                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            <i class="fas fa-trash-alt" aria-hidden="true"></i>
                                             </button>
                                             {!! Form::close() !!}
                                         </div>

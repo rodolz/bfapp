@@ -68,16 +68,16 @@
                                     <td>
                                         <div class="acciones-btn">
                                             @if($orden->idOrdenEstado == 1)
-                                                <a class="btn btn-primary" href="{{ route('ordenes.edit',$orden->id) }}"><i class="fa fa-pencil"></i></a>
+                                                <a class="btn btn-primary" href="{{ route('ordenes.edit',$orden->id) }}"><i class="fas fa-edit"></i></a>
                                             @else
-                                                <button class="btn btn-primary" href="{{ route('ordenes.edit',$orden->id) }}" disabled><i class="fa fa-pencil"></i></button>
+                                                <button class="btn btn-primary" href="{{ route('ordenes.edit',$orden->id) }}" disabled><i class="fas fa-edit"></i></button>
                                             @endif
 
-                                            <a class="btn btn-info" href="{{ URL::to('ordenes/orden_pdf/'.$orden->id) }}"><i class="fa fa-file-pdf-o"></i></a>
+                                            <a class="btn btn-info" href="{{ URL::to('ordenes/orden_pdf/'.$orden->id) }}"><i class="fas fa-file-pdf"></i></a>
                                             {!! Form::open(['method' => 'DELETE', 'name' => 'deleteForm', 'onclick' => 'deletePrompt()','route' => ['ordenes.destroy', $orden->id],'style'=>'display:inline']) !!}
                                             {!! Form::hidden('redirects_to', URL::previous()) !!}
                                             <button type="submit" class="btn btn-danger">
-                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                <i class="fas fa-trash-alt" aria-hidden="true"></i>
                                             </button>
                                             {!! Form::close() !!}
                                         </div>

@@ -61,17 +61,17 @@
                                     <td>
                                         <div class="acciones-btn">
                                             @if($purchase_order->idPOStatus == 1)
-                                                <a class="btn btn-orange" href="{{ route('purchase_orders.load',$purchase_order->id) }}"><i class="fa fa-share"></i></a>
-                                                <a class="btn btn-primary" href="{{ route('purchase_orders.edit',$purchase_order->id) }}"><i class="fa fa-pencil"></i></a>
+                                                <a class="btn btn-orange" href="{{ route('purchase_orders.load',$purchase_order->id) }}"><i class="fas fa-share"></i></a>
+                                                <a class="btn btn-primary" href="{{ route('purchase_orders.edit',$purchase_order->id) }}"><i class="fas fa-edit"></i></a>
                                             @else
-                                                <button class="btn btn-orange" href="{{ route('purchase_orders.load',$purchase_order->id) }}" disabled><i class="fa fa-share"></i></button>
-                                                <button class="btn btn-primary" href="{{ route('purchase_orders.edit',$purchase_order->id) }}" disabled><i class="fa fa-pencil"></i></button>
+                                                <button class="btn btn-orange" href="{{ route('purchase_orders.load',$purchase_order->id) }}" disabled><i class="fas fa-share"></i></button>
+                                                <button class="btn btn-primary" href="{{ route('purchase_orders.edit',$purchase_order->id) }}" disabled><i class="fas fa-edit"></i></button>
                                             @endif
 
-                                            <a class="btn btn-info" href="{{ URL::to('purchase_orders/po_pdf/'.$purchase_order->id) }}"><i class="fa fa-file-pdf-o"></i></a>
+                                            <a class="btn btn-info" href="{{ URL::to('purchase_orders/po_pdf/'.$purchase_order->id) }}"><i class="fas fa-file-pdf"></i></a>
                                             {!! Form::open(['method' => 'DELETE','onclick' => 'deletePrompt()','name' => 'deleteForm','route' => ['purchase_orders.destroy', $purchase_order->id],'style'=>'display:inline']) !!}
                                             <button type="submit" class="btn btn-danger">
-                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                <i class="fas fa-trash-alt" aria-hidden="true"></i>
                                             </button>
                                             {!! Form::close() !!}
                                         </div>
@@ -81,7 +81,7 @@
                         @else
                             <tr>
                                 <td colspan="6">
-                                    <h2 class="bold text-warning text-center"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:30px"></i> No se han creado Ordenes de Compra</h2>
+                                    <h2 class="bold text-warning text-center"><i class="fas fa-exclamation-triangle" aria-hidden="true" style="font-size:30px"></i> No se han creado Ordenes de Compra</h2>
                                 </td>
                             </tr>
                         @endif

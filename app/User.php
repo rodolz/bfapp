@@ -20,6 +20,7 @@ class User extends Authenticatable
         'nombre',
         'email',
         'password',
+        'avatar',
     ];
 
     protected $guard_name = 'web';

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
-use App\Role;
 use App\Http\Controllers\Controller;
-use Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use UxWeb\SweetAlert\SweetAlert;
+use Alert;
 
 class RegisterController extends Controller
 {
@@ -32,7 +32,7 @@ class RegisterController extends Controller
     protected $redirectTo = '/';
 
     /**
-     * Create a new controller instance.
+     * Create a new controller instance.`
      *
      * @return void
      */
@@ -55,7 +55,14 @@ class RegisterController extends Controller
      * @return \Illuminate\Contracts\Validation\Validator
      */
 
-
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'nombre' => ['required', 'string', 'max:255']
+            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            // 'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+    }
     /**
      * Create a new user instance after a valid registration.
      *
@@ -74,11 +81,12 @@ class RegisterController extends Controller
         $user = User::create([
             'nombre' => $data['nombre'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password'])
+            'password' => bcrypt($data['password']),
+            'avatar' => "default.jpg"
         ]);
-
-        $role = Role::findorFail($data['idRol']);
-        $user->attachRole($role);
+        
+        // $role = Role::findorFail($data['idRol']);
+        // $user->attachRole($role);
         return $user;
     }
 }

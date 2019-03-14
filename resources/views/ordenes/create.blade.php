@@ -53,7 +53,7 @@
                                             <div class="input-group col-lg-2 col-md-6 col-sm-9 col-xs-12 right15 top15">
                                                 {{-- <span class="input-group-addon"><i class='fa fa-usd'></i></span>
                                                 <input class="form-control" lang="en-150" type="number" step="0.000001" id="precio" name="precio" min=1.00 value=0.00> --}}
-                                                <span class="input-group-addon"><i class='fa fa-usd'></i></span>
+                                                <span class="input-group-addon"><i class='fas fa-dollar-sign'></i></span>
                                                 <input type="text" id="precio" name="precio" class="autoNumeric form-control" placeholder="0.00">
                                             </div>
                                             <button type="button" id="add_producto" class="btn btn-primary top15">
@@ -64,7 +64,7 @@
                         </div>
                         <!-- Lista de productos -->
                         <div class="row top15">
-                            <div class="form-group col-lg-4 col-md-6 col-sm-9 col-xs-12">
+                            <div class="form-group col-lg-6 col-md-6 col-sm-9 col-xs-12">
                                 <div class="list-group" id="lista_productos" hidden="hidden">
                                     <div class="list-group-item">
                                         <h4 class="list-group-item-heading bold text-center">Productos Seleccionados</h4>
@@ -183,9 +183,9 @@
                                 item.remove();
                         }
                         var li = "<li idProducto="+idProducto+" cantidad="+cantidad+" precio="+precio+" class='list-group-item active'>";
-                        li += "<span class='badge'><a idProducto="+idProducto+"><i class='fa fa-times'></i></a></span>";
+                        li += "<span class='badge'><a idProducto="+idProducto+"><i class='fas fa-times'></i></a></span>";
                         li += "<span class='badge'>Qty: "+cantidad+"</span>";
-                        li += "<span class='badge'><i class='fa fa-usd'></i>"+precio+"</span>";
+                        li += "<span class='badge'><i class='fas fa-dollar-sign'></i> "+precio+"</span>";
                         li += codigo+"</li>";
                         $('#lista_productos').append(li);
                    } 

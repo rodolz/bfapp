@@ -86,13 +86,13 @@
                     data: 'precio', name: 'precio',
                     render: function ( data, type, full, meta ) {
                                 // var num = $.fn.dataTable.render.number( ',', '.', 2).display(data);
-                                return '<div class="input-group"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input class="form-control" style="width: 7.5em" maxlength="4" size="4" type="number" name="'+full.id+'" id="precio" value="'+data+'"/>';
+                                return '<div class="input-group"><span class="input-group-addon"><i class="fas fa-dollar-sign"></i></span><input class="form-control" style="width: 7.5em" maxlength="4" size="4" type="number" name="'+full.id+'" id="precio" value="'+data+'"/>';
                             }
                 },
                 {
                     data: 'precio_costo', name: 'precio_costo',
                     render: function ( data, type, full, meta ) {
-                                return '<div class="input-group"><span class="input-group-addon"><i class="fa fa-dollar"></i></span><input class="form-control" style="width: 7.5em" maxlength="4" size="4" type="number" name="'+full.id+'" id="precio_costo" value="'+data+'" />';
+                                return '<div class="input-group"><span class="input-group-addon"><i class="fas fa-dollar-sign"></i></span><input class="form-control" style="width: 7.5em" maxlength="4" size="4" type="number" name="'+full.id+'" id="precio_costo" value="'+data+'" />';
                             }
                 },
                 {

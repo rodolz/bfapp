@@ -81,7 +81,7 @@
                                                 {!! Form::open(['method' => 'DELETE','onclick' => 'deletePrompt()','name' => 'deleteForm','route' => ['proveedores_producto.destroy', $producto->id],'style'=>'display:inline']) !!}
                                                 <th>
                                                 <button type="submit" class="btn btn-danger" onclick="deletePrompt()">
-                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                    <i class="fas fa-trash-alt" aria-hidden="true"></i>
                                                 </button>
                                 	            {!! Form::close() !!}
                                                 </th>
@@ -89,8 +89,8 @@
                                         @endforeach
                                     @else
                                         <tr>
-                                            <td colspan="4">
-                                                <h2 class="bold text-warning text-center"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="font-size:30px"></i> No se han agregado productos </h2>
+                                            <td colspan="5">
+                                                <h2 class="bold text-warning text-center"><i class="fas fa-exclamation-triangle" aria-hidden="true" style="font-size:30px"></i> No se han agregado productos </h2>
                                             </td>
                                         </tr>
                                     @endif
@@ -101,7 +101,7 @@
                     </div>
                 </div>
             <div class="row text-center">
-                 <a type="button" class="btn" href="{{ URL::route('productos.index') }}">Atras</a>
+                 <a type="button" class="btn" href="{{ URL::route('proveedores.index') }}">Atras</a>
             </div>
         </div>
     </section>

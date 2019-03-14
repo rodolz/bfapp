@@ -50,11 +50,11 @@
                                         <td>{{ $proveedor->website }}</td>
                                         <td>
                                             <div class="acciones-btn">
-                                                <a class='btn btn-orange' href="{{ route('proveedores.show',$proveedor->id) }}"><i class='fa fa-eye' aria-hidden='true'></i></a>
-                                                <a class="btn btn-info" href="{{ route('proveedores.edit',$proveedor->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                                <a class='btn btn-orange' href="{{ route('proveedores.show',$proveedor->id) }}"><i class='fas fa-eye' aria-hidden='true'></i></a>
+                                                <a class="btn btn-info" href="{{ route('proveedores.edit',$proveedor->id) }}"><i class="fas fa-edit" aria-hidden="true"></i></a>
                                                 {!! Form::open(['method' => 'DELETE','onclick' => 'deletePrompt()','name' => 'deleteForm','route' => ['proveedores.destroy', $proveedor->id],'style'=>'display:inline']) !!}
                                                 <button type="submit" class="btn btn-danger">
-                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                    <i class="fas fa-trash-alt" aria-hidden="true"></i>
                                                 </button>
                                                 {!! Form::close() !!}
                                             </div>

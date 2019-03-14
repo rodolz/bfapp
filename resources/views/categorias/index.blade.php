@@ -62,11 +62,11 @@
                             	        <td>
                                             <div class="acciones-btn">
                                                 <!-- <a class="btn btn-info" href="{{ route('categorias.show',$categoria->id) }}">Show</a> -->
-                                                <a class="btn btn-info" href="{{ route('categorias.edit',$categoria->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                                <a class="btn btn-info" href="{{ route('categorias.edit',$categoria->id) }}"><i class="fas fa-edit" aria-hidden="true"></i></a>
 
                                                 {!! Form::open(['method' => 'DELETE','onclick' => 'deletePrompt()','name' => 'deleteForm','route' => ['categorias.destroy', $categoria->id],'style'=>'display:inline']) !!}
                                                 <button type="submit" class="btn btn-danger">
-                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                    <i class="fas fa-trash-alt" aria-hidden="true"></i>
                                                 </button>
                                                 {!! Form::close() !!}
                                             </div>

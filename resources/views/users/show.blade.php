@@ -14,19 +14,20 @@
                 <div class="row">
                     <div class="col-md-3 col-sm-4 col-xs-12">
                         <div class="uprofile-image">
-                            <img src="/uploads/avatars/{{ Auth::user()->avatar }}" class="img-responsive" alt="{{  Auth::user()->nombre }} avatar">
+                            <img src="/uploads/avatars/{{ $user->avatar }}" class="img-responsive" alt="{{$user->nombre}} avatar">
                         </div>
                         <div class="uprofile-name">
                             <h3>
-                                <a href="#">{{ Auth::user()->nombre }}</a>
+                                <a href="#">{{ $user->nombre }}</a>
                                 <!-- Available statuses: online, idle, busy, away and offline -->
                                 <span class="uprofile-status online"></span>
                             </h3>
                             <div class="uprofile-title">
-                                @foreach(Auth::user()->roles as $role)
+                                @foreach($user->roles as $role)
                                     {{ $role->name }} <br/>
                                 @endforeach
                             </div>
+                            @if(Auth::user()->id == $user->id)
                             <div class="row top15">
                                 <form enctype="multipart/form-data" action="/users/perfil/update_avatar" method="POST" >
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -41,11 +42,12 @@
                                     </div>
                                 </form>
                             </div>
+                            @endif
                         </div>
                         <div class="uprofile-info top15">
                             <ul class="list-unstyled">
-                                <li><i class="fa fa-envelope"></i>{{ Auth::user()->email }}</li>
-                                <li><i class="fa fa-calendar"></i>{{ Auth::user()->created_at->format('F Y') }}</li>
+                                <li><i class="fa fa-envelope"></i>{{ $user->email }}</li>
+                                <li><i class="fa fa-calendar"></i>{{ $user->created_at->format('F Y') }}</li>
                             </ul>
                         </div>
                     </div>

@@ -36,7 +36,7 @@
                                             <input class="form-control" type="number" id="cantidad" name="cantidad" min=1 value=1>
                                         </div>
                                         <div class="input-group col-lg-2 col-md-6 col-sm-9 col-xs-12 right15 top15">
-                                            <span class="input-group-addon"><i class='fa fa-usd'></i></span>
+                                            <span class="input-group-addon"><i class='fas fa-dollar-sign'></i></span>
                                             <input type="text" id="precio" name="precio" class="autoNumeric form-control" placeholder="0.00">
                                         </div>
                                         <button type="button" id="add_producto" class="btn btn-primary top15">
@@ -182,7 +182,7 @@
             var li = "<li idProducto="+idProducto+" cantidad="+cantidad+" precio="+precio+" class='list-group-item active'>";
             li += "<span class='badge'><a idProducto="+idProducto+"><i class='fa fa-times'></i></a></span>";
             li += "<span class='badge'>Qty: "+cantidad+"</span>";
-            li += "<span class='badge'><i class='fa fa-usd'></i>"+precio+"</span>";
+            li += "<span class='badge'><i class='fas fa-dollar-sign'></i> "+precio+"</span>";
             li += codigo+"</li>";
             $('#lista_productos').append(li); 
         });

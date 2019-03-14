@@ -34,12 +34,12 @@ class PagosController extends Controller
                                 $token = csrf_token();
                             return "
                             <div class='acciones-btn'>
-                            <a class='btn btn-info' href='pagos/{$pago->id}'><i class='fa fa-list-alt' aria-hidden='true'></i></a>
+                            <a class='btn btn-info' href='pagos/{$pago->id}'><i class='fa fa-list-alt'></i></a>
                             <form id='delete_pago' name='deleteForm' onclick='deletePrompt()' method='POST' action='pagos/{$pago->id}' accept-charset='UTF-8' style='display:inline'>
                                 <input name='_method' type='hidden' value='DELETE'>
                                 <input type='hidden' name='_token' value='{$token}'>
                                 <button id='delete' type='submit' class='btn btn-danger'>
-                                    <i class='fa fa-trash-o' aria-hidden='true'></i>
+                                    <i class='fas fa-trash-alt' aria-hidden='true'></i>
                                  </button>
                             </form>
                             </div>";

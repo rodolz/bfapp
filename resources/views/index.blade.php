@@ -10,7 +10,7 @@
                 <div class="row">
                     <div class="col-md-3 col-sm-6 col-xs-12">
                         <div class="r4_counter db_box">
-                            <i class='pull-left fa fa-dollar icon-md icon-rounded icon-green'></i>
+                            <i class='pull-left fas fa-hand-holding-usd icon-md icon-rounded icon-green'></i>
                             <div class="stats">
                                 <h4><strong>${{ number_format($monto_por_cobrar , 2) }}</strong></h4>
                                 <span>Monto por cobrar</span>
@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-md-3 col-sm-6 col-xs-12">
                         <div class="r4_counter db_box">
-                            <i class='pull-left fa fa-file-pdf-o icon-md icon-rounded icon-orange'></i>
+                            <i class='pull-left fas fa-file-pdf icon-md icon-rounded icon-orange'></i>
                             <div class="stats">
                                 <h4><strong>{{ isset($ordenes_totales) ? $ordenes_totales : "No hay notas de entregas"
                                         }}</strong></h4>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-md-3 col-sm-6 col-xs-12">
                         <div class="r4_counter db_box">
-                            <i class='pull-left fa fa-user icon-md icon-rounded icon-warning'></i>
+                            <i class='pull-left fas fa-user-tie icon-md icon-rounded icon-warning'></i>
                             <div class="stats">
                                 <h4><strong>{{ isset($cliente_top1) ? $cliente_top1->empresa : "No se pudo encontrar"
                                         }}</strong></h4>

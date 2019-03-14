@@ -16,9 +16,8 @@
 		Route::group(['middleware' => 'auth'], function(){
 			//Perfil de usuario
 			Route::get('users','UserController@index')->name('users.index');
-			Route::resource('users','UserController', ['except' => [
-				'index',
-			]]);
+			Route::get('users/{$id}','UserController@show')->name('users.show');
+			Route::delete('users/{$id}','UserController@destroy')->name('users.destroy');
 			Route::post('users/perfil/update_avatar','UserController@update_avatar');
 
 			//Registro
